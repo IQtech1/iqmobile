@@ -4,39 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO -->
-    <meta name="description" content="İQmobil - دليلك لمقارنة أسعار ومواصفات الأجهزة الذكية في 8 دول عربية">
-    <meta name="keywords" content="هواتف, أسعار, مواصفات, مقارنة, İQmobil, smartphones">
+    <!-- ============ SEO ============ -->
+    <meta name="description" content="İQmobil - دليلك لمقارنة أسعار ومواصفات الأجهزة الذكية في 8 دول عربية. أكثر من 250 جهاز بمواصفات كاملة وأسعار محدثة يومياً.">
+    <meta name="keywords" content="هواتف, أسعار, مواصفات, مقارنة, İQmobil, smartphones, prices, سامسونج, آيفون, شاومي">
     <meta name="author" content="İQmobil">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1a73e8">
     
-    <!-- Open Graph -->
+    <!-- ============ Open Graph ============ -->
     <meta property="og:title" content="İQmobil | دليل الأجهزة الذكية">
     <meta property="og:description" content="دليلك الشامل لمقارنة أسعار ومواصفات الأجهزة الذكية">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://starmusic1167.github.io/iqmobil/">
+    <meta property="og:url" content="https://igmobil.github.io/iqmobile/">
+    <meta property="og:image" content="https://igmobil.github.io/iqmobile/assets/img/og-image.jpg">
+    <meta property="og:locale" content="ar_AR">
     
-    <!-- Twitter -->
+    <!-- ============ Twitter ============ -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="İQmobil">
     <meta name="twitter:description" content="دليلك الشامل لمقارنة الأجهزة الذكية">
+    <meta name="twitter:image" content="https://igmobil.github.io/iqmobile/assets/img/og-image.jpg">
     
-    <!-- Favicon -->
+    <!-- ============ Canonical ============ -->
+    <link rel="canonical" href="https://igmobil.github.io/iqmobile/">
+    
+    <!-- ============ Favicon ============ -->
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
     
-    <!-- Font -->
+    <!-- ============ Fonts ============ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <title>İQmobil | دليل الأجهزة الذكية</title>
     
-    <!-- CSS -->
+    <!-- ============ CSS ============ -->
     <link rel="stylesheet" href="app.css">
+    
+    <!-- ============ منع وميض الوضع الليلي ============ -->
+    <script>
+        (function() {
+            try {
+                const saved = localStorage.getItem('iqmobil_theme');
+                let theme = 'light';
+                if (saved) {
+                    try { theme = JSON.parse(saved); } catch(e) { theme = saved; }
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    theme = 'dark';
+                }
+                window.__IQMOBIL_THEME__ = theme;
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.body.classList.add('dark-mode');
+                    });
+                }
+            } catch (e) {}
+        })();
+    </script>
+    
+    <!-- ============ JSON-LD Structured Data ============ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "İQmobil",
+        "url": "https://igmobil.github.io/iqmobile/",
+        "description": "دليلك الشامل لمقارنة أسعار ومواصفات الأجهزة الذكية",
+        "inLanguage": "ar",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://igmobil.github.io/iqmobile/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- ============ Google Analytics (استبدل G-XXXXXXXXXX بمعرفك) ============ -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
 </head>
 <body>
 
     <!-- ============ الشريط العلوي ============ -->
-  
+    <div class="top-bar">
+        🔥 أحدث الأسعار محدثة يومياً في 8 دول عربية
+    </div>
 
     <!-- ============ الهيدر ============ -->
     <header>
@@ -52,14 +113,23 @@
                     <li><a data-category="tablet">الأجهزة اللوحية</a></li>
                     <li><a data-category="watch">الساعات</a></li>
                     <li><a data-nav="compare">المقارنة</a></li>
+                    <li><a data-nav="favorites">
+                        <span class="fav-icon">❤️</span>
+                        <span class="fav-count" id="favCount">0</span>
+                    </a></li>
                 </ul>
             </nav>
 
-          <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي" title="تبديل الوضع الليلي">
-    <span class="theme-icon">🌙</span>
-</button>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي">
+                <span class="theme-icon">🌙</span>
+            </button>
 
-<select class="country-selector" id="countrySelect" aria-label="اختر الدولة"></select>
+            <select class="country-selector" id="countrySelect" aria-label="اختر الدولة"></select>
+
+            <button class="filter-toggle" id="filterToggle" aria-label="الفلاتر">
+                <span>⚙️</span>
+                <span class="filter-badge" id="filterBadge">0</span>
+            </button>
 
             <div class="search-box">
                 <input type="text" id="mainSearch" placeholder="ابحث عن جهاز..." aria-label="بحث">
@@ -72,6 +142,71 @@
             <ul class="categories-list" id="brandsBar"></ul>
         </div>
     </header>
+
+    <!-- ============ الفلاتر المتقدمة ============ -->
+    <div class="filters-panel" id="filtersPanel">
+        <div class="filters-panel-inner">
+            <div class="filters-header">
+                <h3>🔍 فلاتر متقدمة</h3>
+                <button class="close-filters" id="closeFilters">✕</button>
+            </div>
+
+            <div class="filters-grid">
+                <!-- فلترة السعر -->
+                <div class="filter-group">
+                    <label>💰 نطاق السعر</label>
+                    <div class="price-inputs">
+                        <input type="number" id="minPrice" placeholder="من" min="0">
+                        <span>-</span>
+                        <input type="number" id="maxPrice" placeholder="إلى" min="0">
+                    </div>
+                </div>
+
+                <!-- فلترة السنة -->
+                <div class="filter-group">
+                    <label>📅 سنة الإصدار</label>
+                    <select id="filterYear">
+                        <option value="all">الكل</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                </div>
+
+                <!-- فلترة التقييم -->
+                <div class="filter-group">
+                    <label>⭐ التقييم الأدنى</label>
+                    <select id="filterRating">
+                        <option value="0">الكل</option>
+                        <option value="4.5">4.5+ ممتاز</option>
+                        <option value="4.0">4.0+ جيد جداً</option>
+                        <option value="3.5">3.5+ جيد</option>
+                    </select>
+                </div>
+
+                <!-- الترتيب -->
+                <div class="filter-group">
+                    <label>↕️ الترتيب حسب</label>
+                    <select id="sortBy">
+                        <option value="default">الافتراضي</option>
+                        <option value="price-asc">السعر: الأقل أولاً</option>
+                        <option value="price-desc">السعر: الأعلى أولاً</option>
+                        <option value="rating">الأعلى تقييماً</option>
+                        <option value="newest">الأحدث إصداراً</option>
+                        <option value="name">الاسم (أ-ي)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-primary" id="applyFilters">✅ تطبيق</button>
+                <button class="btn-reset" id="resetFilters">🔄 إعادة تعيين</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ============ الصفحات ============ -->
     <main>
@@ -88,9 +223,18 @@
 
             <div class="stats" id="statsContainer"></div>
 
+            <!-- شريط الفلاتر النشطة -->
+            <div class="active-filters" id="activeFilters"></div>
+
             <section class="section">
-                <h2 class="section-title" id="sectionTitle">أحدث الأجهزة</h2>
+                <div class="section-header">
+                    <h2 class="section-title" id="sectionTitle">أحدث الأجهزة</h2>
+                    <div class="results-count" id="resultsCount"></div>
+                </div>
                 <div class="devices-grid" id="devicesGrid"></div>
+                <button class="load-more-btn" id="loadMoreBtn" style="display:none;">
+                    📱 عرض المزيد
+                </button>
             </section>
 
             <section class="compare-section">
@@ -105,6 +249,9 @@
 
         <!-- صفحة المقارنة -->
         <section class="page" id="page-compare"></section>
+
+        <!-- صفحة المفضلات -->
+        <section class="page" id="page-favorites"></section>
 
         <!-- صفحة تسجيل الدخول -->
         <section class="page" id="page-login"></section>
