@@ -1,6 +1,8 @@
 /* ============================================================
-   İQmobil - app.js
-   كل الجافاسكربت في ملف واحد
+   İQmobil - app.js (النسخة الكاملة)
+   يحتوي على: البيانات + Storage + Helpers + State + Auth
+   + Router + Home + Device + Compare + Favorites
+   + Login + Admin + Theme + App
    ============================================================ */
 
 /* ============================================================
@@ -20,9 +22,14 @@ const COUNTRIES = {
 
 const DEFAULT_COUNTRY = "SY";
 
+/* ============================================================
+   بيانات الأجهزة (8 أجهزة حالياً + صور حقيقية)
+   ============================================================ */
+
 const DEVICES_DB = [
     {
         id: 1, brand: "Samsung", name: "Galaxy S24 Ultra", image: "📱",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Samsung_Galaxy_S24_Ultra.png/400px-Samsung_Galaxy_S24_Ultra.png",
         category: "phone", releaseDate: "2024-01-17", badge: "جديد",
         rating: 4.8, reviewsCount: 245,
         specs: {
@@ -36,6 +43,7 @@ const DEVICES_DB = [
     },
     {
         id: 2, brand: "Apple", name: "iPhone 15 Pro Max", image: "📱",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/IPhone_15_Pro_Max.png/400px-IPhone_15_Pro_Max.png",
         category: "phone", releaseDate: "2023-09-22", badge: "الأكثر مبيعاً",
         rating: 4.9, reviewsCount: 312,
         specs: {
@@ -49,6 +57,7 @@ const DEVICES_DB = [
     },
     {
         id: 3, brand: "Xiaomi", name: "Xiaomi 14 Pro", image: "📱",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Xiaomi_14_Pro.png/400px-Xiaomi_14_Pro.png",
         category: "phone", releaseDate: "2023-10-26", badge: "",
         rating: 4.7, reviewsCount: 189,
         specs: {
@@ -62,6 +71,7 @@ const DEVICES_DB = [
     },
     {
         id: 4, brand: "Huawei", name: "Huawei P60 Pro", image: "📱",
+        imageUrl: "",
         category: "phone", releaseDate: "2023-03-23", badge: "",
         rating: 4.6, reviewsCount: 156,
         specs: {
@@ -75,6 +85,7 @@ const DEVICES_DB = [
     },
     {
         id: 5, brand: "OPPO", name: "OPPO Find X6 Pro", image: "📱",
+        imageUrl: "",
         category: "phone", releaseDate: "2023-03-21", badge: "",
         rating: 4.5, reviewsCount: 132,
         specs: {
@@ -88,6 +99,7 @@ const DEVICES_DB = [
     },
     {
         id: 6, brand: "Realme", name: "Realme GT 5 Pro", image: "📱",
+        imageUrl: "",
         category: "phone", releaseDate: "2023-12-07", badge: "أفضل قيمة",
         rating: 4.6, reviewsCount: 98,
         specs: {
@@ -101,6 +113,7 @@ const DEVICES_DB = [
     },
     {
         id: 7, brand: "Apple", name: "iPad Pro 12.9 M2", image: "📲",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/IPad_Pro_12.9.png/400px-IPad_Pro_12.9.png",
         category: "tablet", releaseDate: "2022-10-26", badge: "",
         rating: 4.9, reviewsCount: 178,
         specs: {
@@ -114,6 +127,7 @@ const DEVICES_DB = [
     },
     {
         id: 8, brand: "Samsung", name: "Galaxy Watch 6 Classic", image: "⌚",
+        imageUrl: "",
         category: "watch", releaseDate: "2023-08-11", badge: "",
         rating: 4.7, reviewsCount: 89,
         specs: {
@@ -125,6 +139,10 @@ const DEVICES_DB = [
         prices: { SY: 3200000, SA: 1299, AE: 1249, EG: 16500, IQ: 420000, JO: 240, MA: 3400, DZ: 45000 }
     }
 ];
+
+/* ============================================================
+   المراجعات الافتراضية
+   ============================================================ */
 
 const REVIEWS_DB = {
     1: [
@@ -150,10 +168,12 @@ const Storage = {
     KEYS: {
         COUNTRY: 'iqmobil_country',
         COMPARE: 'iqmobil_compare',
+        FAVORITES: 'iqmobil_favorites',
         CUSTOM_DEVICES: 'iqmobil_custom_devices',
         REVIEWS_PREFIX: 'iqmobil_reviews_',
         SESSION: 'iqmobil_session',
-        ATTEMPTS: 'iqmobil_login_attempts'
+        ATTEMPTS: 'iqmobil_login_attempts',
+        THEME: 'iqmobil_theme'
     },
 
     get(key, defaultValue = null) {
@@ -178,29 +198,27 @@ const Storage = {
     },
 
     remove(key) {
-        try {
-            localStorage.removeItem(key);
-            return true;
-        } catch (e) {
-            return false;
-        }
+        try { localStorage.removeItem(key); return true; }
+        catch (e) { return false; }
     },
 
-    // Country
     getCountry() { return this.get(this.KEYS.COUNTRY, DEFAULT_COUNTRY); },
     setCountry(code) { this.set(this.KEYS.COUNTRY, code); },
 
-    // Compare
     getCompare() { return this.get(this.KEYS.COMPARE, []); },
     setCompare(list) { this.set(this.KEYS.COMPARE, list); },
 
-    // Custom Devices
+    getFavorites() { return this.get(this.KEYS.FAVORITES, []); },
+    setFavorites(list) { this.set(this.KEYS.FAVORITES, list); },
+
     getCustomDevices() { return this.get(this.KEYS.CUSTOM_DEVICES, []); },
     setCustomDevices(devices) { this.set(this.KEYS.CUSTOM_DEVICES, devices); },
 
-    // Device Reviews
     getDeviceReviews(deviceId) { return this.get(this.KEYS.REVIEWS_PREFIX + deviceId, []); },
-    setDeviceReviews(deviceId, reviews) { this.set(this.KEYS.REVIEWS_PREFIX + deviceId, reviews); }
+    setDeviceReviews(deviceId, reviews) { this.set(this.KEYS.REVIEWS_PREFIX + deviceId, reviews); },
+
+    getTheme() { return this.get(this.KEYS.THEME, null); },
+    setTheme(theme) { this.set(this.KEYS.THEME, theme); }
 };
 
 /* ============================================================
@@ -212,7 +230,6 @@ const Helpers = {
         const country = COUNTRIES[countryCode];
         if (!country) return amount + " USD";
         if (!amount && amount !== 0) return "-";
-        
         const formatted = new Intl.NumberFormat('ar-EG', { maximumFractionDigits: 0 }).format(amount);
         return `${formatted} ${country.currency}`;
     },
@@ -221,18 +238,12 @@ const Helpers = {
         try {
             const date = new Date(dateString);
             return date.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
-        } catch (e) {
-            return dateString;
-        }
+        } catch (e) { return dateString; }
     },
 
-    today() {
-        return new Date().toISOString().split('T')[0];
-    },
+    today() { return new Date().toISOString().split('T')[0]; },
 
-    generateId() {
-        return Date.now() + Math.floor(Math.random() * 1000);
-    },
+    generateId() { return Date.now() + Math.floor(Math.random() * 1000); },
 
     escapeHtml(text) {
         if (typeof text !== 'string') return '';
@@ -270,6 +281,24 @@ const Helpers = {
         const defaults = REVIEWS_DB[deviceId] || [];
         const custom = Storage.getDeviceReviews(deviceId);
         return [...defaults, ...custom];
+    },
+
+    // ===== الحصول على صورة الجهاز =====
+    getDeviceImage(device) {
+        if (device.imageUrl && device.imageUrl.trim() !== '') {
+            return `<img src="${device.imageUrl}" alt="${this.escapeHtml(device.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` +
+                   `<span class="fallback-emoji" style="display:none;">${device.image}</span>`;
+        }
+        return `<span class="fallback-emoji">${device.image}</span>`;
+    },
+
+    // ===== الحصول على صورة مصغرة =====
+    getDeviceMiniImage(device) {
+        if (device.imageUrl && device.imageUrl.trim() !== '') {
+            return `<img src="${device.imageUrl}" alt="${this.escapeHtml(device.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` +
+                   `<span class="fallback-emoji" style="display:none;">${device.image}</span>`;
+        }
+        return `<span class="fallback-emoji">${device.image}</span>`;
     }
 };
 
@@ -279,13 +308,51 @@ const Helpers = {
 
 const State = {
     currentPage: 'home',
-    filters: { category: 'all', brand: 'all', search: '' },
+    filters: {
+        category: 'all',
+        brand: 'all',
+        search: '',
+        minPrice: null,
+        maxPrice: null,
+        year: 'all',
+        rating: 0,
+        sortBy: 'default'
+    },
     currentDevice: null,
     compareList: [],
+    favorites: [],
+    visibleDevices: 12,
 
     setCategory(cat) { this.filters.category = cat; },
     setBrand(brand) { this.filters.brand = brand; },
     setSearch(query) { this.filters.search = query; },
+
+    setFilters(newFilters) {
+        Object.assign(this.filters, newFilters);
+    },
+
+    resetFilters() {
+        this.filters = {
+            category: this.filters.category,
+            brand: this.filters.brand,
+            search: '',
+            minPrice: null,
+            maxPrice: null,
+            year: 'all',
+            rating: 0,
+            sortBy: 'default'
+        };
+    },
+
+    countActiveFilters() {
+        let count = 0;
+        if (this.filters.minPrice !== null && this.filters.minPrice !== '') count++;
+        if (this.filters.maxPrice !== null && this.filters.maxPrice !== '') count++;
+        if (this.filters.year && this.filters.year !== 'all') count++;
+        if (this.filters.rating && this.filters.rating > 0) count++;
+        if (this.filters.sortBy && this.filters.sortBy !== 'default') count++;
+        return count;
+    },
 
     loadCompare() {
         this.compareList = Storage.getCompare();
@@ -303,6 +370,27 @@ const State = {
     removeFromCompare(id) {
         this.compareList = this.compareList.filter(x => x !== id);
         Storage.setCompare(this.compareList);
+    },
+
+    loadFavorites() {
+        this.favorites = Storage.getFavorites();
+        return this.favorites;
+    },
+
+    isFavorite(id) {
+        return this.favorites.includes(id);
+    },
+
+    toggleFavorite(id) {
+        if (this.favorites.includes(id)) {
+            this.favorites = this.favorites.filter(x => x !== id);
+            Storage.setFavorites(this.favorites);
+            return false;
+        } else {
+            this.favorites.push(id);
+            Storage.setFavorites(this.favorites);
+            return true;
+        }
     }
 };
 
@@ -311,9 +399,8 @@ const State = {
    ============================================================ */
 
 const Auth = {
-    // كلمة المرور: iqmobil2026
     CONFIG: {
-        passwordHash: 'aXFtb2JpbDIwMjY=',
+        passwordHash: 'aXFtb2JpbDIwMjY=',  // iqmobil2026
         sessionKey: 'iqmobil_session',
         attemptsKey: 'iqmobil_login_attempts',
         sessionDuration: 2 * 60 * 60 * 1000,
@@ -350,17 +437,13 @@ const Auth = {
         return true;
     },
 
-    logout() {
-        Storage.remove(this.CONFIG.sessionKey);
-    },
+    logout() { Storage.remove(this.CONFIG.sessionKey); },
 
     getAttempts() {
         return Storage.get(this.CONFIG.attemptsKey, { count: 0, lockedUntil: 0 });
     },
 
-    setAttempts(data) {
-        Storage.set(this.CONFIG.attemptsKey, data);
-    },
+    setAttempts(data) { Storage.set(this.CONFIG.attemptsKey, data); },
 
     isLocked() {
         const { lockedUntil } = this.getAttempts();
@@ -383,9 +466,7 @@ const Auth = {
         return attempts;
     },
 
-    resetAttempts() {
-        this.setAttempts({ count: 0, lockedUntil: 0 });
-    },
+    resetAttempts() { this.setAttempts({ count: 0, lockedUntil: 0 }); },
 
     getRemainingAttempts() {
         const attempts = this.getAttempts();
@@ -394,14 +475,96 @@ const Auth = {
 };
 
 /* ============================================================
-   6) Router — التنقل بين الصفحات
+   6) Theme — إدارة الوضع الليلي
+   ============================================================ */
+
+const Theme = {
+    LIGHT: 'light',
+    DARK: 'dark',
+
+    get() {
+        const saved = Storage.getTheme();
+        if (saved === this.LIGHT || saved === this.DARK) return saved;
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return this.DARK;
+        }
+        return this.LIGHT;
+    },
+
+    apply(theme) {
+        const body = document.body;
+        if (theme === this.DARK) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+        this.updateIcon(theme);
+        
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', theme === this.DARK ? '#121212' : '#1a73e8');
+        }
+    },
+
+    updateIcon(theme) {
+        const icon = document.querySelector('.theme-icon');
+        if (!icon) return;
+        if (theme === this.DARK) {
+            icon.textContent = '☀️';
+        } else {
+            icon.textContent = '🌙';
+        }
+    },
+
+    toggle() {
+        const current = this.get();
+        const next = current === this.DARK ? this.LIGHT : this.DARK;
+        Storage.setTheme(next);
+        this.apply(next);
+        this.playSound();
+    },
+
+    playSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = 800;
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.03, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.1);
+        } catch (e) {}
+    },
+
+    init() {
+        this.apply(this.get());
+        const btn = document.getElementById('themeToggle');
+        if (btn && !btn.dataset.bound) {
+            btn.dataset.bound = 'true';
+            btn.addEventListener('click', () => this.toggle());
+        }
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!Storage.getTheme()) {
+                    this.apply(e.matches ? this.DARK : this.LIGHT);
+                }
+            });
+        }
+    }
+};
+
+/* ============================================================
+   7) Router — التنقل
    ============================================================ */
 
 const Router = {
     protectedPages: ['admin'],
 
-    go(pageName) {
-        // حماية
+    go(pageName, params = null) {
         if (this.protectedPages.includes(pageName) && !Auth.isLoggedIn()) {
             console.warn('🔒 صفحة محمية');
             this.showPage('login');
@@ -409,8 +572,31 @@ const Router = {
             return;
         }
 
+        // تحديث الـ URL
+        this.updateHash(pageName, params);
+
+        // إذا كانت صفحة جهاز
+        if (pageName === 'device' && params && params.id) {
+            const device = Helpers.getDeviceById(params.id);
+            if (device) {
+                State.currentDevice = device;
+                Device.render();
+            } else {
+                this.showPage('home');
+                return;
+            }
+        }
+
         this.showPage(pageName);
-        this.onPageLoad(pageName);
+        this.onPageLoad(pageName, params);
+    },
+
+    updateHash(page, params) {
+        let hash = '#' + page;
+        if (params && params.id) {
+            hash += '/' + params.id;
+        }
+        history.replaceState(null, '', hash);
     },
 
     showPage(pageName) {
@@ -426,13 +612,52 @@ const Router = {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
-    onPageLoad(pageName) {
+    onPageLoad(pageName, params) {
         switch (pageName) {
             case 'home': Home.render(); break;
             case 'compare': Compare.render(); break;
+            case 'favorites': Favorites.render(); break;
             case 'admin': Admin.render(); break;
             case 'login': Login.render(); break;
         }
+    },
+
+    // ===== قراءة الـ hash من URL =====
+    parseHash() {
+        const hash = window.location.hash.substring(1);
+        if (!hash) return { page: 'home', params: null };
+
+        const parts = hash.split('/');
+        const page = parts[0];
+
+        if (page === 'device' && parts[1]) {
+            return { page: 'device', params: { id: parseInt(parts[1]) } };
+        }
+
+        return { page, params: null };
+    },
+
+    handleHashChange() {
+        const { page, params } = this.parseHash();
+        
+        if (page === 'device' && params) {
+            const device = Helpers.getDeviceById(params.id);
+            if (device) {
+                State.currentDevice = device;
+                Device.render();
+                this.showPage('device');
+                return;
+            }
+        }
+        
+        if (page === 'admin' && !Auth.isLoggedIn()) {
+            this.showPage('login');
+            Login.render();
+            return;
+        }
+        
+        this.showPage(page);
+        this.onPageLoad(page, params);
     },
 
     init() {
@@ -441,7 +666,12 @@ const Router = {
             el.dataset.bound = 'true';
             el.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.go(el.dataset.nav);
+                const page = el.dataset.nav;
+                if (page === 'favorites') {
+                    this.go('favorites');
+                } else {
+                    this.go(page);
+                }
             });
         });
 
@@ -454,11 +684,14 @@ const Router = {
                 this.go('home');
             });
         });
+
+        // مراقبة تغييرات الـ hash
+        window.addEventListener('hashchange', () => this.handleHashChange());
     }
 };
 
 /* ============================================================
-   7) Home — الصفحة الرئيسية
+   8) Home — الصفحة الرئيسية
    ============================================================ */
 
 const Home = {
@@ -467,12 +700,12 @@ const Home = {
         this.renderSection();
         this.renderDevicesGrid();
         this.bindEvents();
+        this.updateFilterBadge();
     },
 
     renderStats() {
         const container = document.getElementById('statsContainer');
         if (!container) return;
-
         const totalDevices = Helpers.getAllDevices().length;
         const totalReviews = Helpers.getAllDevices().reduce((s, d) => s + (d.reviewsCount || 0), 0);
         const totalCountries = Object.keys(COUNTRIES).length;
@@ -489,13 +722,82 @@ const Home = {
         const title = document.getElementById('sectionTitle');
         if (!title) return;
         const titles = {
-            all: 'أحدث الأجهزة',
-            phone: 'الهواتف الذكية',
-            tablet: 'الأجهزة اللوحية',
-            watch: 'الساعات الذكية',
-            laptop: 'اللابتوب'
+            all: 'أحدث الأجهزة', phone: 'الهواتف الذكية',
+            tablet: 'الأجهزة اللوحية', watch: 'الساعات الذكية', laptop: 'اللابتوب'
         };
         title.textContent = titles[State.filters.category] || 'أحدث الأجهزة';
+    },
+
+    // ===== تطبيق الفلاتر =====
+    applyAllFilters(devices) {
+        const country = Storage.getCountry();
+        const f = State.filters;
+
+        // الفئة
+        if (f.category !== 'all') {
+            devices = devices.filter(d => d.category === f.category);
+        }
+
+        // الماركة
+        if (f.brand !== 'all') {
+            devices = devices.filter(d => d.brand === f.brand);
+        }
+
+        // البحث
+        if (f.search && f.search.trim()) {
+            devices = devices.filter(d => Helpers.matchesSearch(d, f.search));
+        }
+
+        // السعر
+        if (f.minPrice !== null && f.minPrice !== '' && f.minPrice !== undefined) {
+            devices = devices.filter(d => {
+                const price = d.prices[country] || d.prices.SY || 0;
+                return price >= parseFloat(f.minPrice);
+            });
+        }
+        if (f.maxPrice !== null && f.maxPrice !== '' && f.maxPrice !== undefined) {
+            devices = devices.filter(d => {
+                const price = d.prices[country] || d.prices.SY || 0;
+                return price <= parseFloat(f.maxPrice);
+            });
+        }
+
+        // السنة
+        if (f.year && f.year !== 'all') {
+            devices = devices.filter(d => {
+                const year = d.releaseDate ? d.releaseDate.split('-')[0] : '';
+                return year === f.year;
+            });
+        }
+
+        // التقييم
+        if (f.rating && f.rating > 0) {
+            devices = devices.filter(d => d.rating >= parseFloat(f.rating));
+        }
+
+        // الترتيب
+        if (f.sortBy && f.sortBy !== 'default') {
+            devices = [...devices];
+            switch (f.sortBy) {
+                case 'price-asc':
+                    devices.sort((a, b) => (a.prices[country] || 0) - (b.prices[country] || 0));
+                    break;
+                case 'price-desc':
+                    devices.sort((a, b) => (b.prices[country] || 0) - (a.prices[country] || 0));
+                    break;
+                case 'rating':
+                    devices.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    devices.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+                    break;
+                case 'name':
+                    devices.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+                    break;
+            }
+        }
+
+        return devices;
     },
 
     renderDevicesGrid() {
@@ -504,10 +806,13 @@ const Home = {
 
         const country = Storage.getCountry();
         let devices = Helpers.getAllDevices();
+        devices = this.applyAllFilters(devices);
 
-        if (State.filters.category !== 'all') devices = devices.filter(d => d.category === State.filters.category);
-        if (State.filters.brand !== 'all') devices = devices.filter(d => d.brand === State.filters.brand);
-        if (State.filters.search.trim()) devices = devices.filter(d => Helpers.matchesSearch(d, State.filters.search));
+        // عدّاد النتائج
+        const countEl = document.getElementById('resultsCount');
+        if (countEl) {
+            countEl.textContent = `${devices.length} جهاز`;
+        }
 
         if (devices.length === 0) {
             grid.innerHTML = `
@@ -517,24 +822,54 @@ const Home = {
                     <p>جرّب تعديل الفلاتر أو كلمة البحث</p>
                 </div>
             `;
+            const loadBtn = document.getElementById('loadMoreBtn');
+            if (loadBtn) loadBtn.style.display = 'none';
             return;
         }
 
-        grid.innerHTML = devices.map(d => this.renderCard(d, country)).join('');
+        // عرض محدود
+        const visible = devices.slice(0, State.visibleDevices);
+        grid.innerHTML = visible.map(d => this.renderCard(d, country)).join('');
+
+        // زر عرض المزيد
+        const loadBtn = document.getElementById('loadMoreBtn');
+        if (loadBtn) {
+            if (devices.length > State.visibleDevices) {
+                loadBtn.style.display = 'block';
+                loadBtn.textContent = `📱 عرض المزيد (${devices.length - State.visibleDevices} متبقي)`;
+                loadBtn.dataset.bound = loadBtn.dataset.bound || 'false';
+                if (loadBtn.dataset.bound === 'false') {
+                    loadBtn.dataset.bound = 'true';
+                    loadBtn.addEventListener('click', () => {
+                        State.visibleDevices += 12;
+                        this.renderDevicesGrid();
+                    });
+                }
+            } else {
+                loadBtn.style.display = 'none';
+            }
+        }
+
         this.bindCardEvents();
     },
 
     renderCard(device, country) {
         const price = device.prices[country] || device.prices.SY || 0;
         const checked = State.compareList.includes(device.id) ? 'checked' : '';
+        const isFav = State.isFavorite(device.id) ? 'is-fav' : '';
+        const favIcon = State.isFavorite(device.id) ? '❤️' : '🤍';
+
         return `
             <div class="device-card" data-device-id="${device.id}">
                 <div class="device-image">
-                    ${device.image}
+                    ${Helpers.getDeviceImage(device)}
                     ${device.badge ? `<span class="device-badge">${Helpers.escapeHtml(device.badge)}</span>` : ''}
                     <input type="checkbox" class="compare-checkbox" ${checked}
                            data-compare-id="${device.id}" aria-label="أضف للمقارنة">
                 </div>
+                <button class="fav-btn ${isFav}" data-fav-id="${device.id}" aria-label="أضف للمفضلة">
+                    ${favIcon}
+                </button>
                 <div class="device-info">
                     <div class="device-brand">${Helpers.escapeHtml(device.brand)}</div>
                     <div class="device-name">${Helpers.escapeHtml(device.name)}</div>
@@ -548,8 +883,10 @@ const Home = {
     bindCardEvents() {
         document.querySelectorAll('.device-card').forEach(card => {
             card.addEventListener('click', (e) => {
-                if (e.target.classList.contains('compare-checkbox')) return;
-                Device.open(parseInt(card.dataset.deviceId));
+                if (e.target.closest('.compare-checkbox')) return;
+                if (e.target.closest('.fav-btn')) return;
+                const id = parseInt(card.dataset.deviceId);
+                Router.go('device', { id });
             });
         });
 
@@ -559,9 +896,27 @@ const Home = {
                 Compare.toggle(parseInt(cb.dataset.compareId), cb);
             });
         });
+
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.favId);
+                const isFav = State.toggleFavorite(id);
+                
+                btn.classList.toggle('is-fav', isFav);
+                btn.textContent = isFav ? '❤️' : '🤍';
+                App.updateFavCount();
+                
+                if (isFav) {
+                    btn.style.animation = 'heartBeat 0.5s ease';
+                    setTimeout(() => btn.style.animation = '', 500);
+                }
+            });
+        });
     },
 
     bindEvents() {
+        // البحث في البانر
         const heroBtn = document.getElementById('heroSearchBtn');
         if (heroBtn && !heroBtn.dataset.bound) {
             heroBtn.dataset.bound = 'true';
@@ -573,6 +928,7 @@ const Home = {
             heroInput.dataset.bound = 'true';
             heroInput.addEventListener('input', Helpers.debounce((e) => {
                 State.setSearch(e.target.value);
+                State.visibleDevices = 12;
                 this.renderDevicesGrid();
             }, 300));
         }
@@ -582,6 +938,7 @@ const Home = {
         const input = document.getElementById('heroSearch');
         if (!input) return;
         State.setSearch(input.value);
+        State.visibleDevices = 12;
         const mainSearch = document.getElementById('mainSearch');
         if (mainSearch) mainSearch.value = input.value;
         this.renderDevicesGrid();
@@ -591,12 +948,14 @@ const Home = {
 
     filterCategory(cat) {
         State.setCategory(cat);
+        State.visibleDevices = 12;
         this.renderSection();
         this.renderDevicesGrid();
     },
 
     filterBrand(brand, el) {
         State.setBrand(brand);
+        State.visibleDevices = 12;
         document.querySelectorAll('#brandsBar a').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
         else {
@@ -604,22 +963,168 @@ const Home = {
             if (target) target.classList.add('active');
         }
         this.renderDevicesGrid();
+    },
+
+    updateFilterBadge() {
+        const badge = document.getElementById('filterBadge');
+        if (!badge) return;
+        const count = State.countActiveFilters();
+        badge.textContent = count;
+        if (count === 0) badge.style.display = 'none';
+        else badge.style.display = 'flex';
     }
 };
 
 /* ============================================================
-   8) Device — تفاصيل الجهاز
+   9) Filters — لوحة الفلاتر المتقدمة
+   ============================================================ */
+
+const Filters = {
+    init() {
+        const toggleBtn = document.getElementById('filterToggle');
+        const closeBtn = document.getElementById('closeFilters');
+        const applyBtn = document.getElementById('applyFilters');
+        const resetBtn = document.getElementById('resetFilters');
+        const panel = document.getElementById('filtersPanel');
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggle());
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.close());
+        }
+        if (applyBtn) {
+            applyBtn.addEventListener('click', () => this.apply());
+        }
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => this.reset());
+        }
+
+        // إغلاق عند النقر خارج اللوحة
+        document.addEventListener('click', (e) => {
+            if (!panel) return;
+            if (!panel.classList.contains('open')) return;
+            if (panel.contains(e.target)) return;
+            if (e.target.closest('#filterToggle')) return;
+            this.close();
+        });
+    },
+
+    toggle() {
+        const panel = document.getElementById('filtersPanel');
+        if (panel) panel.classList.toggle('open');
+        this.syncInputsFromState();
+    },
+
+    close() {
+        const panel = document.getElementById('filtersPanel');
+        if (panel) panel.classList.remove('open');
+    },
+
+    syncInputsFromState() {
+        const f = State.filters;
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val !== null && val !== undefined ? val : '';
+        };
+        setVal('minPrice', f.minPrice);
+        setVal('maxPrice', f.maxPrice);
+        setVal('filterYear', f.year || 'all');
+        setVal('filterRating', f.rating || '0');
+        setVal('sortBy', f.sortBy || 'default');
+    },
+
+    apply() {
+        const minPrice = document.getElementById('minPrice').value;
+        const maxPrice = document.getElementById('maxPrice').value;
+        const year = document.getElementById('filterYear').value;
+        const rating = document.getElementById('filterRating').value;
+        const sortBy = document.getElementById('sortBy').value;
+
+        State.setFilters({
+            minPrice: minPrice ? parseFloat(minPrice) : null,
+            maxPrice: maxPrice ? parseFloat(maxPrice) : null,
+            year: year,
+            rating: parseFloat(rating) || 0,
+            sortBy: sortBy
+        });
+
+        State.visibleDevices = 12;
+        Home.renderDevicesGrid();
+        Home.updateFilterBadge();
+        this.renderActiveTags();
+        this.close();
+    },
+
+    reset() {
+        State.resetFilters();
+        State.visibleDevices = 12;
+        this.syncInputsFromState();
+        Home.renderDevicesGrid();
+        Home.updateFilterBadge();
+        this.renderActiveTags();
+        this.close();
+    },
+
+    renderActiveTags() {
+        const container = document.getElementById('activeFilters');
+        if (!container) return;
+
+        const f = State.filters;
+        const country = Storage.getCountry();
+        const currency = COUNTRIES[country]?.currency || '';
+        const tags = [];
+
+        if (f.minPrice) tags.push({ key: 'minPrice', text: `أدنى: ${Helpers.formatPrice(f.minPrice, country)}` });
+        if (f.maxPrice) tags.push({ key: 'maxPrice', text: `أقصى: ${Helpers.formatPrice(f.maxPrice, country)}` });
+        if (f.year && f.year !== 'all') tags.push({ key: 'year', text: `سنة: ${f.year}` });
+        if (f.rating > 0) tags.push({ key: 'rating', text: `تقييم: ${f.rating}+` });
+        if (f.sortBy && f.sortBy !== 'default') {
+            const sortNames = {
+                'price-asc': 'الأقل سعراً',
+                'price-desc': 'الأعلى سعراً',
+                'rating': 'الأعلى تقييماً',
+                'newest': 'الأحدث',
+                'name': 'الاسم أ-ي'
+            };
+            tags.push({ key: 'sortBy', text: `ترتيب: ${sortNames[f.sortBy]}` });
+        }
+
+        if (tags.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = tags.map(t => `
+            <div class="active-filter-tag">
+                ${t.text}
+                <button data-remove-filter="${t.key}">✕</button>
+            </div>
+        `).join('');
+
+        container.querySelectorAll('[data-remove-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.removeFilter;
+                if (key === 'minPrice' || key === 'maxPrice') State.filters[key] = null;
+                if (key === 'year') State.filters.year = 'all';
+                if (key === 'rating') State.filters.rating = 0;
+                if (key === 'sortBy') State.filters.sortBy = 'default';
+                
+                State.visibleDevices = 12;
+                this.syncInputsFromState();
+                Home.renderDevicesGrid();
+                Home.updateFilterBadge();
+                this.renderActiveTags();
+            });
+        });
+    }
+};
+
+/* ============================================================
+   10) Device — تفاصيل الجهاز
    ============================================================ */
 
 const Device = {
-    open(id) {
-        const device = Helpers.getDeviceById(id);
-        if (!device) { alert('الجهاز غير موجود'); return; }
-        State.currentDevice = device;
-        this.render();
-        Router.go('device');
-    },
-
     render() {
         const device = State.currentDevice;
         if (!device) return;
@@ -635,22 +1140,29 @@ const Device = {
             os: "نظام التشغيل", weight: "الوزن"
         };
 
+        const isFav = State.isFavorite(device.id);
+
         container.innerHTML = `
             <div class="device-detail">
                 <div class="device-header">
-                    <div class="device-hero-image">${device.image}</div>
+                    <div class="device-hero-image">
+                        ${Helpers.getDeviceImage(device)}
+                    </div>
                     <div class="device-header-info">
                         <span class="brand-tag">${Helpers.escapeHtml(device.brand)}</span>
                         <h1>${Helpers.escapeHtml(device.name)}</h1>
                         <div class="rating-big">
                             ⭐ ${device.rating}
-                            <span style="color: #5f6368; font-size: 14px;">(${device.reviewsCount} مراجعة)</span>
+                            <span style="color: var(--gray); font-size: 14px;">(${device.reviewsCount} مراجعة)</span>
                         </div>
                         <div class="price-big">${Helpers.formatPrice(price, country)}</div>
-                        <p style="color: #5f6368;">📅 تاريخ الإصدار: ${Helpers.formatDate(device.releaseDate)}</p>
+                        <p style="color: var(--gray);">📅 تاريخ الإصدار: ${Helpers.formatDate(device.releaseDate)}</p>
                         <div class="device-actions">
                             <button class="btn-primary" id="addToCompareBtn">⚖️ أضف للمقارنة</button>
                             <button class="btn-primary" style="background: #34a853;" id="buyBtn">🛒 شراء</button>
+                            <button class="btn-primary" style="background: ${isFav ? 'var(--heart)' : '#5f6368'};" id="favBtn">
+                                ${isFav ? '❤️ في المفضلة' : '🤍 أضف للمفضلة'}
+                            </button>
                             <button class="btn-primary" style="background: #5f6368;" data-nav="home">← رجوع</button>
                         </div>
                     </div>
@@ -698,6 +1210,16 @@ const Device = {
         const buyBtn = document.getElementById('buyBtn');
         if (buyBtn) buyBtn.addEventListener('click', () => alert('🛒 ميزة الشراء ستُضاف قريباً!'));
 
+        const favBtn = document.getElementById('favBtn');
+        if (favBtn) {
+            favBtn.addEventListener('click', () => {
+                const isFav = State.toggleFavorite(State.currentDevice.id);
+                favBtn.style.background = isFav ? 'var(--heart)' : '#5f6368';
+                favBtn.textContent = isFav ? '❤️ في المفضلة' : '🤍 أضف للمفضلة';
+                App.updateFavCount();
+            });
+        }
+
         const submitBtn = document.getElementById('submitReviewBtn');
         if (submitBtn) submitBtn.addEventListener('click', () => this.submitReview());
     },
@@ -712,7 +1234,7 @@ const Device = {
 
         if (reviews.length === 0) {
             list.innerHTML = `
-                <div style="text-align: center; padding: 30px; color: #5f6368;">
+                <div style="text-align: center; padding: 30px; color: var(--gray);">
                     <div style="font-size: 40px; margin-bottom: 10px;">💬</div>
                     <p>لا توجد مراجعات بعد. كن أول من يراجع!</p>
                 </div>
@@ -748,12 +1270,7 @@ const Device = {
         if (!text || text.length < 5) { alert('⚠️ يرجى كتابة مراجعة (5 أحرف على الأقل)'); textInput.focus(); return; }
 
         const reviews = Storage.getDeviceReviews(device.id);
-        reviews.unshift({
-            user: user,
-            rating: rating,
-            text: text,
-            date: Helpers.today()
-        });
+        reviews.unshift({ user: user, rating: rating, text: text, date: Helpers.today() });
         Storage.setDeviceReviews(device.id, reviews);
 
         userInput.value = '';
@@ -775,7 +1292,7 @@ const Device = {
 };
 
 /* ============================================================
-   9) Compare — المقارنة
+   11) Compare — المقارنة
    ============================================================ */
 
 const Compare = {
@@ -861,9 +1378,9 @@ const Compare = {
                             <th class="device-col">المواصفة</th>
                             ${devices.map(d => `
                                 <th class="device-header-cell">
-                                    <span class="emoji">${d.image}</span>
+                                    <div class="device-mini-img">${Helpers.getDeviceMiniImage(d)}</div>
                                     <div>${Helpers.escapeHtml(d.brand)}</div>
-                                    <div style="font-size: 14px; color: #5f6368; margin-top: 5px;">
+                                    <div style="font-size: 14px; color: var(--gray); margin-top: 5px;">
                                         ${Helpers.escapeHtml(d.name)}
                                     </div>
                                     <button class="btn-remove" data-remove-id="${d.id}">❌ إزالة</button>
@@ -874,7 +1391,7 @@ const Compare = {
                     <tbody>
                         <tr>
                             <td class="device-col">💰 السعر</td>
-                            ${devices.map(d => `<td style="font-weight: 700; color: #1a73e8;">${Helpers.formatPrice(d.prices[country] || d.prices.SY || 0, country)}</td>`).join('')}
+                            ${devices.map(d => `<td style="font-weight: 700; color: var(--primary);">${Helpers.formatPrice(d.prices[country] || d.prices.SY || 0, country)}</td>`).join('')}
                         </tr>
                         <tr>
                             <td class="device-col">⭐ التقييم</td>
@@ -913,7 +1430,98 @@ const Compare = {
 };
 
 /* ============================================================
-   10) Login — تسجيل الدخول
+   12) Favorites — المفضلات
+   ============================================================ */
+
+const Favorites = {
+    render() {
+        const container = document.getElementById('page-favorites');
+        if (!container) return;
+
+        State.loadFavorites();
+        const favIds = State.favorites;
+        const country = Storage.getCountry();
+
+        const header = `
+            <div class="favorites-page">
+                <div class="favorites-header">
+                    <h1>❤️ المفضلات</h1>
+                    <p>${favIds.length > 0 ? `${favIds.length} جهاز في قائمتك` : 'احفظ الأجهزة التي تريد شراءها لاحقاً'}</p>
+                </div>
+        `;
+
+        if (favIds.length === 0) {
+            container.innerHTML = header + `
+                <div class="empty-favorites">
+                    <span class="icon">💔</span>
+                    <h2>لا توجد أجهزة في المفضلة</h2>
+                    <p>اضغط على أيقونة القلب 🤍 على أي جهاز لإضافته هنا</p>
+                    <button class="btn-primary" data-nav="home">تصفح الأجهزة ←</button>
+                </div>
+            </div>
+            `;
+            Router.init();
+            return;
+        }
+
+        const devices = favIds.map(id => Helpers.getDeviceById(id)).filter(Boolean);
+
+        container.innerHTML = header + `
+                <div class="devices-grid">
+                    ${devices.map(d => this.renderFavCard(d, country)).join('')}
+                </div>
+            </div>
+        `;
+
+        this.bindEvents();
+        Router.init();
+    },
+
+    renderFavCard(device, country) {
+        const price = device.prices[country] || device.prices.SY || 0;
+        return `
+            <div class="device-card" data-device-id="${device.id}">
+                <div class="device-image">
+                    ${Helpers.getDeviceImage(device)}
+                    ${device.badge ? `<span class="device-badge">${Helpers.escapeHtml(device.badge)}</span>` : ''}
+                </div>
+                <button class="fav-btn is-fav" data-fav-id="${device.id}" aria-label="إزالة من المفضلة">
+                    ❤️
+                </button>
+                <div class="device-info">
+                    <div class="device-brand">${Helpers.escapeHtml(device.brand)}</div>
+                    <div class="device-name">${Helpers.escapeHtml(device.name)}</div>
+                    <div class="device-price">${Helpers.formatPrice(price, country)}</div>
+                    <div class="device-rating">⭐ ${device.rating} (${device.reviewsCount})</div>
+                </div>
+            </div>
+        `;
+    },
+
+    bindEvents() {
+        document.querySelectorAll('.device-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.fav-btn')) return;
+                const id = parseInt(card.dataset.deviceId);
+                Router.go('device', { id });
+            });
+        });
+
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.favId);
+                State.toggleFavorite(id);
+                App.updateFavCount();
+                this.render();
+                alert('💔 تم إزالة الجهاز من المفضلة');
+            });
+        });
+    }
+};
+
+/* ============================================================
+   13) Login — تسجيل الدخول
    ============================================================ */
 
 const Login = {
@@ -932,9 +1540,7 @@ const Login = {
                     <div class="login-icon">🔐</div>
                     <h2>منطقة محظورة</h2>
                     <p class="login-subtitle">هذه المنطقة مخصصة للمشرفين فقط</p>
-
                     <div id="loginAlert"></div>
-
                     <form id="loginForm">
                         <div class="form-group">
                             <label for="loginPassword">كلمة المرور</label>
@@ -945,7 +1551,6 @@ const Login = {
                         <button type="submit" class="btn-primary login-btn">🔓 دخول</button>
                         <div class="login-info" id="loginInfo"></div>
                     </form>
-
                     <button class="login-back" data-nav="home">← العودة للرئيسية</button>
                 </div>
             </div>
@@ -1011,18 +1616,18 @@ const Login = {
 
         if (Auth.isLocked()) {
             const mins = Auth.getRemainingLockTime();
-            info.innerHTML = `<span style="color: #ea4335;">🚫 الحساب محظور مؤقتاً. حاول بعد ${mins} دقيقة.</span>`;
+            info.innerHTML = `<span style="color: var(--danger);">🚫 الحساب محظور مؤقتاً. حاول بعد ${mins} دقيقة.</span>`;
         } else {
             const remaining = Auth.getRemainingAttempts();
             if (remaining < Auth.CONFIG.maxAttempts) {
-                info.innerHTML = `<span style="color: #fbbc04;">⚠️ متبقي ${remaining} محاولات</span>`;
+                info.innerHTML = `<span style="color: var(--warning);">⚠️ متبقي ${remaining} محاولات</span>`;
             }
         }
     }
 };
 
 /* ============================================================
-   11) Admin — لوحة التحكم
+   14) Admin — لوحة التحكم
    ============================================================ */
 
 const Admin = {
@@ -1041,9 +1646,7 @@ const Admin = {
                     <h1>⚙️ لوحة التحكم</h1>
                     <button class="btn-logout" id="logoutBtn">🚪 تسجيل الخروج</button>
                 </div>
-
                 <div id="alertBox"></div>
-
                 <div class="admin-form">
                     <h2>➕ إضافة جهاز جديد</h2>
                     <form id="addDeviceForm">
@@ -1064,16 +1667,20 @@ const Admin = {
                             <div class="form-group"><label>الإيموجي</label><input type="text" name="image" value="📱" maxlength="4"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label>الشاشة</label><input type="text" name="screen" placeholder="6.8 بوصة AMOLED" maxlength="60"></div>
+                            <div class="form-group"><label>رابط الصورة (اختياري)</label><input type="url" name="imageUrl" placeholder="https://..."></div>
                             <div class="form-group"><label>المعالج</label><input type="text" name="processor" placeholder="Snapdragon 8 Gen 3" maxlength="60"></div>
                         </div>
                         <div class="form-row">
+                            <div class="form-group"><label>الشاشة</label><input type="text" name="screen" placeholder="6.8 بوصة AMOLED" maxlength="60"></div>
                             <div class="form-group"><label>الذاكرة العشوائية</label><input type="text" name="ram" placeholder="12 GB" maxlength="30"></div>
-                            <div class="form-group"><label>التخزين</label><input type="text" name="storage" placeholder="256 GB" maxlength="60"></div>
                         </div>
                         <div class="form-row">
+                            <div class="form-group"><label>التخزين</label><input type="text" name="storage" placeholder="256 GB" maxlength="60"></div>
                             <div class="form-group"><label>الكاميرا الخلفية</label><input type="text" name="camera" placeholder="200 MP" maxlength="80"></div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group"><label>البطارية</label><input type="text" name="battery" placeholder="5000 mAh" maxlength="40"></div>
+                            <div class="form-group"><label>نظام التشغيل</label><input type="text" name="os" placeholder="Android 14" maxlength="40"></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>السعر في سوريا (ل.س) *</label><input type="number" name="priceSY" required placeholder="12500000" min="0"></div>
@@ -1082,7 +1689,6 @@ const Admin = {
                         <button type="submit" class="btn-primary">✅ إضافة الجهاز</button>
                     </form>
                 </div>
-
                 <div class="admin-device-list">
                     <h2>📋 الأجهزة المضافة</h2>
                     <div id="adminDeviceList"></div>
@@ -1108,6 +1714,7 @@ const Admin = {
             brand: data.get('brand').trim(),
             name: data.get('name').trim(),
             image: data.get('image') || '📱',
+            imageUrl: data.get('imageUrl') || '',
             category: data.get('category') || 'phone',
             releaseDate: Helpers.today(),
             badge: 'جديد',
@@ -1124,7 +1731,7 @@ const Admin = {
                 frontCamera: '-',
                 battery: data.get('battery') || '-',
                 charging: '-',
-                os: '-',
+                os: data.get('os') || '-',
                 weight: '-'
             },
             prices: {
@@ -1151,7 +1758,7 @@ const Admin = {
         const custom = Storage.getCustomDevices();
 
         if (custom.length === 0) {
-            list.innerHTML = `<p style="color: #5f6368; padding: 20px; text-align: center;">لا توجد أجهزة مضافة بعد</p>`;
+            list.innerHTML = `<p style="color: var(--gray); padding: 20px; text-align: center;">لا توجد أجهزة مضافة بعد</p>`;
             return;
         }
 
@@ -1159,7 +1766,7 @@ const Admin = {
             <div class="admin-device-item">
                 <div>
                     <strong>${d.image} ${Helpers.escapeHtml(d.brand)} ${Helpers.escapeHtml(d.name)}</strong>
-                    <div style="font-size: 13px; color: #5f6368; margin-top: 5px;">
+                    <div style="font-size: 13px; color: var(--gray); margin-top: 5px;">
                         ${Helpers.formatPrice(d.prices.SY || 0, 'SY')}
                     </div>
                 </div>
@@ -1205,157 +1812,47 @@ const Admin = {
         Compare.renderBar();
     }
 };
+
 /* ============================================================
-   11.5) Theme — إدارة الوضع الليلي/النهاري
-   ============================================================ */
-
-const Theme = {
-    // المفاتيح
-    KEY: 'iqmobil_theme',
-    
-    // القيم
-    LIGHT: 'light',
-    DARK: 'dark',
-
-    // ===== الحصول على الثيم الحالي =====
-    get() {
-        // 1. ابحث في localStorage
-        const saved = Storage.get(this.KEY);
-        if (saved === this.LIGHT || saved === this.DARK) {
-            return saved;
-        }
-        
-        // 2. اكتشف من إعدادات النظام
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return this.DARK;
-        }
-        
-        // 3. الافتراضي
-        return this.LIGHT;
-    },
-
-    // ===== تطبيق الثيم =====
-    apply(theme) {
-        const body = document.body;
-        
-        if (theme === this.DARK) {
-            body.classList.add('dark-mode');
-        } else {
-            body.classList.remove('dark-mode');
-        }
-        
-        // تحديث الأيقونة
-        this.updateIcon(theme);
-        
-        // تحديث meta theme-color (لشريط المتصفح على الجوال)
-        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (metaThemeColor) {
-            metaThemeColor.setAttribute('content', theme === this.DARK ? '#121212' : '#1a73e8');
-        } else {
-            const meta = document.createElement('meta');
-            meta.name = 'theme-color';
-            meta.content = theme === this.DARK ? '#121212' : '#1a73e8';
-            document.head.appendChild(meta);
-        }
-    },
-
-    // ===== تحديث أيقونة الزر =====
-    updateIcon(theme) {
-        const icon = document.querySelector('.theme-icon');
-        if (!icon) return;
-        
-        if (theme === this.DARK) {
-            icon.textContent = '☀️';  // شمس للعودة للوضع النهاري
-            icon.title = 'التبديل للوضع النهاري';
-        } else {
-            icon.textContent = '🌙';  // قمر للدخول للوضع الليلي
-            icon.title = 'التبديل للوضع الليلي';
-        }
-    },
-
-    // ===== تبديل الثيم =====
-    toggle() {
-        const current = this.get();
-        const next = current === this.DARK ? this.LIGHT : this.DARK;
-        
-        // حفظ
-        Storage.set(this.KEY, next);
-        
-        // تطبيق
-        this.apply(next);
-        
-        // تأثير بصري
-        this.playSound();
-    },
-
-    // ===== صوت خفيف (اختياري) =====
-    playSound() {
-        try {
-            // استخدام Web Audio API لصوت خفيف
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-            
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + 0.1);
-        } catch (e) {
-            // تجاهل الأخطاء
-        }
-    },
-
-    // ===== التهيئة =====
-    init() {
-        // 1. تطبيق الثيم المحفوظ
-        const theme = this.get();
-        this.apply(theme);
-        
-        // 2. ربط زر التبديل
-        const btn = document.getElementById('themeToggle');
-        if (btn && !btn.dataset.bound) {
-            btn.dataset.bound = 'true';
-            btn.addEventListener('click', () => this.toggle());
-        }
-        
-        // 3. متابعة تغييرات النظام (إذا لم يكن هناك اختيار محفوظ)
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                // فقط إذا لم يحفظ المستخدم اختياراً
-                if (!Storage.get(this.KEY)) {
-                    this.apply(e.matches ? this.DARK : this.LIGHT);
-                }
-            });
-        }
-    }
-};
-/* ============================================================
-   12) App — نقطة البداية
+   15) App — نقطة البداية
    ============================================================ */
 
 const App = {
     init() {
         console.log('🚀 İQmobil - بدء التشغيل...');
 
+        // 🌙 تطبيق الثيم أول شيء
+        Theme.init();
+
+        // تحميل البيانات
         State.loadCompare();
+        State.loadFavorites();
+
+        // تهيئة المكونات
         this.initCountrySelector();
         this.initBrands();
         this.initFooter();
         this.initMainSearch();
         this.initCompareBtn();
         this.initYear();
+        this.updateFavCount();
 
+        // تهيئة الفلاتر
+        Filters.init();
+        Filters.renderActiveTags();
+
+        // الراوتر
         Router.init();
-        Home.render();
+
+        // الصفحة الأولية
+        const { page, params } = Router.parseHash();
+        if (page && page !== 'home') {
+            Router.handleHashChange();
+        } else {
+            Home.render();
+        }
+
         Compare.renderBar();
-        this.checkSecretAccess();
 
         console.log('✅ İQmobil - جاهز!');
     },
@@ -1372,9 +1869,12 @@ const App = {
         select.addEventListener('change', (e) => {
             Storage.setCountry(e.target.value);
             const page = State.currentPage;
-            if (page === 'home') Home.renderDevicesGrid();
-            else if (page === 'device' && State.currentDevice) Device.render();
+            if (page === 'home') {
+                Home.renderDevicesGrid();
+                Filters.renderActiveTags();
+            } else if (page === 'device' && State.currentDevice) Device.render();
             else if (page === 'compare') Compare.render();
+            else if (page === 'favorites') Favorites.render();
         });
     },
 
@@ -1469,6 +1969,7 @@ const App = {
         input.addEventListener('input', Helpers.debounce((e) => {
             const query = e.target.value;
             State.setSearch(query);
+            State.visibleDevices = 12;
             if (State.currentPage !== 'home') Router.go('home');
             Home.renderDevicesGrid();
             const heroInput = document.getElementById('heroSearch');
@@ -1478,7 +1979,10 @@ const App = {
 
     initCompareBtn() {
         const btn = document.getElementById('goCompareBtn');
-        if (btn) btn.addEventListener('click', () => Compare.goToCompare());
+        if (btn && !btn.dataset.bound) {
+            btn.dataset.bound = 'true';
+            btn.addEventListener('click', () => Compare.goToCompare());
+        }
     },
 
     initYear() {
@@ -1486,13 +1990,14 @@ const App = {
         if (yearEl) yearEl.textContent = new Date().getFullYear();
     },
 
-    checkSecretAccess() {
-        const hash = window.location.hash.toLowerCase();
-        if (hash === '#admin' || hash === '#login') {
-            console.log('🔐 محاولة وصول للوحة التحكم');
-            Router.go('login');
-            history.replaceState(null, '', window.location.pathname);
-        }
+    updateFavCount() {
+        const countEl = document.getElementById('favCount');
+        if (!countEl) return;
+        State.loadFavorites();
+        const count = State.favorites.length;
+        countEl.textContent = count;
+        if (count === 0) countEl.style.display = 'none';
+        else countEl.style.display = 'inline-flex';
     }
 };
 
@@ -1505,4 +2010,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // للتصحيح في Console
-window.IQmobil = { State, Storage, Helpers, Auth, Router, Home, Device, Compare, Login, Admin, App };
+window.IQmobil = {
+    State, Storage, Helpers, Auth, Theme,
+    Router, Home, Filters, Device, Compare,
+    Favorites, Login, Admin, App
+};
