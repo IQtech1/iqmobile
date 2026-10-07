@@ -1,5 +1,5 @@
 /* ============================================================
-   İQmobil - app.css (النسخة النهائية)
+   İQmobil - app.css (النسخة النهائية الكاملة)
    ============================================================ */
 
 :root {
@@ -29,7 +29,6 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
@@ -43,8 +42,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-body,
-body * {
+body, body * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -89,7 +87,7 @@ h3 { font-size: 1.25rem; }
 ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: var(--radius-pill); }
 ::selection { background: var(--primary); color: var(--white); }
 
-/* ============ الهيدر ============ */
+/* ============ الشريط العلوي والهيدر ============ */
 .top-bar {
     background: var(--dark);
     color: var(--white);
@@ -168,7 +166,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     padding: 0 6px;
 }
 
-/* زر الوضع الليلي */
 .theme-toggle {
     width: 42px;
     height: 42px;
@@ -188,7 +185,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .theme-icon { font-size: 20px; line-height: 1; }
 
-/* زر الفلاتر */
 .filter-toggle {
     width: 42px;
     height: 42px;
@@ -263,7 +259,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 .search-box input::placeholder { color: var(--gray); }
 .search-box button { font-size: 16px; padding: 0; color: var(--gray); }
 
-/* شريط الماركات */
 .categories-bar {
     background: var(--white);
     border-top: 1px solid var(--border);
@@ -331,7 +326,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 }
 
 .filters-panel.open { right: 0; }
-
 .filters-panel-inner { padding: 25px; }
 
 .filters-header {
@@ -419,11 +413,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-.filters-actions {
-    display: flex;
-    gap: 10px;
-}
-
+.filters-actions { display: flex; gap: 10px; }
 .filters-actions button { flex: 1; }
 
 .btn-reset {
@@ -438,7 +428,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .btn-reset:hover { background: var(--border); }
 
-/* الفلاتر النشطة */
 .active-filters {
     max-width: 1400px;
     margin: 0 auto;
@@ -572,7 +561,17 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     transition: transform var(--transition);
 }
 
-.device-card:hover .device-image svg {
+.device-image img {
+    width: 100%;
+    height: 100%;
+    max-width: 140px;
+    max-height: 140px;
+    object-fit: contain;
+    transition: transform var(--transition);
+}
+
+.device-card:hover .device-image svg,
+.device-card:hover .device-image img {
     transform: scale(1.05);
 }
 
@@ -820,11 +819,13 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     padding: 30px;
 }
 
-.device-hero-image svg {
+.device-hero-image svg,
+.device-hero-image img {
     width: 100%;
     height: 100%;
     max-width: 250px;
     max-height: 250px;
+    object-fit: contain;
 }
 
 .device-header-info h1 { font-size: 30px; margin-bottom: 10px; }
@@ -981,6 +982,13 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     margin: 0 auto 10px;
     width: 80px;
     height: 80px;
+}
+
+.compare-table .device-mini-img svg,
+.compare-table .device-mini-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .empty-compare {
@@ -1289,7 +1297,7 @@ footer {
 }
 
 /* ============================================================
-   Dark Mode — الوضع الليلي (كامل)
+   Dark Mode
    ============================================================ */
 
 body.dark-mode {
@@ -1388,15 +1396,12 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: #3c4043; }
     .navbar { padding: 12px 4%; gap: 10px; }
     nav ul { gap: 12px; }
     .search-box { width: 100%; order: 10; }
-    
     .hero h1 { font-size: 28px; }
     .hero p { font-size: 15px; }
     .hero-search { flex-direction: column; border-radius: var(--radius-md); padding: 12px; }
     .hero-search button { width: 100%; margin-top: 8px; }
-    
     .device-header { grid-template-columns: 1fr; }
     .device-hero-image { min-height: 250px; }
-    
     .form-row { grid-template-columns: 1fr; }
     .footer-content { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .filters-panel { width: 100%; max-width: 100%; right: -100%; }
@@ -1405,20 +1410,16 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: #3c4043; }
 @media (max-width: 600px) {
     nav ul { display: none; }
     .navbar { justify-content: space-between; }
-    
     .section { padding: 20px 4%; }
     .section-title { font-size: 20px; }
     .section-header { flex-direction: column; align-items: flex-start; }
-    
     .hero { padding: 40px 4%; }
     .hero h1 { font-size: 22px; }
     .hero p { font-size: 14px; }
-    
     .compare-section h2 { font-size: 22px; }
-    
     .devices-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .device-image { height: 130px; padding: 10px; }
-    .device-image svg { max-width: 90px; max-height: 90px; }
+    .device-image svg, .device-image img { max-width: 90px; max-height: 90px; }
     .device-info { padding: 10px; }
     .device-name { font-size: 13px; min-height: auto; margin-bottom: 6px; }
     .device-price { font-size: 14px; }
@@ -1426,20 +1427,15 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: #3c4043; }
     .device-badge { font-size: 10px; padding: 3px 8px; }
     .fav-btn { width: 30px; height: 30px; font-size: 15px; }
     .compare-checkbox { width: 18px; height: 18px; }
-    
     .device-header { padding: 20px; }
     .device-header-info h1 { font-size: 20px; }
     .price-big { font-size: 24px; }
-    
     .login-box { padding: 35px 25px; }
     .login-icon { font-size: 50px; }
-    
     .admin-header-bar h1 { font-size: 20px; }
     .footer-content { grid-template-columns: 1fr; }
-    
     .filters-panel-inner { padding: 20px; }
     .filters-header h3 { font-size: 18px; }
-    
     .stats { padding: 20px 4%; gap: 12px; }
     .stat-card { padding: 18px 12px; }
     .stat-card .number { font-size: 24px; }
