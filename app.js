@@ -1205,7 +1205,137 @@ const Admin = {
         Compare.renderBar();
     }
 };
+/* ============================================================
+   11.5) Theme — إدارة الوضع الليلي/النهاري
+   ============================================================ */
 
+const Theme = {
+    // المفاتيح
+    KEY: 'iqmobil_theme',
+    
+    // القيم
+    LIGHT: 'light',
+    DARK: 'dark',
+
+    // ===== الحصول على الثيم الحالي =====
+    get() {
+        // 1. ابحث في localStorage
+        const saved = Storage.get(this.KEY);
+        if (saved === this.LIGHT || saved === this.DARK) {
+            return saved;
+        }
+        
+        // 2. اكتشف من إعدادات النظام
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return this.DARK;
+        }
+        
+        // 3. الافتراضي
+        return this.LIGHT;
+    },
+
+    // ===== تطبيق الثيم =====
+    apply(theme) {
+        const body = document.body;
+        
+        if (theme === this.DARK) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+        
+        // تحديث الأيقونة
+        this.updateIcon(theme);
+        
+        // تحديث meta theme-color (لشريط المتصفح على الجوال)
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', theme === this.DARK ? '#121212' : '#1a73e8');
+        } else {
+            const meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            meta.content = theme === this.DARK ? '#121212' : '#1a73e8';
+            document.head.appendChild(meta);
+        }
+    },
+
+    // ===== تحديث أيقونة الزر =====
+    updateIcon(theme) {
+        const icon = document.querySelector('.theme-icon');
+        if (!icon) return;
+        
+        if (theme === this.DARK) {
+            icon.textContent = '☀️';  // شمس للعودة للوضع النهاري
+            icon.title = 'التبديل للوضع النهاري';
+        } else {
+            icon.textContent = '🌙';  // قمر للدخول للوضع الليلي
+            icon.title = 'التبديل للوضع الليلي';
+        }
+    },
+
+    // ===== تبديل الثيم =====
+    toggle() {
+        const current = this.get();
+        const next = current === this.DARK ? this.LIGHT : this.DARK;
+        
+        // حفظ
+        Storage.set(this.KEY, next);
+        
+        // تطبيق
+        this.apply(next);
+        
+        // تأثير بصري
+        this.playSound();
+    },
+
+    // ===== صوت خفيف (اختياري) =====
+    playSound() {
+        try {
+            // استخدام Web Audio API لصوت خفيف
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+            
+            oscillator.start(ctx.currentTime);
+            oscillator.stop(ctx.currentTime + 0.1);
+        } catch (e) {
+            // تجاهل الأخطاء
+        }
+    },
+
+    // ===== التهيئة =====
+    init() {
+        // 1. تطبيق الثيم المحفوظ
+        const theme = this.get();
+        this.apply(theme);
+        
+        // 2. ربط زر التبديل
+        const btn = document.getElementById('themeToggle');
+        if (btn && !btn.dataset.bound) {
+            btn.dataset.bound = 'true';
+            btn.addEventListener('click', () => this.toggle());
+        }
+        
+        // 3. متابعة تغييرات النظام (إذا لم يكن هناك اختيار محفوظ)
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                // فقط إذا لم يحفظ المستخدم اختياراً
+                if (!Storage.get(this.KEY)) {
+                    this.apply(e.matches ? this.DARK : this.LIGHT);
+                }
+            });
+        }
+    }
+};
 /* ============================================================
    12) App — نقطة البداية
    ============================================================ */
