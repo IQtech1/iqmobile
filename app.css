@@ -1,12 +1,7 @@
 /* ============================================================
-   İQmobil - app.css (النسخة الكاملة)
-   يحتوي على: أساسيات + هيدر + بطاقات + صفحات + Dark Mode
-   + فلاتر + مفضلات + زر التبديل
+   İQmobil - app.css (النسخة النهائية)
    ============================================================ */
 
-/* ============================================================
-   1) المتغيرات
-   ============================================================ */
 :root {
     --primary: #1a73e8;
     --primary-dark: #0d47a1;
@@ -23,48 +18,22 @@
     --danger: #ea4335;
     --warning: #fbbc04;
     --heart: #e91e63;
-    
-    --space-xs: 5px;
-    --space-sm: 10px;
-    --space-md: 20px;
-    --space-lg: 40px;
-    --space-xl: 60px;
-    
     --radius-sm: 8px;
     --radius-md: 15px;
     --radius-lg: 20px;
     --radius-pill: 50px;
-    
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.12);
-    
-    --transition-fast: 0.15s ease;
+    --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
     --transition: 0.3s ease;
-    
-    --z-header: 1000;
-    --z-compare-bar: 999;
-    --z-filters: 900;
 }
 
-/* ============================================================
-   2) الأساسيات
-   ============================================================ */
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-}
+html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-    font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Cairo', -apple-system, sans-serif;
     background: var(--bg);
     color: var(--dark);
     line-height: 1.6;
@@ -72,11 +41,15 @@ body {
     direction: rtl;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+body * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 a { text-decoration: none; color: inherit; cursor: pointer; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; transition: var(--transition); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
 input, select, textarea { font-family: inherit; outline: none; border: none; }
 ul, ol { list-style: none; }
 img { max-width: 100%; display: block; height: auto; }
@@ -114,16 +87,13 @@ h3 { font-size: 1.25rem; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--light-gray); }
 ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: var(--radius-pill); }
-::-webkit-scrollbar-thumb:hover { background: var(--dark); }
 ::selection { background: var(--primary); color: var(--white); }
 
-/* ============================================================
-   3) الهيدر
-   ============================================================ */
+/* ============ الهيدر ============ */
 .top-bar {
     background: var(--dark);
     color: var(--white);
-    padding: 6px var(--space-md);
+    padding: 6px 20px;
     font-size: 13px;
     text-align: center;
     font-weight: 600;
@@ -131,10 +101,10 @@ h3 { font-size: 1.25rem; }
 
 header {
     background: var(--white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     position: sticky;
     top: 0;
-    z-index: var(--z-header);
+    z-index: 1000;
 }
 
 .navbar {
@@ -153,16 +123,11 @@ header {
     font-weight: 900;
     color: var(--primary);
     white-space: nowrap;
-    user-select: none;
 }
 
 .logo span { color: var(--secondary); }
 
-nav ul {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
+nav ul { display: flex; gap: 20px; align-items: center; }
 
 nav a {
     color: var(--dark);
@@ -189,9 +154,6 @@ nav a::after {
 nav a:hover, nav a.active { color: var(--primary); }
 nav a:hover::after, nav a.active::after { width: 100%; }
 
-/* ============ زر المفضلات في القائمة ============ */
-.fav-icon { font-size: 15px; }
-
 .fav-count {
     background: var(--heart);
     color: var(--white);
@@ -204,15 +166,9 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     align-items: center;
     justify-content: center;
     padding: 0 6px;
-    transition: var(--transition);
 }
 
-.fav-count:empty,
-.fav-count[data-count="0"] {
-    display: none;
-}
-
-/* ============ زر الوضع الليلي ============ */
+/* زر الوضع الليلي */
 .theme-toggle {
     width: 42px;
     height: 42px;
@@ -221,11 +177,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     transition: var(--transition);
-    border: none;
-    position: relative;
-    overflow: hidden;
     flex-shrink: 0;
 }
 
@@ -234,18 +186,9 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     transform: scale(1.1) rotate(15deg);
 }
 
-.theme-toggle:active {
-    transform: scale(0.95);
-}
+.theme-icon { font-size: 20px; line-height: 1; }
 
-.theme-icon {
-    font-size: 20px;
-    transition: var(--transition);
-    display: block;
-    line-height: 1;
-}
-
-/* ============ زر الفلاتر ============ */
+/* زر الفلاتر */
 .filter-toggle {
     width: 42px;
     height: 42px;
@@ -254,23 +197,14 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     transition: var(--transition);
-    border: none;
     position: relative;
     flex-shrink: 0;
     font-size: 18px;
 }
 
-.filter-toggle:hover {
-    background: var(--border);
-    transform: scale(1.1);
-}
-
-.filter-toggle.active {
-    background: var(--primary);
-    color: var(--white);
-}
+.filter-toggle:hover { background: var(--border); transform: scale(1.1); }
+.filter-toggle.active { background: var(--primary); color: var(--white); }
 
 .filter-badge {
     position: absolute;
@@ -290,12 +224,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     border: 2px solid var(--white);
 }
 
-.filter-badge:empty,
-.filter-badge[data-count="0"] {
-    display: none;
-}
-
-/* ============ اختيار الدولة ============ */
 .country-selector {
     background: var(--light-gray);
     padding: 8px 14px;
@@ -309,7 +237,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .country-selector:hover { background: var(--border); }
 
-/* ============ مربع البحث ============ */
 .search-box {
     display: flex;
     align-items: center;
@@ -323,7 +250,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 .search-box:focus-within {
     background: var(--white);
     box-shadow: 0 0 0 2px var(--primary);
-    width: 280px;
 }
 
 .search-box input {
@@ -337,7 +263,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 .search-box input::placeholder { color: var(--gray); }
 .search-box button { font-size: 16px; padding: 0; color: var(--gray); }
 
-/* ============ شريط الماركات ============ */
+/* شريط الماركات */
 .categories-bar {
     background: var(--white);
     border-top: 1px solid var(--border);
@@ -371,9 +297,25 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     background: var(--primary-light);
 }
 
-/* ============================================================
-   4) لوحة الفلاتر المتقدمة
-   ============================================================ */
+/* ============ لوحة الفلاتر ============ */
+.filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+    z-index: 1499;
+}
+
+.filters-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .filters-panel {
     position: fixed;
     top: 0;
@@ -382,32 +324,13 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     max-width: 90%;
     height: 100vh;
     background: var(--white);
-    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
-    z-index: var(--z-filters);
+    box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+    z-index: 1500;
     transition: right 0.4s ease;
     overflow-y: auto;
 }
 
 .filters-panel.open { right: 0; }
-
-.filters-panel::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: var(--transition);
-    z-index: -1;
-}
-
-.filters-panel.open::before {
-    opacity: 1;
-    pointer-events: auto;
-}
 
 .filters-panel-inner { padding: 25px; }
 
@@ -432,6 +355,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+    color: var(--dark);
 }
 
 .close-filters:hover {
@@ -514,7 +438,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .btn-reset:hover { background: var(--border); }
 
-/* ============ شريط الفلاتر النشطة ============ */
+/* الفلاتر النشطة */
 .active-filters {
     max-width: 1400px;
     margin: 0 auto;
@@ -522,13 +446,9 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    min-height: 0;
-    transition: var(--transition);
 }
 
-.active-filters:not(:empty) {
-    padding: 15px 5%;
-}
+.active-filters:not(:empty) { padding: 15px 5%; }
 
 .active-filter-tag {
     background: var(--primary-light);
@@ -551,9 +471,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .active-filter-tag button:hover { color: var(--danger); }
 
-/* ============================================================
-   5) الأزرار
-   ============================================================ */
+/* ============ الأزرار ============ */
 .btn-primary {
     background: var(--primary);
     color: var(--white);
@@ -579,7 +497,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     border-radius: var(--radius-pill);
     font-size: 13px;
     font-weight: 600;
-    transition: var(--transition);
 }
 
 .btn-danger:hover { background: #c5221f; }
@@ -613,9 +530,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     transform: translateY(-2px);
 }
 
-/* ============================================================
-   6) بطاقة الجهاز + الصور
-   ============================================================ */
+/* ============ بطاقة الجهاز ============ */
 .devices-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -640,28 +555,25 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .device-image {
     height: 200px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
+    background: var(--light-gray);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    padding: 15px;
 }
 
-.device-image img {
-    max-width: 80%;
-    max-height: 80%;
-    object-fit: contain;
+.device-image svg {
+    width: 100%;
+    height: 100%;
+    max-width: 140px;
+    max-height: 140px;
     transition: transform var(--transition);
 }
 
-.device-card:hover .device-image img {
-    transform: scale(1.1);
-}
-
-.device-image .fallback-emoji {
-    font-size: 60px;
-    line-height: 1;
+.device-card:hover .device-image svg {
+    transform: scale(1.05);
 }
 
 .device-badge {
@@ -689,7 +601,6 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     z-index: 2;
 }
 
-/* ============ زر المفضلة على البطاقة ============ */
 .fav-btn {
     position: absolute;
     bottom: 12px;
@@ -701,24 +612,16 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     box-shadow: var(--shadow-sm);
     z-index: 2;
     font-size: 18px;
     transition: var(--transition);
     border: none;
+    color: var(--dark);
 }
 
-.fav-btn:hover {
-    transform: scale(1.15);
-    background: #ffe8ed;
-}
-
-.fav-btn.is-fav {
-    background: var(--heart);
-    color: var(--white);
-    animation: heartBeat 0.5s ease;
-}
+.fav-btn:hover { transform: scale(1.15); background: #ffe8ed; }
+.fav-btn.is-fav { background: var(--heart); color: var(--white); animation: heartBeat 0.5s ease; }
 
 .device-info { padding: 18px; }
 
@@ -740,11 +643,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     line-height: 1.3;
 }
 
-.device-price {
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--primary);
-}
+.device-price { font-size: 18px; font-weight: 900; color: var(--primary); }
 
 .device-rating {
     display: flex;
@@ -755,23 +654,15 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     margin-top: 6px;
 }
 
-/* ============================================================
-   7) الصفحة الرئيسية
-   ============================================================ */
+/* ============ الصفحة الرئيسية ============ */
 .hero {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: var(--white);
-    padding: var(--space-xl) 5%;
+    padding: 60px 5%;
     text-align: center;
 }
 
-.hero h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
-    font-weight: 900;
-    color: var(--white);
-}
-
+.hero h1 { font-size: 42px; margin-bottom: 15px; font-weight: 900; color: var(--white); }
 .hero p { font-size: 18px; opacity: 0.95; margin-bottom: 30px; }
 
 .hero-search {
@@ -808,7 +699,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    padding: var(--space-lg) 5%;
+    padding: 40px 5%;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -822,10 +713,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     transition: var(--transition);
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
+.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
 
 .stat-card .number {
     font-size: 32px;
@@ -834,14 +722,10 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: block;
 }
 
-.stat-card .label {
-    color: var(--gray);
-    font-size: 14px;
-    margin-top: 5px;
-}
+.stat-card .label { color: var(--gray); font-size: 14px; margin-top: 5px; }
 
 .section {
-    padding: var(--space-lg) 5%;
+    padding: 40px 5%;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -850,7 +734,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-md);
+    margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 15px;
 }
@@ -873,16 +757,12 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     flex-shrink: 0;
 }
 
-.results-count {
-    color: var(--gray);
-    font-size: 14px;
-    font-weight: 600;
-}
+.results-count { color: var(--gray); font-size: 14px; font-weight: 600; }
 
 .compare-section {
     background: var(--dark);
     color: var(--white);
-    padding: var(--space-xl) 5%;
+    padding: 60px 5%;
     text-align: center;
 }
 
@@ -900,10 +780,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     transition: var(--transition);
 }
 
-.compare-btn:hover {
-    background: var(--secondary-dark);
-    transform: translateY(-2px);
-}
+.compare-btn:hover { background: var(--secondary-dark); transform: translateY(-2px); }
 
 .no-results {
     grid-column: 1 / -1;
@@ -915,9 +792,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 .no-results .icon { font-size: 48px; margin-bottom: 15px; }
 .no-results h3 { margin-bottom: 10px; color: var(--dark); }
 
-/* ============================================================
-   8) تفاصيل الجهاز
-   ============================================================ */
+/* ============ تفاصيل الجهاز ============ */
 .device-detail {
     max-width: 1400px;
     margin: 30px auto;
@@ -936,23 +811,21 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 }
 
 .device-hero-image {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
+    background: var(--light-gray);
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 350px;
-    padding: 20px;
-    position: relative;
+    padding: 30px;
 }
 
-.device-hero-image img {
-    max-width: 90%;
-    max-height: 320px;
-    object-fit: contain;
+.device-hero-image svg {
+    width: 100%;
+    height: 100%;
+    max-width: 250px;
+    max-height: 250px;
 }
-
-.device-hero-image .fallback-emoji { font-size: 120px; }
 
 .device-header-info h1 { font-size: 30px; margin-bottom: 10px; }
 
@@ -1063,9 +936,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .review-form button:hover { background: var(--primary-dark); }
 
-/* ============================================================
-   9) المقارنة
-   ============================================================ */
+/* ============ المقارنة ============ */
 .compare-page {
     max-width: 1400px;
     margin: 30px auto;
@@ -1094,7 +965,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .compare-table .device-col {
     font-weight: 700;
-    background: #f8f9fa;
+    background: var(--bg);
     width: 200px;
     color: var(--dark);
 }
@@ -1105,17 +976,11 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     padding: 20px;
 }
 
-.compare-table .device-header-cell .device-mini-img {
-    font-size: 60px;
+.compare-table .device-mini-img {
     display: block;
-    margin-bottom: 10px;
-}
-
-.compare-table .device-header-cell .device-mini-img img {
-    max-width: 80px;
-    max-height: 80px;
-    margin: 0 auto;
-    object-fit: contain;
+    margin: 0 auto 10px;
+    width: 80px;
+    height: 80px;
 }
 
 .empty-compare {
@@ -1148,9 +1013,9 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: none;
     justify-content: space-between;
     align-items: center;
-    z-index: var(--z-compare-bar);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-    gap: var(--space-md);
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+    gap: 20px;
     flex-wrap: wrap;
 }
 
@@ -1183,9 +1048,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .compare-bar-btn:hover { background: var(--secondary-dark); }
 
-/* ============================================================
-   10) صفحة المفضلات
-   ============================================================ */
+/* ============ المفضلات ============ */
 .favorites-page {
     max-width: 1400px;
     margin: 30px auto;
@@ -1201,12 +1064,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     margin-bottom: 30px;
 }
 
-.favorites-header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-    color: var(--white);
-}
-
+.favorites-header h1 { font-size: 32px; margin-bottom: 10px; color: var(--white); }
 .favorites-header p { opacity: 0.95; font-size: 16px; }
 
 .empty-favorites {
@@ -1221,24 +1079,17 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     display: block;
 }
 
-.empty-favorites h2 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    color: var(--dark);
-}
-
+.empty-favorites h2 { font-size: 28px; margin-bottom: 15px; color: var(--dark); }
 .empty-favorites p { margin-bottom: 25px; }
 
-/* ============================================================
-   11) تسجيل الدخول + لوحة التحكم
-   ============================================================ */
+/* ============ تسجيل الدخول ============ */
 .login-container {
     min-height: calc(100vh - 300px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 60px 5%;
-    background: linear-gradient(135deg, var(--light-gray) 0%, #e8eaed 100%);
+    background: var(--light-gray);
 }
 
 .login-box {
@@ -1292,6 +1143,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
 
 .login-back:hover { color: var(--primary); }
 
+/* ============ لوحة التحكم ============ */
 .admin-container { max-width: 1000px; margin: 30px auto; padding: 0 5%; }
 
 .admin-header-bar {
@@ -1343,7 +1195,7 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid var(--border);
-    gap: var(--space-md);
+    gap: 20px;
 }
 
 .admin-device-item:last-child { border-bottom: none; }
@@ -1405,23 +1257,21 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     border-right: 4px solid var(--danger);
 }
 
-/* ============================================================
-   12) الفوتر
-   ============================================================ */
+/* ============ الفوتر ============ */
 footer {
     background: var(--dark);
     color: #aaa;
     padding: 50px 5% 20px;
     border-top: 4px solid var(--primary);
-    margin-top: var(--space-lg);
+    margin-top: 40px;
 }
 
 .footer-content {
     max-width: 1400px;
-    margin: 0 auto var(--space-lg);
+    margin: 0 auto 40px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--space-lg);
+    gap: 40px;
 }
 
 .footer-col h4 { color: var(--white); margin-bottom: 18px; font-size: 16px; }
@@ -1431,7 +1281,7 @@ footer {
 
 .footer-bottom {
     text-align: center;
-    padding-top: var(--space-md);
+    padding-top: 20px;
     border-top: 1px solid #333;
     font-size: 13px;
     max-width: 1400px;
@@ -1439,7 +1289,7 @@ footer {
 }
 
 /* ============================================================
-   13) Dark Mode — الوضع الليلي
+   Dark Mode — الوضع الليلي (كامل)
    ============================================================ */
 
 body.dark-mode {
@@ -1458,10 +1308,9 @@ body.dark-mode {
     --danger: #f28b82;
     --warning: #fdd663;
     --heart: #ff4081;
-    
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 2px 10px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+    --shadow-lg: 0 12px 30px rgba(0,0,0,0.5);
     
     background: var(--bg);
     color: var(--dark);
@@ -1469,7 +1318,6 @@ body.dark-mode {
 
 body.dark-mode header { background: #1a1a1a; }
 body.dark-mode .top-bar { background: #000000; }
-body.dark-mode nav a { color: var(--dark); }
 body.dark-mode .categories-bar { background: #1a1a1a; }
 body.dark-mode .search-box { background: #2d2e30; }
 body.dark-mode .search-box input { color: var(--dark); }
@@ -1481,12 +1329,12 @@ body.dark-mode .filter-toggle:hover { background: var(--border); }
 body.dark-mode .hero-search { background: #1a1a1a; }
 body.dark-mode .hero-search input { color: var(--dark); }
 body.dark-mode .device-card { background: #1a1a1a; }
-body.dark-mode .device-image { background: linear-gradient(135deg, #2d2e30 0%, #3c4043 100%); }
+body.dark-mode .device-image { background: #2d2e30; }
 body.dark-mode .device-name { color: var(--dark); }
 body.dark-mode .stat-card { background: #1a1a1a; }
 body.dark-mode .compare-section { background: #0a0a0a; }
 body.dark-mode .device-header { background: #1a1a1a; }
-body.dark-mode .device-hero-image { background: linear-gradient(135deg, #2d2e30 0%, #3c4043 100%); }
+body.dark-mode .device-hero-image { background: #2d2e30; }
 body.dark-mode .specs-table { background: #1a1a1a; }
 body.dark-mode .specs-table th { background: #2d2e30; color: var(--dark); }
 body.dark-mode .specs-table td { color: #b0b4b8; }
@@ -1499,7 +1347,7 @@ body.dark-mode .compare-table { background: #1a1a1a; }
 body.dark-mode .compare-table th { background: #2d2e30; color: var(--dark); }
 body.dark-mode .compare-table .device-col { background: #2d2e30; color: var(--dark); }
 body.dark-mode .compare-bar { background: #0a0a0a; }
-body.dark-mode .login-container { background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%); }
+body.dark-mode .login-container { background: #0a0a0a; }
 body.dark-mode .login-box { background: #1a1a1a; }
 body.dark-mode .login-box input[type="password"] { background: #2d2e30; color: var(--dark); }
 body.dark-mode .admin-form { background: #1a1a1a; }
@@ -1518,33 +1366,18 @@ body.dark-mode .price-inputs input { background: #2d2e30; color: var(--dark); }
 body.dark-mode .btn-reset { background: #2d2e30; color: var(--dark); }
 body.dark-mode .load-more-btn { background: #1a1a1a; }
 body.dark-mode .active-filter-tag { background: var(--primary-light); color: var(--primary); }
-body.dark-mode .fav-btn { background: #2d2e30; }
+body.dark-mode .fav-btn { background: #2d2e30; color: var(--dark); }
 body.dark-mode .fav-btn:hover { background: #3c1f28; }
 body.dark-mode .fav-btn.is-fav { background: var(--heart); }
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 { color: var(--dark); }
 body.dark-mode .section-title { color: var(--dark); }
 body.dark-mode .device-price { color: var(--primary); }
 body.dark-mode .price-big { color: var(--primary); }
-
+body.dark-mode .filters-overlay { background: rgba(0,0,0,0.7); }
 body.dark-mode ::-webkit-scrollbar-track { background: #1a1a1a; }
 body.dark-mode ::-webkit-scrollbar-thumb { background: #3c4043; }
-body.dark-mode ::selection { background: var(--primary); color: #ffffff; }
 
-/* انتقال ناعم */
-body, body * {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-body .device-card,
-body .stat-card,
-body .theme-toggle,
-body .btn-primary {
-    transition: all 0.3s ease;
-}
-
-/* ============================================================
-   14) التجاوب
-   ============================================================ */
+/* ============ التجاوب ============ */
 @media (max-width: 1024px) {
     nav ul { gap: 15px; }
     nav a { font-size: 14px; }
@@ -1563,12 +1396,9 @@ body .btn-primary {
     
     .device-header { grid-template-columns: 1fr; }
     .device-hero-image { min-height: 250px; }
-    .device-hero-image .fallback-emoji { font-size: 80px; }
     
     .form-row { grid-template-columns: 1fr; }
-    
-    .footer-content { grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
-    
+    .footer-content { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .filters-panel { width: 100%; max-width: 100%; right: -100%; }
 }
 
@@ -1576,19 +1406,19 @@ body .btn-primary {
     nav ul { display: none; }
     .navbar { justify-content: space-between; }
     
-    .section { padding: var(--space-md) 4%; }
+    .section { padding: 20px 4%; }
     .section-title { font-size: 20px; }
     .section-header { flex-direction: column; align-items: flex-start; }
     
-    .hero { padding: var(--space-lg) 4%; }
+    .hero { padding: 40px 4%; }
     .hero h1 { font-size: 22px; }
     .hero p { font-size: 14px; }
     
     .compare-section h2 { font-size: 22px; }
     
     .devices-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .device-image { height: 130px; }
-    .device-image .fallback-emoji { font-size: 40px; }
+    .device-image { height: 130px; padding: 10px; }
+    .device-image svg { max-width: 90px; max-height: 90px; }
     .device-info { padding: 10px; }
     .device-name { font-size: 13px; min-height: auto; margin-bottom: 6px; }
     .device-price { font-size: 14px; }
@@ -1610,7 +1440,7 @@ body .btn-primary {
     .filters-panel-inner { padding: 20px; }
     .filters-header h3 { font-size: 18px; }
     
-    .stats { padding: var(--space-md) 4%; gap: 12px; }
+    .stats { padding: 20px 4%; gap: 12px; }
     .stat-card { padding: 18px 12px; }
     .stat-card .number { font-size: 24px; }
     .stat-card .label { font-size: 12px; }
