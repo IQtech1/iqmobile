@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO -->
+    <meta name="description" content="İQmobil - دليلك لمقارنة أسعار ومواصفات الأجهزة الذكية في 8 دول عربية">
+    <meta name="keywords" content="هواتف, أسعار, مواصفات, مقارنة, İQmobil, smartphones">
+    <meta name="author" content="İQmobil">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="İQmobil | دليل الأجهزة الذكية">
+    <meta property="og:description" content="دليلك الشامل لمقارنة أسعار ومواصفات الأجهزة الذكية">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://starmusic1167.github.io/iqmobil/">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="İQmobil">
+    <meta name="twitter:description" content="دليلك الشامل لمقارنة الأجهزة الذكية">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <title>İQmobil | دليل الأجهزة الذكية</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+    <!-- ============ الشريط العلوي ============ -->
+    <div class="top-bar">
+        🔥 أحدث الأسعار محدثة يومياً في 8 دول عربية
+    </div>
+
+    <!-- ============ الهيدر ============ -->
+    <header>
+        <div class="navbar">
+            <a class="logo" data-nav="home">
+                İQ<span>mobil</span>
+            </a>
+            
+            <nav>
+                <ul id="mainNav">
+                    <li><a data-nav="home" class="active">الرئيسية</a></li>
+                    <li><a data-category="phone">الهواتف</a></li>
+                    <li><a data-category="tablet">الأجهزة اللوحية</a></li>
+                    <li><a data-category="watch">الساعات</a></li>
+                    <li><a data-nav="compare">المقارنة</a></li>
+                </ul>
+            </nav>
+
+            <select class="country-selector" id="countrySelect" aria-label="اختر الدولة"></select>
+
+            <div class="search-box">
+                <input type="text" id="mainSearch" placeholder="ابحث عن جهاز..." aria-label="بحث">
+                <button type="button" aria-label="بحث">🔍</button>
+            </div>
+        </div>
+
+        <!-- شريط الماركات -->
+        <div class="categories-bar">
+            <ul class="categories-list" id="brandsBar"></ul>
+        </div>
+    </header>
+
+    <!-- ============ الصفحات ============ -->
+    <main>
+        <!-- الصفحة الرئيسية -->
+        <section class="page active" id="page-home">
+            <section class="hero">
+                <h1>مرحباً بك في İQmobil</h1>
+                <p>دليلك الشامل لمقارنة أسعار ومواصفات الأجهزة الذكية</p>
+                <div class="hero-search">
+                    <input type="text" id="heroSearch" placeholder="ابحث عن هاتف، جهاز لوحي، أو ساعة ذكية...">
+                    <button type="button" id="heroSearchBtn">ابحث الآن</button>
+                </div>
+            </section>
+
+            <div class="stats" id="statsContainer"></div>
+
+            <section class="section">
+                <h2 class="section-title" id="sectionTitle">أحدث الأجهزة</h2>
+                <div class="devices-grid" id="devicesGrid"></div>
+            </section>
+
+            <section class="compare-section">
+                <h2>⚖️ قارن بين الأجهزة</h2>
+                <p>اختر جهازين أو أكثر من الأعلى وقارن بين مواصفاتهم وأسعارهم بالتفصيل</p>
+                <button class="compare-btn" data-nav="compare">ابدأ المقارنة الآن</button>
+            </section>
+        </section>
+
+        <!-- صفحة تفاصيل الجهاز -->
+        <section class="page" id="page-device"></section>
+
+        <!-- صفحة المقارنة -->
+        <section class="page" id="page-compare"></section>
+
+        <!-- صفحة تسجيل الدخول -->
+        <section class="page" id="page-login"></section>
+
+        <!-- لوحة التحكم -->
+        <section class="page" id="page-admin"></section>
+    </main>
+
+    <!-- ============ شريط المقارنة العائم ============ -->
+    <div class="compare-bar" id="compareBar">
+        <div class="compare-bar-items" id="compareBarItems"></div>
+        <button class="compare-bar-btn" id="goCompareBtn">قارن الآن ←</button>
+    </div>
+
+    <!-- ============ الفوتر ============ -->
+    <footer>
+        <div class="footer-content" id="footerContent"></div>
+        <div class="footer-bottom">
+            © <span id="currentYear">2026</span> İQmobil - جميع الحقوق محفوظة
+        </div>
+    </footer>
+
+    <!-- ============ JavaScript ============ -->
+    <script src="app.js"></script>
+</body>
+</html>
