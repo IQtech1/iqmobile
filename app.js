@@ -1,12 +1,10 @@
 /* ============================================================
-   İQmobil - app.js (النسخة الكاملة)
-   يحتوي على: البيانات + Storage + Helpers + State + Auth
-   + Router + Home + Device + Compare + Favorites
-   + Login + Admin + Theme + App
+   İQmobil - app.js (النسخة النهائية)
+   40 جهاز + صور SVG + كل الإصلاحات
    ============================================================ */
 
 /* ============================================================
-   1) البيانات — Countries, Devices, Reviews
+   1) الدول
    ============================================================ */
 
 const COUNTRIES = {
@@ -23,13 +21,118 @@ const COUNTRIES = {
 const DEFAULT_COUNTRY = "SY";
 
 /* ============================================================
-   بيانات الأجهزة (8 أجهزة حالياً + صور حقيقية)
+   2) مولّد الصور SVG — بدون حقوق
+   ============================================================ */
+
+const BRAND_COLORS = {
+    "Samsung": ["#1428A0", "#0C1E75"],
+    "Apple": ["#555555", "#000000"],
+    "Xiaomi": ["#FF6900", "#E65100"],
+    "Huawei": ["#FF0033", "#C7002B"],
+    "OPPO": ["#1EA366", "#146B42"],
+    "Realme": ["#FFC915", "#E5A800"],
+    "OnePlus": ["#EB0028", "#B5001F"],
+    "Google": ["#4285F4", "#1A73E8"],
+    "Vivo": ["#415FFF", "#2A3DCC"],
+    "Honor": ["#00B0F0", "#0086B8"],
+    "Motorola": ["#0091DA", "#005F8F"],
+    "Nokia": ["#124191", "#0A2C63"],
+    "Sony": ["#000000", "#333333"],
+    "Asus": ["#000063", "#00003D"],
+    "Nothing": ["#000000", "#1A1A1A"]
+};
+
+const SVGGenerator = {
+    // ===== توليد صورة SVG لجهاز =====
+    generate(device, size = 400) {
+        const colors = BRAND_COLORS[device.brand] || ["#1a73e8", "#0d47a1"];
+        const color1 = colors[0];
+        const color2 = colors[1];
+        const initial = device.brand.charAt(0).toUpperCase();
+        const categoryIcon = this.getCategoryIcon(device.category);
+        
+        // نص مختصر لاسم الجهاز
+        const nameParts = device.name.split(' ');
+        const shortName = nameParts.length > 2 
+            ? nameParts.slice(0, 2).join(' ') 
+            : device.name;
+
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet">
+    <defs>
+        <linearGradient id="grad-${device.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:${color1};stop-opacity:1" />
+            <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+        </linearGradient>
+        <filter id="shadow-${device.id}">
+            <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.2"/>
+        </filter>
+    </defs>
+    
+    <rect width="${size}" height="${size}" rx="${size * 0.15}" fill="url(#grad-${device.id})" filter="url(#shadow-${device.id})"/>
+    
+    <circle cx="${size * 0.5}" cy="${size * 0.38}" r="${size * 0.13}" fill="rgba(255,255,255,0.15)"/>
+    
+    <text x="${size * 0.5}" y="${size * 0.44}" 
+          font-family="'Cairo', Arial, sans-serif" 
+          font-size="${size * 0.16}" 
+          font-weight="900" 
+          fill="white" 
+          text-anchor="middle"
+          dominant-baseline="middle">${initial}</text>
+    
+    <text x="${size * 0.5}" y="${size * 0.68}" 
+          font-family="'Cairo', Arial, sans-serif" 
+          font-size="${size * 0.085}" 
+          font-weight="700" 
+          fill="white" 
+          text-anchor="middle">${this.escapeXml(shortName)}</text>
+    
+    <text x="${size * 0.5}" y="${size * 0.82}" 
+          font-family="'Cairo', Arial, sans-serif" 
+          font-size="${size * 0.06}" 
+          font-weight="400" 
+          fill="rgba(255,255,255,0.85)" 
+          text-anchor="middle">${categoryIcon}</text>
+</svg>`;
+    },
+
+    // ===== أيقونة الفئة =====
+    getCategoryIcon(category) {
+        const icons = {
+            phone: "📱 Smartphone",
+            tablet: "📲 Tablet",
+            watch: "⌚ Smartwatch",
+            laptop: "💻 Laptop"
+        };
+        return icons[category] || "📱 Device";
+    },
+
+    // ===== تأمين XML =====
+    escapeXml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    },
+
+    // ===== تحويل لـ Data URI =====
+    toDataUri(device, size = 400) {
+        const svg = this.generate(device, size);
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+};
+
+/* ============================================================
+   3) قاعدة بيانات الأجهزة — 40 جهاز
    ============================================================ */
 
 const DEVICES_DB = [
+    // ============ SAMSUNG (7 أجهزة) ============
     {
         id: 1, brand: "Samsung", name: "Galaxy S24 Ultra", image: "📱",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Samsung_Galaxy_S24_Ultra.png/400px-Samsung_Galaxy_S24_Ultra.png",
         category: "phone", releaseDate: "2024-01-17", badge: "جديد",
         rating: 4.8, reviewsCount: 245,
         specs: {
@@ -42,8 +145,86 @@ const DEVICES_DB = [
         prices: { SY: 12500000, SA: 4850, AE: 4750, EG: 62000, IQ: 1650000, JO: 900, MA: 13000, DZ: 175000 }
     },
     {
-        id: 2, brand: "Apple", name: "iPhone 15 Pro Max", image: "📱",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/IPhone_15_Pro_Max.png/400px-IPhone_15_Pro_Max.png",
+        id: 2, brand: "Samsung", name: "Galaxy S24+", image: "📱",
+        category: "phone", releaseDate: "2024-01-17", badge: "",
+        rating: 4.7, reviewsCount: 178,
+        specs: {
+            screen: "6.7 بوصة - AMOLED 120Hz", resolution: "1440 × 3120 بكسل",
+            processor: "Exynos 2400", ram: "12 GB",
+            storage: "256 GB / 512 GB", camera: "50 MP + 12 MP + 10 MP",
+            frontCamera: "12 MP", battery: "4900 mAh",
+            charging: "45W سلكي / 15W لاسلكي", os: "Android 14", weight: "196 غرام"
+        },
+        prices: { SY: 9500000, SA: 3699, AE: 3599, EG: 47000, IQ: 1250000, JO: 680, MA: 9800, DZ: 132000 }
+    },
+    {
+        id: 3, brand: "Samsung", name: "Galaxy S23 Ultra", image: "📱",
+        category: "phone", releaseDate: "2023-02-17", badge: "",
+        rating: 4.8, reviewsCount: 312,
+        specs: {
+            screen: "6.8 بوصة - AMOLED 120Hz", resolution: "1440 × 3088 بكسل",
+            processor: "Snapdragon 8 Gen 2", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "200 MP + 12 MP + 10 MP + 10 MP",
+            frontCamera: "12 MP", battery: "5000 mAh",
+            charging: "45W سلكي / 15W لاسلكي", os: "Android 13", weight: "234 غرام"
+        },
+        prices: { SY: 9800000, SA: 3899, AE: 3799, EG: 49000, IQ: 1320000, JO: 720, MA: 10200, DZ: 138000 }
+    },
+    {
+        id: 4, brand: "Samsung", name: "Galaxy A54", image: "📱",
+        category: "phone", releaseDate: "2023-03-24", badge: "أفضل قيمة",
+        rating: 4.4, reviewsCount: 156,
+        specs: {
+            screen: "6.4 بوصة - AMOLED 120Hz", resolution: "1080 × 2340 بكسل",
+            processor: "Exynos 1380", ram: "6 GB / 8 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 12 MP + 5 MP",
+            frontCamera: "32 MP", battery: "5000 mAh",
+            charging: "25W سلكي", os: "Android 13", weight: "202 غرام"
+        },
+        prices: { SY: 3200000, SA: 1299, AE: 1249, EG: 15500, IQ: 420000, JO: 240, MA: 3400, DZ: 45000 }
+    },
+    {
+        id: 5, brand: "Samsung", name: "Galaxy Z Fold 5", image: "📱",
+        category: "phone", releaseDate: "2023-08-11", badge: "",
+        rating: 4.6, reviewsCount: 98,
+        specs: {
+            screen: "7.6 بوصة قابلة للطي", resolution: "1812 × 2176 بكسل",
+            processor: "Snapdragon 8 Gen 2", ram: "12 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 12 MP + 10 MP",
+            frontCamera: "10 MP + 4 MP", battery: "4400 mAh",
+            charging: "25W سلكي / 15W لاسلكي", os: "Android 13", weight: "253 غرام"
+        },
+        prices: { SY: 14500000, SA: 5699, AE: 5599, EG: 72000, IQ: 1950000, JO: 1050, MA: 15200, DZ: 205000 }
+    },
+    {
+        id: 6, brand: "Samsung", name: "Galaxy Watch 6 Classic", image: "⌚",
+        category: "watch", releaseDate: "2023-08-11", badge: "",
+        rating: 4.7, reviewsCount: 89,
+        specs: {
+            screen: "1.47 بوصة - Super AMOLED", resolution: "480 × 480 بكسل",
+            processor: "Exynos W930", ram: "2 GB", storage: "16 GB",
+            camera: "لا يوجد", frontCamera: "-", battery: "425 mAh",
+            charging: "لاسلكي", os: "Wear OS 4", weight: "59 غرام"
+        },
+        prices: { SY: 3200000, SA: 1299, AE: 1249, EG: 16500, IQ: 420000, JO: 240, MA: 3400, DZ: 45000 }
+    },
+    {
+        id: 7, brand: "Samsung", name: "Galaxy Tab S9 Ultra", image: "📲",
+        category: "tablet", releaseDate: "2023-08-11", badge: "",
+        rating: 4.7, reviewsCount: 67,
+        specs: {
+            screen: "14.6 بوصة - AMOLED 120Hz", resolution: "1848 × 2960 بكسل",
+            processor: "Snapdragon 8 Gen 2", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "13 MP + 8 MP",
+            frontCamera: "12 MP + 12 MP", battery: "11200 mAh",
+            charging: "45W سلكي", os: "Android 13", weight: "737 غرام"
+        },
+        prices: { SY: 11500000, SA: 4499, AE: 4399, EG: 58000, IQ: 1520000, JO: 840, MA: 12000, DZ: 165000 }
+    },
+
+    // ============ APPLE (6 أجهزة) ============
+    {
+        id: 8, brand: "Apple", name: "iPhone 15 Pro Max", image: "📱",
         category: "phone", releaseDate: "2023-09-22", badge: "الأكثر مبيعاً",
         rating: 4.9, reviewsCount: 312,
         specs: {
@@ -56,64 +237,46 @@ const DEVICES_DB = [
         prices: { SY: 11800000, SA: 4599, AE: 4499, EG: 58000, IQ: 1550000, JO: 850, MA: 12500, DZ: 165000 }
     },
     {
-        id: 3, brand: "Xiaomi", name: "Xiaomi 14 Pro", image: "📱",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Xiaomi_14_Pro.png/400px-Xiaomi_14_Pro.png",
-        category: "phone", releaseDate: "2023-10-26", badge: "",
-        rating: 4.7, reviewsCount: 189,
+        id: 9, brand: "Apple", name: "iPhone 15 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-09-22", badge: "",
+        rating: 4.8, reviewsCount: 256,
         specs: {
-            screen: "6.73 بوصة - LTPO AMOLED", resolution: "1440 × 3200 بكسل",
-            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
-            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 50 MP + 50 MP",
-            frontCamera: "32 MP", battery: "4880 mAh",
-            charging: "120W سلكي / 50W لاسلكي", os: "Android 14 - HyperOS", weight: "223 غرام"
+            screen: "6.1 بوصة - Super Retina XDR", resolution: "1179 × 2556 بكسل",
+            processor: "Apple A17 Pro", ram: "8 GB",
+            storage: "128 GB / 256 GB / 512 GB / 1 TB", camera: "48 MP + 12 MP + 12 MP",
+            frontCamera: "12 MP", battery: "3274 mAh",
+            charging: "20W سلكي / 15W MagSafe", os: "iOS 17", weight: "187 غرام"
         },
-        prices: { SY: 8500000, SA: 3299, AE: 3199, EG: 41000, IQ: 1100000, JO: 620, MA: 8900, DZ: 118000 }
+        prices: { SY: 10200000, SA: 3999, AE: 3899, EG: 50000, IQ: 1350000, JO: 740, MA: 10800, DZ: 142000 }
     },
     {
-        id: 4, brand: "Huawei", name: "Huawei P60 Pro", image: "📱",
-        imageUrl: "",
-        category: "phone", releaseDate: "2023-03-23", badge: "",
-        rating: 4.6, reviewsCount: 156,
+        id: 10, brand: "Apple", name: "iPhone 15", image: "📱",
+        category: "phone", releaseDate: "2023-09-22", badge: "",
+        rating: 4.7, reviewsCount: 198,
         specs: {
-            screen: "6.67 بوصة - OLED 120Hz", resolution: "1220 × 2700 بكسل",
-            processor: "Snapdragon 8+ Gen 1", ram: "8 GB / 12 GB",
-            storage: "256 GB / 512 GB", camera: "48 MP + 48 MP + 13 MP",
-            frontCamera: "13 MP", battery: "4815 mAh",
-            charging: "88W سلكي / 50W لاسلكي", os: "HarmonyOS 3.1", weight: "200 غرام"
+            screen: "6.1 بوصة - Super Retina XDR", resolution: "1179 × 2556 بكسل",
+            processor: "Apple A16 Bionic", ram: "6 GB",
+            storage: "128 GB / 256 GB / 512 GB", camera: "48 MP + 12 MP",
+            frontCamera: "12 MP", battery: "3349 mAh",
+            charging: "20W سلكي / 15W MagSafe", os: "iOS 17", weight: "171 غرام"
         },
-        prices: { SY: 9200000, SA: 3599, AE: 3499, EG: 45000, IQ: 1200000, JO: 680, MA: 9500, DZ: 128000 }
+        prices: { SY: 7800000, SA: 2999, AE: 2899, EG: 38000, IQ: 1020000, JO: 560, MA: 8200, DZ: 108000 }
     },
     {
-        id: 5, brand: "OPPO", name: "OPPO Find X6 Pro", image: "📱",
-        imageUrl: "",
-        category: "phone", releaseDate: "2023-03-21", badge: "",
-        rating: 4.5, reviewsCount: 132,
+        id: 11, brand: "Apple", name: "iPhone 14 Pro Max", image: "📱",
+        category: "phone", releaseDate: "2022-09-16", badge: "",
+        rating: 4.8, reviewsCount: 289,
         specs: {
-            screen: "6.82 بوصة - LTPO AMOLED", resolution: "1440 × 3168 بكسل",
-            processor: "Snapdragon 8 Gen 2", ram: "12 GB / 16 GB",
-            storage: "256 GB / 512 GB", camera: "50 MP + 50 MP + 50 MP",
-            frontCamera: "32 MP", battery: "5000 mAh",
-            charging: "100W سلكي / 50W لاسلكي", os: "Android 13 - ColorOS", weight: "216 غرام"
+            screen: "6.7 بوصة - Super Retina XDR", resolution: "1290 × 2796 بكسل",
+            processor: "Apple A16 Bionic", ram: "6 GB",
+            storage: "128 GB / 256 GB / 512 GB / 1 TB", camera: "48 MP + 12 MP + 12 MP",
+            frontCamera: "12 MP", battery: "4323 mAh",
+            charging: "20W سلكي / 15W MagSafe", os: "iOS 16", weight: "240 غرام"
         },
-        prices: { SY: 8800000, SA: 3399, AE: 3299, EG: 42000, IQ: 1150000, JO: 640, MA: 9100, DZ: 122000 }
+        prices: { SY: 9500000, SA: 3799, AE: 3699, EG: 47000, IQ: 1280000, JO: 700, MA: 10100, DZ: 135000 }
     },
     {
-        id: 6, brand: "Realme", name: "Realme GT 5 Pro", image: "📱",
-        imageUrl: "",
-        category: "phone", releaseDate: "2023-12-07", badge: "أفضل قيمة",
-        rating: 4.6, reviewsCount: 98,
-        specs: {
-            screen: "6.78 بوصة - AMOLED", resolution: "1264 × 2780 بكسل",
-            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
-            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 8 MP + 50 MP",
-            frontCamera: "32 MP", battery: "5400 mAh",
-            charging: "100W سلكي", os: "Android 14 - Realme UI", weight: "218 غرام"
-        },
-        prices: { SY: 6200000, SA: 2499, AE: 2399, EG: 29000, IQ: 820000, JO: 460, MA: 6500, DZ: 88000 }
-    },
-    {
-        id: 7, brand: "Apple", name: "iPad Pro 12.9 M2", image: "📲",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/IPad_Pro_12.9.png/400px-IPad_Pro_12.9.png",
+        id: 12, brand: "Apple", name: "iPad Pro 12.9 M2", image: "📲",
         category: "tablet", releaseDate: "2022-10-26", badge: "",
         rating: 4.9, reviewsCount: 178,
         specs: {
@@ -126,22 +289,388 @@ const DEVICES_DB = [
         prices: { SY: 10500000, SA: 4299, AE: 4199, EG: 55000, IQ: 1420000, JO: 800, MA: 11500, DZ: 152000 }
     },
     {
-        id: 8, brand: "Samsung", name: "Galaxy Watch 6 Classic", image: "⌚",
-        imageUrl: "",
-        category: "watch", releaseDate: "2023-08-11", badge: "",
+        id: 13, brand: "Apple", name: "Apple Watch Series 9", image: "⌚",
+        category: "watch", releaseDate: "2023-09-22", badge: "جديد",
+        rating: 4.8, reviewsCount: 145,
+        specs: {
+            screen: "1.9 بوصة - LTPO OLED", resolution: "484 × 396 بكسل",
+            processor: "Apple S9 SiP", ram: "1 GB", storage: "64 GB",
+            camera: "لا يوجد", frontCamera: "-", battery: "308 mAh",
+            charging: "لاسلكي سريع", os: "watchOS 10", weight: "51.5 غرام"
+        },
+        prices: { SY: 4500000, SA: 1799, AE: 1749, EG: 23000, IQ: 590000, JO: 340, MA: 4700, DZ: 62000 }
+    },
+
+    // ============ XIAOMI (5 أجهزة) ============
+    {
+        id: 14, brand: "Xiaomi", name: "Xiaomi 14 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-10-26", badge: "",
+        rating: 4.7, reviewsCount: 189,
+        specs: {
+            screen: "6.73 بوصة - LTPO AMOLED", resolution: "1440 × 3200 بكسل",
+            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 50 MP + 50 MP",
+            frontCamera: "32 MP", battery: "4880 mAh",
+            charging: "120W سلكي / 50W لاسلكي", os: "Android 14 - HyperOS", weight: "223 غرام"
+        },
+        prices: { SY: 8500000, SA: 3299, AE: 3199, EG: 41000, IQ: 1100000, JO: 620, MA: 8900, DZ: 118000 }
+    },
+    {
+        id: 15, brand: "Xiaomi", name: "Xiaomi 14 Ultra", image: "📱",
+        category: "phone", releaseDate: "2024-02-25", badge: "جديد",
+        rating: 4.9, reviewsCount: 156,
+        specs: {
+            screen: "6.73 بوصة - LTPO AMOLED", resolution: "1440 × 3200 بكسل",
+            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 50 MP + 50 MP + 50 MP",
+            frontCamera: "32 MP", battery: "5300 mAh",
+            charging: "90W سلكي / 80W لاسلكي", os: "Android 14 - HyperOS", weight: "224 غرام"
+        },
+        prices: { SY: 11500000, SA: 4499, AE: 4399, EG: 56000, IQ: 1500000, JO: 850, MA: 12000, DZ: 160000 }
+    },
+    {
+        id: 16, brand: "Xiaomi", name: "Redmi Note 13 Pro+", image: "📱",
+        category: "phone", releaseDate: "2024-01-04", badge: "أفضل قيمة",
+        rating: 4.5, reviewsCount: 234,
+        specs: {
+            screen: "6.67 بوصة - AMOLED 120Hz", resolution: "1220 × 2712 بكسل",
+            processor: "MediaTek Dimensity 7200 Ultra", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB", camera: "200 MP + 8 MP + 2 MP",
+            frontCamera: "16 MP", battery: "5000 mAh",
+            charging: "120W سلكي", os: "Android 13 - MIUI 14", weight: "204.5 غرام"
+        },
+        prices: { SY: 2400000, SA: 999, AE: 949, EG: 11500, IQ: 320000, JO: 180, MA: 2600, DZ: 34000 }
+    },
+    {
+        id: 17, brand: "Xiaomi", name: "Redmi Note 12", image: "📱",
+        category: "phone", releaseDate: "2023-03-23", badge: "",
+        rating: 4.3, reviewsCount: 198,
+        specs: {
+            screen: "6.67 بوصة - AMOLED", resolution: "1080 × 2400 بكسل",
+            processor: "Snapdragon 685", ram: "4 GB / 6 GB / 8 GB",
+            storage: "64 GB / 128 GB / 256 GB", camera: "50 MP + 8 MP + 2 MP",
+            frontCamera: "13 MP", battery: "5000 mAh",
+            charging: "33W سلكي", os: "Android 13 - MIUI 14", weight: "188 غرام"
+        },
+        prices: { SY: 1450000, SA: 599, AE: 579, EG: 6900, IQ: 195000, JO: 110, MA: 1600, DZ: 21000 }
+    },
+    {
+        id: 18, brand: "Xiaomi", name: "POCO F5 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-05-09", badge: "",
+        rating: 4.6, reviewsCount: 145,
+        specs: {
+            screen: "6.67 بوصة - AMOLED 120Hz", resolution: "1440 × 3200 بكسل",
+            processor: "Snapdragon 8+ Gen 1", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB", camera: "64 MP + 8 MP + 2 MP",
+            frontCamera: "16 MP", battery: "5160 mAh",
+            charging: "67W سلكي / 30W لاسلكي", os: "Android 13 - MIUI 14", weight: "204 غرام"
+        },
+        prices: { SY: 3400000, SA: 1399, AE: 1349, EG: 17000, IQ: 450000, JO: 260, MA: 3700, DZ: 49000 }
+    },
+
+    // ============ HUAWEI (4 أجهزة) ============
+    {
+        id: 19, brand: "Huawei", name: "Huawei P60 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-03-23", badge: "",
+        rating: 4.6, reviewsCount: 156,
+        specs: {
+            screen: "6.67 بوصة - OLED 120Hz", resolution: "1220 × 2700 بكسل",
+            processor: "Snapdragon 8+ Gen 1", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB", camera: "48 MP + 48 MP + 13 MP",
+            frontCamera: "13 MP", battery: "4815 mAh",
+            charging: "88W سلكي / 50W لاسلكي", os: "HarmonyOS 3.1", weight: "200 غرام"
+        },
+        prices: { SY: 9200000, SA: 3599, AE: 3499, EG: 45000, IQ: 1200000, JO: 680, MA: 9500, DZ: 128000 }
+    },
+    {
+        id: 20, brand: "Huawei", name: "Huawei Mate 60 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-09-25", badge: "جديد",
         rating: 4.7, reviewsCount: 89,
         specs: {
-            screen: "1.47 بوصة - Super AMOLED", resolution: "480 × 480 بكسل",
-            processor: "Exynos W930", ram: "2 GB", storage: "16 GB",
-            camera: "لا يوجد", frontCamera: "-", battery: "425 mAh",
-            charging: "لاسلكي", os: "Wear OS 4", weight: "59 غرام"
+            screen: "6.82 بوصة - LTPO OLED", resolution: "1260 × 2720 بكسل",
+            processor: "Kirin 9000S", ram: "12 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 48 MP + 12 MP",
+            frontCamera: "13 MP + 3D", battery: "5000 mAh",
+            charging: "88W سلكي / 50W لاسلكي", os: "HarmonyOS 4.0", weight: "225 غرام"
         },
-        prices: { SY: 3200000, SA: 1299, AE: 1249, EG: 16500, IQ: 420000, JO: 240, MA: 3400, DZ: 45000 }
+        prices: { SY: 11500000, SA: 4499, AE: 4399, EG: 56000, IQ: 1520000, JO: 850, MA: 12200, DZ: 165000 }
+    },
+    {
+        id: 21, brand: "Huawei", name: "Huawei Nova 11", image: "📱",
+        category: "phone", releaseDate: "2023-04-17", badge: "",
+        rating: 4.4, reviewsCount: 112,
+        specs: {
+            screen: "6.7 بوصة - OLED 120Hz", resolution: "1084 × 2412 بكسل",
+            processor: "Snapdragon 778G 4G", ram: "8 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 8 MP",
+            frontCamera: "60 MP", battery: "4500 mAh",
+            charging: "66W سلكي", os: "HarmonyOS 3.1", weight: "168 غرام"
+        },
+        prices: { SY: 2900000, SA: 1199, AE: 1149, EG: 14500, IQ: 380000, JO: 220, MA: 3100, DZ: 41000 }
+    },
+    {
+        id: 22, brand: "Huawei", name: "Huawei Watch GT 4", image: "⌚",
+        category: "watch", releaseDate: "2023-09-14", badge: "",
+        rating: 4.6, reviewsCount: 98,
+        specs: {
+            screen: "1.43 بوصة - AMOLED", resolution: "466 × 466 بكسل",
+            processor: "غير محدد", ram: "32 MB", storage: "4 GB",
+            camera: "لا يوجد", frontCamera: "-", battery: "524 mAh",
+            charging: "لاسلكي", os: "HarmonyOS", weight: "48 غرام"
+        },
+        prices: { SY: 2100000, SA: 849, AE: 819, EG: 10500, IQ: 280000, JO: 160, MA: 2300, DZ: 30000 }
+    },
+
+    // ============ OPPO (3 أجهزة) ============
+    {
+        id: 23, brand: "OPPO", name: "OPPO Find X6 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-03-21", badge: "",
+        rating: 4.5, reviewsCount: 132,
+        specs: {
+            screen: "6.82 بوصة - LTPO AMOLED", resolution: "1440 × 3168 بكسل",
+            processor: "Snapdragon 8 Gen 2", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB", camera: "50 MP + 50 MP + 50 MP",
+            frontCamera: "32 MP", battery: "5000 mAh",
+            charging: "100W سلكي / 50W لاسلكي", os: "Android 13 - ColorOS", weight: "216 غرام"
+        },
+        prices: { SY: 8800000, SA: 3399, AE: 3299, EG: 42000, IQ: 1150000, JO: 640, MA: 9100, DZ: 122000 }
+    },
+    {
+        id: 24, brand: "OPPO", name: "OPPO Find N3 Flip", image: "📱",
+        category: "phone", releaseDate: "2023-10-19", badge: "",
+        rating: 4.5, reviewsCount: 78,
+        specs: {
+            screen: "6.8 بوصة قابلة للطي", resolution: "1080 × 2520 بكسل",
+            processor: "MediaTek Dimensity 9200", ram: "12 GB",
+            storage: "256 GB / 512 GB", camera: "50 MP + 48 MP + 32 MP",
+            frontCamera: "32 MP", battery: "4300 mAh",
+            charging: "44W سلكي", os: "Android 13 - ColorOS", weight: "198 غرام"
+        },
+        prices: { SY: 11500000, SA: 4499, AE: 4399, EG: 55000, IQ: 1500000, JO: 830, MA: 12000, DZ: 160000 }
+    },
+    {
+        id: 25, brand: "OPPO", name: "OPPO Reno 10 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-07-12", badge: "",
+        rating: 4.4, reviewsCount: 145,
+        specs: {
+            screen: "6.74 بوصة - AMOLED 120Hz", resolution: "1240 × 2772 بكسل",
+            processor: "Snapdragon 778G", ram: "8 GB / 12 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 32 MP + 8 MP",
+            frontCamera: "32 MP", battery: "4600 mAh",
+            charging: "80W سلكي", os: "Android 13 - ColorOS", weight: "185 غرام"
+        },
+        prices: { SY: 3300000, SA: 1349, AE: 1299, EG: 16500, IQ: 440000, JO: 250, MA: 3500, DZ: 46000 }
+    },
+
+    // ============ REALME (3 أجهزة) ============
+    {
+        id: 26, brand: "Realme", name: "Realme GT 5 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-12-07", badge: "أفضل قيمة",
+        rating: 4.6, reviewsCount: 98,
+        specs: {
+            screen: "6.78 بوصة - AMOLED", resolution: "1264 × 2780 بكسل",
+            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 8 MP + 50 MP",
+            frontCamera: "32 MP", battery: "5400 mAh",
+            charging: "100W سلكي", os: "Android 14 - Realme UI", weight: "218 غرام"
+        },
+        prices: { SY: 6200000, SA: 2499, AE: 2399, EG: 29000, IQ: 820000, JO: 460, MA: 6500, DZ: 88000 }
+    },
+    {
+        id: 27, brand: "Realme", name: "Realme 11 Pro+", image: "📱",
+        category: "phone", releaseDate: "2023-05-10", badge: "",
+        rating: 4.4, reviewsCount: 167,
+        specs: {
+            screen: "6.7 بوصة - AMOLED 120Hz", resolution: "1080 × 2412 بكسل",
+            processor: "MediaTek Dimensity 7050", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB", camera: "200 MP + 8 MP + 2 MP",
+            frontCamera: "32 MP", battery: "5000 mAh",
+            charging: "100W سلكي", os: "Android 13 - Realme UI", weight: "189 غرام"
+        },
+        prices: { SY: 2400000, SA: 999, AE: 949, EG: 11500, IQ: 320000, JO: 180, MA: 2600, DZ: 34000 }
+    },
+    {
+        id: 28, brand: "Realme", name: "Realme GT Neo 5", image: "📱",
+        category: "phone", releaseDate: "2023-02-09", badge: "",
+        rating: 4.5, reviewsCount: 134,
+        specs: {
+            screen: "6.74 بوصة - AMOLED 144Hz", resolution: "1240 × 2772 بكسل",
+            processor: "Snapdragon 8+ Gen 1", ram: "8 GB / 12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 8 MP + 2 MP",
+            frontCamera: "16 MP", battery: "4600 mAh",
+            charging: "240W سلكي", os: "Android 13 - Realme UI", weight: "199 غرام"
+        },
+        prices: { SY: 3900000, SA: 1599, AE: 1549, EG: 19000, IQ: 510000, JO: 290, MA: 4200, DZ: 55000 }
+    },
+
+    // ============ GOOGLE (3 أجهزة) ============
+    {
+        id: 29, brand: "Google", name: "Google Pixel 8 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-10-12", badge: "جديد",
+        rating: 4.7, reviewsCount: 178,
+        specs: {
+            screen: "6.7 بوصة - LTPO OLED 120Hz", resolution: "1344 × 2992 بكسل",
+            processor: "Google Tensor G3", ram: "12 GB",
+            storage: "128 GB / 256 GB / 512 GB / 1 TB", camera: "50 MP + 48 MP + 48 MP",
+            frontCamera: "10.5 MP", battery: "5050 mAh",
+            charging: "30W سلكي / 23W لاسلكي", os: "Android 14", weight: "213 غرام"
+        },
+        prices: { SY: 9800000, SA: 3799, AE: 3699, EG: 48000, IQ: 1300000, JO: 720, MA: 10200, DZ: 135000 }
+    },
+    {
+        id: 30, brand: "Google", name: "Google Pixel 8", image: "📱",
+        category: "phone", releaseDate: "2023-10-12", badge: "",
+        rating: 4.6, reviewsCount: 145,
+        specs: {
+            screen: "6.2 بوصة - OLED 120Hz", resolution: "1080 × 2400 بكسل",
+            processor: "Google Tensor G3", ram: "8 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 12 MP",
+            frontCamera: "10.5 MP", battery: "4575 mAh",
+            charging: "27W سلكي / 18W لاسلكي", os: "Android 14", weight: "187 غرام"
+        },
+        prices: { SY: 7200000, SA: 2799, AE: 2699, EG: 35000, IQ: 950000, JO: 520, MA: 7500, DZ: 100000 }
+    },
+    {
+        id: 31, brand: "Google", name: "Google Pixel Watch 2", image: "⌚",
+        category: "watch", releaseDate: "2023-10-12", badge: "",
+        rating: 4.5, reviewsCount: 78,
+        specs: {
+            screen: "1.2 بوصة - AMOLED", resolution: "450 × 450 بكسل",
+            processor: "Qualcomm 5100", ram: "2 GB", storage: "32 GB",
+            camera: "لا يوجد", frontCamera: "-", battery: "306 mAh",
+            charging: "لاسلكي", os: "Wear OS 4", weight: "31 غرام"
+        },
+        prices: { SY: 3700000, SA: 1499, AE: 1449, EG: 19000, IQ: 490000, JO: 280, MA: 3900, DZ: 51000 }
+    },
+
+    // ============ ONEPLUS (3 أجهزة) ============
+    {
+        id: 32, brand: "OnePlus", name: "OnePlus 12", image: "📱",
+        category: "phone", releaseDate: "2023-12-11", badge: "جديد",
+        rating: 4.8, reviewsCount: 167,
+        specs: {
+            screen: "6.82 بوصة - LTPO AMOLED 120Hz", resolution: "1440 × 3168 بكسل",
+            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB / 24 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 64 MP + 48 MP",
+            frontCamera: "32 MP", battery: "5400 mAh",
+            charging: "100W سلكي / 50W لاسلكي", os: "Android 14 - OxygenOS", weight: "220 غرام"
+        },
+        prices: { SY: 7600000, SA: 2999, AE: 2899, EG: 37000, IQ: 1000000, JO: 560, MA: 8100, DZ: 108000 }
+    },
+    {
+        id: 33, brand: "OnePlus", name: "OnePlus 11", image: "📱",
+        category: "phone", releaseDate: "2023-02-07", badge: "",
+        rating: 4.6, reviewsCount: 189,
+        specs: {
+            screen: "6.7 بوصة - LTPO3 AMOLED", resolution: "1440 × 3216 بكسل",
+            processor: "Snapdragon 8 Gen 2", ram: "8 GB / 12 GB / 16 GB",
+            storage: "128 GB / 256 GB / 512 GB", camera: "50 MP + 48 MP + 32 MP",
+            frontCamera: "16 MP", battery: "5000 mAh",
+            charging: "100W سلكي", os: "Android 13 - OxygenOS", weight: "205 غرام"
+        },
+        prices: { SY: 5800000, SA: 2299, AE: 2249, EG: 28500, IQ: 780000, JO: 440, MA: 6200, DZ: 84000 }
+    },
+    {
+        id: 34, brand: "OnePlus", name: "OnePlus Nord 3", image: "📱",
+        category: "phone", releaseDate: "2023-07-05", badge: "",
+        rating: 4.4, reviewsCount: 134,
+        specs: {
+            screen: "6.74 بوصة - AMOLED 120Hz", resolution: "1240 × 2772 بكسل",
+            processor: "MediaTek Dimensity 9000", ram: "8 GB / 16 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 8 MP + 2 MP",
+            frontCamera: "16 MP", battery: "5000 mAh",
+            charging: "80W سلكي", os: "Android 13 - OxygenOS", weight: "193.5 غرام"
+        },
+        prices: { SY: 3300000, SA: 1349, AE: 1299, EG: 16500, IQ: 440000, JO: 250, MA: 3500, DZ: 46000 }
+    },
+
+    // ============ VIVO (2 أجهزة) ============
+    {
+        id: 35, brand: "Vivo", name: "Vivo X100 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-11-13", badge: "جديد",
+        rating: 4.7, reviewsCount: 123,
+        specs: {
+            screen: "6.78 بوصة - LTPO AMOLED 120Hz", resolution: "1260 × 2800 بكسل",
+            processor: "MediaTek Dimensity 9300", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 50 MP + 50 MP",
+            frontCamera: "32 MP", battery: "5400 mAh",
+            charging: "100W سلكي / 50W لاسلكي", os: "Android 14 - OriginOS", weight: "221 غرام"
+        },
+        prices: { SY: 8900000, SA: 3499, AE: 3399, EG: 43000, IQ: 1180000, JO: 660, MA: 9300, DZ: 125000 }
+    },
+    {
+        id: 36, brand: "Vivo", name: "Vivo V29 Pro", image: "📱",
+        category: "phone", releaseDate: "2023-09-07", badge: "",
+        rating: 4.4, reviewsCount: 145,
+        specs: {
+            screen: "6.78 بوصة - AMOLED 120Hz", resolution: "1260 × 2800 بكسل",
+            processor: "MediaTek Dimensity 8200", ram: "8 GB / 12 GB",
+            storage: "256 GB / 512 GB", camera: "50 MP + 8 MP + 12 MP",
+            frontCamera: "50 MP", battery: "4600 mAh",
+            charging: "80W سلكي", os: "Android 13 - Funtouch OS", weight: "188 غرام"
+        },
+        prices: { SY: 3900000, SA: 1599, AE: 1549, EG: 19000, IQ: 510000, JO: 290, MA: 4200, DZ: 55000 }
+    },
+
+    // ============ HONOR (2 أجهزة) ============
+    {
+        id: 37, brand: "Honor", name: "Honor Magic6 Pro", image: "📱",
+        category: "phone", releaseDate: "2024-01-11", badge: "جديد",
+        rating: 4.6, reviewsCount: 98,
+        specs: {
+            screen: "6.8 بوصة - LTPO AMOLED 120Hz", resolution: "1280 × 2800 بكسل",
+            processor: "Snapdragon 8 Gen 3", ram: "12 GB / 16 GB",
+            storage: "256 GB / 512 GB / 1 TB", camera: "50 MP + 180 MP + 50 MP",
+            frontCamera: "50 MP", battery: "5600 mAh",
+            charging: "80W سلكي / 66W لاسلكي", os: "Android 14 - MagicOS 8", weight: "229 غرام"
+        },
+        prices: { SY: 8700000, SA: 3399, AE: 3299, EG: 42000, IQ: 1150000, JO: 640, MA: 9100, DZ: 122000 }
+    },
+    {
+        id: 38, brand: "Honor", name: "Honor 90", image: "📱",
+        category: "phone", releaseDate: "2023-05-29", badge: "",
+        rating: 4.3, reviewsCount: 134,
+        specs: {
+            screen: "6.7 بوصة - AMOLED 120Hz", resolution: "1200 × 2664 بكسل",
+            processor: "Snapdragon 7 Gen 1", ram: "8 GB / 12 GB / 16 GB",
+            storage: "256 GB / 512 GB", camera: "200 MP + 12 MP + 2 MP",
+            frontCamera: "50 MP", battery: "5000 mAh",
+            charging: "66W سلكي", os: "Android 13 - MagicOS 7.1", weight: "183 غرام"
+        },
+        prices: { SY: 2700000, SA: 1099, AE: 1049, EG: 13000, IQ: 350000, JO: 200, MA: 2900, DZ: 38000 }
+    },
+
+    // ============ NOKIA (2 أجهزة) ============
+    {
+        id: 39, brand: "Nokia", name: "Nokia XR21", image: "📱",
+        category: "phone", releaseDate: "2023-06-01", badge: "",
+        rating: 4.2, reviewsCount: 67,
+        specs: {
+            screen: "6.49 بوصة - IPS LCD 120Hz", resolution: "1080 × 2400 بكسل",
+            processor: "Snapdragon 695", ram: "6 GB / 8 GB",
+            storage: "128 GB / 256 GB", camera: "64 MP + 8 MP",
+            frontCamera: "16 MP", battery: "4800 mAh",
+            charging: "33W سلكي", os: "Android 13", weight: "231 غرام"
+        },
+        prices: { SY: 2400000, SA: 999, AE: 949, EG: 11500, IQ: 320000, JO: 180, MA: 2600, DZ: 34000 }
+    },
+    {
+        id: 40, brand: "Nokia", name: "Nokia G42 5G", image: "📱",
+        category: "phone", releaseDate: "2023-06-28", badge: "",
+        rating: 4.0, reviewsCount: 89,
+        specs: {
+            screen: "6.56 بوصة - IPS LCD 90Hz", resolution: "720 × 1612 بكسل",
+            processor: "Snapdragon 480+", ram: "6 GB / 8 GB",
+            storage: "128 GB / 256 GB", camera: "50 MP + 2 MP + 2 MP",
+            frontCamera: "8 MP", battery: "5000 mAh",
+            charging: "20W سلكي", os: "Android 13", weight: "193.8 غرام"
+        },
+        prices: { SY: 1300000, SA: 549, AE: 529, EG: 6300, IQ: 175000, JO: 100, MA: 1400, DZ: 19000 }
     }
 ];
 
 /* ============================================================
-   المراجعات الافتراضية
+   4) المراجعات الافتراضية
    ============================================================ */
 
 const REVIEWS_DB = {
@@ -150,18 +679,26 @@ const REVIEWS_DB = {
         { user: "سارة ع.", rating: 5, text: "الأفضل في السوق حالياً، يستحق السعر.", date: "2024-02-10" },
         { user: "خالد ر.", rating: 4, text: "قوي جداً لكن حجمه كبير بعض الشيء.", date: "2024-02-05" }
     ],
-    2: [
+    8: [
         { user: "محمد س.", rating: 5, text: "آيفون بمعنى الكلمة، أداء لا يوصف.", date: "2024-02-12" },
         { user: "نور ح.", rating: 5, text: "الكاميرا رهيبة والبطارية ممتازة.", date: "2024-02-08" }
     ],
-    3: [{ user: "علي ك.", rating: 5, text: "أفضل قيمة مقابل السعر في فئته.", date: "2024-02-14" }],
-    4: [{ user: "لينا ف.", rating: 4, text: "كاميرا رائعة لكن بدون خدمات جوجل.", date: "2024-02-11" }],
-    5: [{ user: "يوسف ط.", rating: 5, text: "شاشة مذهلة وشحن سريع جداً.", date: "2024-02-13" }],
-    6: [{ user: "هدى ب.", rating: 5, text: "سعر لا يُقاوم مقابل هذه المواصفات!", date: "2024-02-16" }]
+    14: [
+        { user: "علي ك.", rating: 5, text: "أفضل قيمة مقابل السعر في فئته.", date: "2024-02-14" }
+    ],
+    19: [
+        { user: "لينا ف.", rating: 4, text: "كاميرا رائعة لكن بدون خدمات جوجل.", date: "2024-02-11" }
+    ],
+    23: [
+        { user: "يوسف ط.", rating: 5, text: "شاشة مذهلة وشحن سريع جداً.", date: "2024-02-13" }
+    ],
+    26: [
+        { user: "هدى ب.", rating: 5, text: "سعر لا يُقاوم مقابل هذه المواصفات!", date: "2024-02-16" }
+    ]
 };
 
 /* ============================================================
-   2) Storage — إدارة localStorage
+   5) Storage
    ============================================================ */
 
 const Storage = {
@@ -181,20 +718,12 @@ const Storage = {
             const value = localStorage.getItem(key);
             if (value === null) return defaultValue;
             return JSON.parse(value);
-        } catch (e) {
-            console.warn('Storage.get error:', e);
-            return defaultValue;
-        }
+        } catch (e) { return defaultValue; }
     },
 
     set(key, value) {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-            return true;
-        } catch (e) {
-            console.warn('Storage.set error:', e);
-            return false;
-        }
+        try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+        catch (e) { return false; }
     },
 
     remove(key) {
@@ -222,7 +751,7 @@ const Storage = {
 };
 
 /* ============================================================
-   3) Helpers — دوال مساعدة
+   6) Helpers
    ============================================================ */
 
 const Helpers = {
@@ -283,27 +812,19 @@ const Helpers = {
         return [...defaults, ...custom];
     },
 
-    // ===== الحصول على صورة الجهاز =====
-    getDeviceImage(device) {
-        if (device.imageUrl && device.imageUrl.trim() !== '') {
-            return `<img src="${device.imageUrl}" alt="${this.escapeHtml(device.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` +
-                   `<span class="fallback-emoji" style="display:none;">${device.image}</span>`;
-        }
-        return `<span class="fallback-emoji">${device.image}</span>`;
+    // ===== صورة الجهاز (SVG) =====
+    getDeviceImage(device, size = 400) {
+        const dataUri = SVGGenerator.toDataUri(device, size);
+        return `<img src="${dataUri}" alt="${this.escapeHtml(device.name)}" loading="lazy">`;
     },
 
-    // ===== الحصول على صورة مصغرة =====
     getDeviceMiniImage(device) {
-        if (device.imageUrl && device.imageUrl.trim() !== '') {
-            return `<img src="${device.imageUrl}" alt="${this.escapeHtml(device.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` +
-                   `<span class="fallback-emoji" style="display:none;">${device.image}</span>`;
-        }
-        return `<span class="fallback-emoji">${device.image}</span>`;
+        return this.getDeviceImage(device, 200);
     }
 };
 
 /* ============================================================
-   4) State — الحالة العامة
+   7) State
    ============================================================ */
 
 const State = {
@@ -327,9 +848,7 @@ const State = {
     setBrand(brand) { this.filters.brand = brand; },
     setSearch(query) { this.filters.search = query; },
 
-    setFilters(newFilters) {
-        Object.assign(this.filters, newFilters);
-    },
+    setFilters(newFilters) { Object.assign(this.filters, newFilters); },
 
     resetFilters() {
         this.filters = {
@@ -354,10 +873,7 @@ const State = {
         return count;
     },
 
-    loadCompare() {
-        this.compareList = Storage.getCompare();
-        return this.compareList;
-    },
+    loadCompare() { this.compareList = Storage.getCompare(); return this.compareList; },
 
     addToCompare(id) {
         if (this.compareList.includes(id)) return { success: false, message: 'الجهاز مضاف بالفعل' };
@@ -372,14 +888,9 @@ const State = {
         Storage.setCompare(this.compareList);
     },
 
-    loadFavorites() {
-        this.favorites = Storage.getFavorites();
-        return this.favorites;
-    },
+    loadFavorites() { this.favorites = Storage.getFavorites(); return this.favorites; },
 
-    isFavorite(id) {
-        return this.favorites.includes(id);
-    },
+    isFavorite(id) { return this.favorites.includes(id); },
 
     toggleFavorite(id) {
         if (this.favorites.includes(id)) {
@@ -395,12 +906,12 @@ const State = {
 };
 
 /* ============================================================
-   5) Auth — المصادقة
+   8) Auth
    ============================================================ */
 
 const Auth = {
     CONFIG: {
-        passwordHash: 'aXFtb2JpbDIwMjY=',  // iqmobil2026
+        passwordHash: 'aXFtb2JpbDIwMjY=',
         sessionKey: 'iqmobil_session',
         attemptsKey: 'iqmobil_login_attempts',
         sessionDuration: 2 * 60 * 60 * 1000,
@@ -413,9 +924,7 @@ const Auth = {
         catch (e) { return btoa(str); }
     },
 
-    verifyPassword(input) {
-        return this.encode(input.trim()) === this.CONFIG.passwordHash;
-    },
+    verifyPassword(input) { return this.encode(input.trim()) === this.CONFIG.passwordHash; },
 
     createSession() {
         const session = {
@@ -430,19 +939,13 @@ const Auth = {
     isLoggedIn() {
         const session = Storage.get(this.CONFIG.sessionKey);
         if (!session) return false;
-        if (Date.now() > session.expiresAt) {
-            this.logout();
-            return false;
-        }
+        if (Date.now() > session.expiresAt) { this.logout(); return false; }
         return true;
     },
 
     logout() { Storage.remove(this.CONFIG.sessionKey); },
 
-    getAttempts() {
-        return Storage.get(this.CONFIG.attemptsKey, { count: 0, lockedUntil: 0 });
-    },
-
+    getAttempts() { return Storage.get(this.CONFIG.attemptsKey, { count: 0, lockedUntil: 0 }); },
     setAttempts(data) { Storage.set(this.CONFIG.attemptsKey, data); },
 
     isLocked() {
@@ -475,7 +978,7 @@ const Auth = {
 };
 
 /* ============================================================
-   6) Theme — إدارة الوضع الليلي
+   9) Theme
    ============================================================ */
 
 const Theme = {
@@ -485,35 +988,37 @@ const Theme = {
     get() {
         const saved = Storage.getTheme();
         if (saved === this.LIGHT || saved === this.DARK) return saved;
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return this.DARK;
-        }
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return this.DARK;
         return this.LIGHT;
     },
 
     apply(theme) {
         const body = document.body;
+        const html = document.documentElement;
+        
         if (theme === this.DARK) {
             body.classList.add('dark-mode');
+            html.classList.add('dark-mode');
         } else {
             body.classList.remove('dark-mode');
+            html.classList.remove('dark-mode');
         }
+        
         this.updateIcon(theme);
         
-        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (metaThemeColor) {
-            metaThemeColor.setAttribute('content', theme === this.DARK ? '#121212' : '#1a73e8');
+        let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (!metaThemeColor) {
+            metaThemeColor = document.createElement('meta');
+            metaThemeColor.name = 'theme-color';
+            document.head.appendChild(metaThemeColor);
         }
+        metaThemeColor.setAttribute('content', theme === this.DARK ? '#121212' : '#1a73e8');
     },
 
     updateIcon(theme) {
         const icon = document.querySelector('.theme-icon');
         if (!icon) return;
-        if (theme === this.DARK) {
-            icon.textContent = '☀️';
-        } else {
-            icon.textContent = '🌙';
-        }
+        icon.textContent = theme === this.DARK ? '☀️' : '🌙';
     },
 
     toggle() {
@@ -521,23 +1026,6 @@ const Theme = {
         const next = current === this.DARK ? this.LIGHT : this.DARK;
         Storage.setTheme(next);
         this.apply(next);
-        this.playSound();
-    },
-
-    playSound() {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.frequency.value = 800;
-            osc.type = 'sine';
-            gain.gain.setValueAtTime(0.03, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.1);
-        } catch (e) {}
     },
 
     init() {
@@ -549,16 +1037,14 @@ const Theme = {
         }
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                if (!Storage.getTheme()) {
-                    this.apply(e.matches ? this.DARK : this.LIGHT);
-                }
+                if (!Storage.getTheme()) this.apply(e.matches ? this.DARK : this.LIGHT);
             });
         }
     }
 };
 
 /* ============================================================
-   7) Router — التنقل
+   10) Router
    ============================================================ */
 
 const Router = {
@@ -566,16 +1052,13 @@ const Router = {
 
     go(pageName, params = null) {
         if (this.protectedPages.includes(pageName) && !Auth.isLoggedIn()) {
-            console.warn('🔒 صفحة محمية');
             this.showPage('login');
             if (typeof Login !== 'undefined') Login.render();
             return;
         }
 
-        // تحديث الـ URL
         this.updateHash(pageName, params);
 
-        // إذا كانت صفحة جهاز
         if (pageName === 'device' && params && params.id) {
             const device = Helpers.getDeviceById(params.id);
             if (device) {
@@ -593,10 +1076,9 @@ const Router = {
 
     updateHash(page, params) {
         let hash = '#' + page;
-        if (params && params.id) {
-            hash += '/' + params.id;
-        }
-        history.replaceState(null, '', hash);
+        if (params && params.id) hash += '/' + params.id;
+        try { history.replaceState(null, '', hash); }
+        catch (e) { window.location.hash = hash; }
     },
 
     showPage(pageName) {
@@ -622,18 +1104,14 @@ const Router = {
         }
     },
 
-    // ===== قراءة الـ hash من URL =====
     parseHash() {
         const hash = window.location.hash.substring(1);
         if (!hash) return { page: 'home', params: null };
-
         const parts = hash.split('/');
         const page = parts[0];
-
         if (page === 'device' && parts[1]) {
             return { page: 'device', params: { id: parseInt(parts[1]) } };
         }
-
         return { page, params: null };
     },
 
@@ -666,12 +1144,7 @@ const Router = {
             el.dataset.bound = 'true';
             el.addEventListener('click', (e) => {
                 e.preventDefault();
-                const page = el.dataset.nav;
-                if (page === 'favorites') {
-                    this.go('favorites');
-                } else {
-                    this.go(page);
-                }
+                this.go(el.dataset.nav);
             });
         });
 
@@ -685,13 +1158,12 @@ const Router = {
             });
         });
 
-        // مراقبة تغييرات الـ hash
         window.addEventListener('hashchange', () => this.handleHashChange());
     }
 };
 
 /* ============================================================
-   8) Home — الصفحة الرئيسية
+   11) Home
    ============================================================ */
 
 const Home = {
@@ -713,7 +1185,7 @@ const Home = {
         container.innerHTML = `
             <div class="stat-card"><span class="number">${totalDevices}</span><span class="label">جهاز في قاعدة البيانات</span></div>
             <div class="stat-card"><span class="number">${totalCountries}</span><span class="label">دول عربية</span></div>
-            <div class="stat-card"><span class="number">${totalReviews}</span><span class="label">مراجعة وتقييم</span></div>
+            <div class="stat-card"><span class="number">${totalReviews}+</span><span class="label">مراجعة وتقييم</span></div>
             <div class="stat-card"><span class="number">يومياً</span><span class="label">تحديث الأسعار</span></div>
         `;
     },
@@ -728,27 +1200,14 @@ const Home = {
         title.textContent = titles[State.filters.category] || 'أحدث الأجهزة';
     },
 
-    // ===== تطبيق الفلاتر =====
     applyAllFilters(devices) {
         const country = Storage.getCountry();
         const f = State.filters;
 
-        // الفئة
-        if (f.category !== 'all') {
-            devices = devices.filter(d => d.category === f.category);
-        }
+        if (f.category !== 'all') devices = devices.filter(d => d.category === f.category);
+        if (f.brand !== 'all') devices = devices.filter(d => d.brand === f.brand);
+        if (f.search && f.search.trim()) devices = devices.filter(d => Helpers.matchesSearch(d, f.search));
 
-        // الماركة
-        if (f.brand !== 'all') {
-            devices = devices.filter(d => d.brand === f.brand);
-        }
-
-        // البحث
-        if (f.search && f.search.trim()) {
-            devices = devices.filter(d => Helpers.matchesSearch(d, f.search));
-        }
-
-        // السعر
         if (f.minPrice !== null && f.minPrice !== '' && f.minPrice !== undefined) {
             devices = devices.filter(d => {
                 const price = d.prices[country] || d.prices.SY || 0;
@@ -762,7 +1221,6 @@ const Home = {
             });
         }
 
-        // السنة
         if (f.year && f.year !== 'all') {
             devices = devices.filter(d => {
                 const year = d.releaseDate ? d.releaseDate.split('-')[0] : '';
@@ -770,30 +1228,18 @@ const Home = {
             });
         }
 
-        // التقييم
         if (f.rating && f.rating > 0) {
             devices = devices.filter(d => d.rating >= parseFloat(f.rating));
         }
 
-        // الترتيب
         if (f.sortBy && f.sortBy !== 'default') {
             devices = [...devices];
             switch (f.sortBy) {
-                case 'price-asc':
-                    devices.sort((a, b) => (a.prices[country] || 0) - (b.prices[country] || 0));
-                    break;
-                case 'price-desc':
-                    devices.sort((a, b) => (b.prices[country] || 0) - (a.prices[country] || 0));
-                    break;
-                case 'rating':
-                    devices.sort((a, b) => b.rating - a.rating);
-                    break;
-                case 'newest':
-                    devices.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
-                    break;
-                case 'name':
-                    devices.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
-                    break;
+                case 'price-asc': devices.sort((a, b) => (a.prices[country] || 0) - (b.prices[country] || 0)); break;
+                case 'price-desc': devices.sort((a, b) => (b.prices[country] || 0) - (a.prices[country] || 0)); break;
+                case 'rating': devices.sort((a, b) => b.rating - a.rating); break;
+                case 'newest': devices.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)); break;
+                case 'name': devices.sort((a, b) => a.name.localeCompare(b.name, 'ar')); break;
             }
         }
 
@@ -808,11 +1254,8 @@ const Home = {
         let devices = Helpers.getAllDevices();
         devices = this.applyAllFilters(devices);
 
-        // عدّاد النتائج
         const countEl = document.getElementById('resultsCount');
-        if (countEl) {
-            countEl.textContent = `${devices.length} جهاز`;
-        }
+        if (countEl) countEl.textContent = `${devices.length} جهاز`;
 
         if (devices.length === 0) {
             grid.innerHTML = `
@@ -827,11 +1270,9 @@ const Home = {
             return;
         }
 
-        // عرض محدود
         const visible = devices.slice(0, State.visibleDevices);
         grid.innerHTML = visible.map(d => this.renderCard(d, country)).join('');
 
-        // زر عرض المزيد
         const loadBtn = document.getElementById('loadMoreBtn');
         if (loadBtn) {
             if (devices.length > State.visibleDevices) {
@@ -862,7 +1303,7 @@ const Home = {
         return `
             <div class="device-card" data-device-id="${device.id}">
                 <div class="device-image">
-                    ${Helpers.getDeviceImage(device)}
+                    ${Helpers.getDeviceImage(device, 200)}
                     ${device.badge ? `<span class="device-badge">${Helpers.escapeHtml(device.badge)}</span>` : ''}
                     <input type="checkbox" class="compare-checkbox" ${checked}
                            data-compare-id="${device.id}" aria-label="أضف للمقارنة">
@@ -902,11 +1343,9 @@ const Home = {
                 e.stopPropagation();
                 const id = parseInt(btn.dataset.favId);
                 const isFav = State.toggleFavorite(id);
-                
                 btn.classList.toggle('is-fav', isFav);
                 btn.textContent = isFav ? '❤️' : '🤍';
                 App.updateFavCount();
-                
                 if (isFav) {
                     btn.style.animation = 'heartBeat 0.5s ease';
                     setTimeout(() => btn.style.animation = '', 500);
@@ -916,7 +1355,6 @@ const Home = {
     },
 
     bindEvents() {
-        // البحث في البانر
         const heroBtn = document.getElementById('heroSearchBtn');
         if (heroBtn && !heroBtn.dataset.bound) {
             heroBtn.dataset.bound = 'true';
@@ -969,14 +1407,13 @@ const Home = {
         const badge = document.getElementById('filterBadge');
         if (!badge) return;
         const count = State.countActiveFilters();
-        badge.textContent = count;
         if (count === 0) badge.style.display = 'none';
-        else badge.style.display = 'flex';
+        else { badge.style.display = 'flex'; badge.textContent = count; }
     }
 };
 
 /* ============================================================
-   9) Filters — لوحة الفلاتر المتقدمة
+   12) Filters
    ============================================================ */
 
 const Filters = {
@@ -985,40 +1422,32 @@ const Filters = {
         const closeBtn = document.getElementById('closeFilters');
         const applyBtn = document.getElementById('applyFilters');
         const resetBtn = document.getElementById('resetFilters');
-        const panel = document.getElementById('filtersPanel');
+        const overlay = document.getElementById('filtersOverlay');
 
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => this.toggle());
-        }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
-        }
-        if (applyBtn) {
-            applyBtn.addEventListener('click', () => this.apply());
-        }
-        if (resetBtn) {
-            resetBtn.addEventListener('click', () => this.reset());
-        }
-
-        // إغلاق عند النقر خارج اللوحة
-        document.addEventListener('click', (e) => {
-            if (!panel) return;
-            if (!panel.classList.contains('open')) return;
-            if (panel.contains(e.target)) return;
-            if (e.target.closest('#filterToggle')) return;
-            this.close();
-        });
+        if (toggleBtn) toggleBtn.addEventListener('click', () => this.toggle());
+        if (closeBtn) closeBtn.addEventListener('click', () => this.close());
+        if (applyBtn) applyBtn.addEventListener('click', () => this.apply());
+        if (resetBtn) resetBtn.addEventListener('click', () => this.reset());
+        if (overlay) overlay.addEventListener('click', () => this.close());
     },
 
     toggle() {
         const panel = document.getElementById('filtersPanel');
+        const overlay = document.getElementById('filtersOverlay');
+        const btn = document.getElementById('filterToggle');
         if (panel) panel.classList.toggle('open');
+        if (overlay) overlay.classList.toggle('show');
+        if (btn) btn.classList.toggle('active');
         this.syncInputsFromState();
     },
 
     close() {
         const panel = document.getElementById('filtersPanel');
+        const overlay = document.getElementById('filtersOverlay');
+        const btn = document.getElementById('filterToggle');
         if (panel) panel.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        if (btn) btn.classList.remove('active');
     },
 
     syncInputsFromState() {
@@ -1071,29 +1500,21 @@ const Filters = {
         if (!container) return;
 
         const f = State.filters;
-        const country = Storage.getCountry();
-        const currency = COUNTRIES[country]?.currency || '';
         const tags = [];
 
-        if (f.minPrice) tags.push({ key: 'minPrice', text: `أدنى: ${Helpers.formatPrice(f.minPrice, country)}` });
-        if (f.maxPrice) tags.push({ key: 'maxPrice', text: `أقصى: ${Helpers.formatPrice(f.maxPrice, country)}` });
+        if (f.minPrice) tags.push({ key: 'minPrice', text: `أدنى: ${Helpers.formatPrice(f.minPrice, Storage.getCountry())}` });
+        if (f.maxPrice) tags.push({ key: 'maxPrice', text: `أقصى: ${Helpers.formatPrice(f.maxPrice, Storage.getCountry())}` });
         if (f.year && f.year !== 'all') tags.push({ key: 'year', text: `سنة: ${f.year}` });
         if (f.rating > 0) tags.push({ key: 'rating', text: `تقييم: ${f.rating}+` });
         if (f.sortBy && f.sortBy !== 'default') {
             const sortNames = {
-                'price-asc': 'الأقل سعراً',
-                'price-desc': 'الأعلى سعراً',
-                'rating': 'الأعلى تقييماً',
-                'newest': 'الأحدث',
-                'name': 'الاسم أ-ي'
+                'price-asc': 'الأقل سعراً', 'price-desc': 'الأعلى سعراً',
+                'rating': 'الأعلى تقييماً', 'newest': 'الأحدث', 'name': 'الاسم أ-ي'
             };
             tags.push({ key: 'sortBy', text: `ترتيب: ${sortNames[f.sortBy]}` });
         }
 
-        if (tags.length === 0) {
-            container.innerHTML = '';
-            return;
-        }
+        if (tags.length === 0) { container.innerHTML = ''; return; }
 
         container.innerHTML = tags.map(t => `
             <div class="active-filter-tag">
@@ -1109,7 +1530,6 @@ const Filters = {
                 if (key === 'year') State.filters.year = 'all';
                 if (key === 'rating') State.filters.rating = 0;
                 if (key === 'sortBy') State.filters.sortBy = 'default';
-                
                 State.visibleDevices = 12;
                 this.syncInputsFromState();
                 Home.renderDevicesGrid();
@@ -1121,7 +1541,7 @@ const Filters = {
 };
 
 /* ============================================================
-   10) Device — تفاصيل الجهاز
+   13) Device
    ============================================================ */
 
 const Device = {
@@ -1145,22 +1565,19 @@ const Device = {
         container.innerHTML = `
             <div class="device-detail">
                 <div class="device-header">
-                    <div class="device-hero-image">
-                        ${Helpers.getDeviceImage(device)}
-                    </div>
+                    <div class="device-hero-image">${Helpers.getDeviceImage(device, 500)}</div>
                     <div class="device-header-info">
                         <span class="brand-tag">${Helpers.escapeHtml(device.brand)}</span>
                         <h1>${Helpers.escapeHtml(device.name)}</h1>
                         <div class="rating-big">
                             ⭐ ${device.rating}
-                            <span style="color: var(--gray); font-size: 14px;">(${device.reviewsCount} مراجعة)</span>
+                            <span style="font-size: 14px;">(${device.reviewsCount} مراجعة)</span>
                         </div>
                         <div class="price-big">${Helpers.formatPrice(price, country)}</div>
                         <p style="color: var(--gray);">📅 تاريخ الإصدار: ${Helpers.formatDate(device.releaseDate)}</p>
                         <div class="device-actions">
                             <button class="btn-primary" id="addToCompareBtn">⚖️ أضف للمقارنة</button>
-                            <button class="btn-primary" style="background: #34a853;" id="buyBtn">🛒 شراء</button>
-                            <button class="btn-primary" style="background: ${isFav ? 'var(--heart)' : '#5f6368'};" id="favBtn">
+                            <button class="btn-primary" style="background: ${isFav ? 'var(--heart)' : '#34a853'};" id="favBtn">
                                 ${isFav ? '❤️ في المفضلة' : '🤍 أضف للمفضلة'}
                             </button>
                             <button class="btn-primary" style="background: #5f6368;" data-nav="home">← رجوع</button>
@@ -1180,7 +1597,6 @@ const Device = {
                 <div class="reviews-section">
                     <h2 class="section-title">آراء المستخدمين</h2>
                     <div id="reviewsList"></div>
-
                     <div class="review-form">
                         <h3>✍️ أضف مراجعتك</h3>
                         <input type="text" id="reviewUser" placeholder="اسمك" maxlength="50">
@@ -1207,14 +1623,11 @@ const Device = {
         const addBtn = document.getElementById('addToCompareBtn');
         if (addBtn) addBtn.addEventListener('click', () => this.addToCompare());
 
-        const buyBtn = document.getElementById('buyBtn');
-        if (buyBtn) buyBtn.addEventListener('click', () => alert('🛒 ميزة الشراء ستُضاف قريباً!'));
-
         const favBtn = document.getElementById('favBtn');
         if (favBtn) {
             favBtn.addEventListener('click', () => {
                 const isFav = State.toggleFavorite(State.currentDevice.id);
-                favBtn.style.background = isFav ? 'var(--heart)' : '#5f6368';
+                favBtn.style.background = isFav ? 'var(--heart)' : '#34a853';
                 favBtn.textContent = isFav ? '❤️ في المفضلة' : '🤍 أضف للمفضلة';
                 App.updateFavCount();
             });
@@ -1270,7 +1683,7 @@ const Device = {
         if (!text || text.length < 5) { alert('⚠️ يرجى كتابة مراجعة (5 أحرف على الأقل)'); textInput.focus(); return; }
 
         const reviews = Storage.getDeviceReviews(device.id);
-        reviews.unshift({ user: user, rating: rating, text: text, date: Helpers.today() });
+        reviews.unshift({ user, rating, text, date: Helpers.today() });
         Storage.setDeviceReviews(device.id, reviews);
 
         userInput.value = '';
@@ -1292,7 +1705,7 @@ const Device = {
 };
 
 /* ============================================================
-   11) Compare — المقارنة
+   14) Compare
    ============================================================ */
 
 const Compare = {
@@ -1409,7 +1822,6 @@ const Compare = {
                         `).join('')}
                     </tbody>
                 </table>
-
                 <div style="text-align: center; margin: 30px 0;">
                     <button class="compare-btn" data-nav="home">← العودة للأجهزة</button>
                 </div>
@@ -1430,7 +1842,7 @@ const Compare = {
 };
 
 /* ============================================================
-   12) Favorites — المفضلات
+   15) Favorites
    ============================================================ */
 
 const Favorites = {
@@ -1482,12 +1894,10 @@ const Favorites = {
         return `
             <div class="device-card" data-device-id="${device.id}">
                 <div class="device-image">
-                    ${Helpers.getDeviceImage(device)}
+                    ${Helpers.getDeviceImage(device, 200)}
                     ${device.badge ? `<span class="device-badge">${Helpers.escapeHtml(device.badge)}</span>` : ''}
                 </div>
-                <button class="fav-btn is-fav" data-fav-id="${device.id}" aria-label="إزالة من المفضلة">
-                    ❤️
-                </button>
+                <button class="fav-btn is-fav" data-fav-id="${device.id}" aria-label="إزالة من المفضلة">❤️</button>
                 <div class="device-info">
                     <div class="device-brand">${Helpers.escapeHtml(device.brand)}</div>
                     <div class="device-name">${Helpers.escapeHtml(device.name)}</div>
@@ -1502,26 +1912,23 @@ const Favorites = {
         document.querySelectorAll('.device-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 if (e.target.closest('.fav-btn')) return;
-                const id = parseInt(card.dataset.deviceId);
-                Router.go('device', { id });
+                Router.go('device', { id: parseInt(card.dataset.deviceId) });
             });
         });
 
         document.querySelectorAll('.fav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const id = parseInt(btn.dataset.favId);
-                State.toggleFavorite(id);
+                State.toggleFavorite(parseInt(btn.dataset.favId));
                 App.updateFavCount();
                 this.render();
-                alert('💔 تم إزالة الجهاز من المفضلة');
             });
         });
     }
 };
 
 /* ============================================================
-   13) Login — تسجيل الدخول
+   16) Login
    ============================================================ */
 
 const Login = {
@@ -1529,10 +1936,7 @@ const Login = {
         const container = document.getElementById('page-login');
         if (!container) return;
 
-        if (Auth.isLoggedIn()) {
-            Router.go('admin');
-            return;
-        }
+        if (Auth.isLoggedIn()) { Router.go('admin'); return; }
 
         container.innerHTML = `
             <div class="login-container">
@@ -1544,9 +1948,7 @@ const Login = {
                     <form id="loginForm">
                         <div class="form-group">
                             <label for="loginPassword">كلمة المرور</label>
-                            <input type="password" id="loginPassword"
-                                   placeholder="أدخل كلمة المرور..."
-                                   autocomplete="current-password" required>
+                            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور..." required>
                         </div>
                         <button type="submit" class="btn-primary login-btn">🔓 دخول</button>
                         <div class="login-info" id="loginInfo"></div>
@@ -1557,18 +1959,13 @@ const Login = {
         `;
 
         document.getElementById('loginForm').addEventListener('submit', (e) => this.submit(e));
-        setTimeout(() => {
-            const input = document.getElementById('loginPassword');
-            if (input) input.focus();
-        }, 100);
-
+        setTimeout(() => document.getElementById('loginPassword')?.focus(), 100);
         this.checkLockStatus();
         Router.init();
     },
 
     submit(e) {
         e.preventDefault();
-
         if (Auth.isLocked()) {
             const mins = Auth.getRemainingLockTime();
             this.showAlert(`🚫 محظور مؤقتاً. حاول بعد ${mins} دقيقة`, 'error');
@@ -1578,10 +1975,7 @@ const Login = {
         const input = document.getElementById('loginPassword');
         const password = input.value;
 
-        if (!password) {
-            this.showAlert('⚠️ أدخل كلمة المرور', 'error');
-            return;
-        }
+        if (!password) { this.showAlert('⚠️ أدخل كلمة المرور', 'error'); return; }
 
         if (Auth.verifyPassword(password)) {
             Auth.createSession();
@@ -1591,7 +1985,7 @@ const Login = {
         } else {
             const attempts = Auth.registerFailedAttempt();
             if (attempts.lockedUntil > Date.now()) {
-                this.showAlert('🚫 تم حظرك لمدة 15 دقيقة بسبب 5 محاولات خاطئة', 'error');
+                this.showAlert('🚫 تم حظرك لمدة 15 دقيقة', 'error');
             } else {
                 const remaining = Auth.getRemainingAttempts();
                 this.showAlert(`❌ كلمة المرور خاطئة. متبقي: ${remaining} محاولة`, 'error');
@@ -1605,18 +1999,15 @@ const Login = {
         const box = document.getElementById('loginAlert');
         if (!box) return;
         box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-        if (type === 'success') {
-            setTimeout(() => { if (box) box.innerHTML = ''; }, 2000);
-        }
+        if (type === 'success') setTimeout(() => { if (box) box.innerHTML = ''; }, 2000);
     },
 
     checkLockStatus() {
         const info = document.getElementById('loginInfo');
         if (!info) return;
-
         if (Auth.isLocked()) {
             const mins = Auth.getRemainingLockTime();
-            info.innerHTML = `<span style="color: var(--danger);">🚫 الحساب محظور مؤقتاً. حاول بعد ${mins} دقيقة.</span>`;
+            info.innerHTML = `<span style="color: var(--danger);">🚫 محظور مؤقتاً. حاول بعد ${mins} دقيقة.</span>`;
         } else {
             const remaining = Auth.getRemainingAttempts();
             if (remaining < Auth.CONFIG.maxAttempts) {
@@ -1627,15 +2018,12 @@ const Login = {
 };
 
 /* ============================================================
-   14) Admin — لوحة التحكم
+   17) Admin
    ============================================================ */
 
 const Admin = {
     render() {
-        if (!Auth.isLoggedIn()) {
-            Router.go('login');
-            return;
-        }
+        if (!Auth.isLoggedIn()) { Router.go('login'); return; }
 
         const container = document.getElementById('page-admin');
         if (!container) return;
@@ -1664,10 +2052,6 @@ const Admin = {
                                     <option value="laptop">لابتوب</option>
                                 </select>
                             </div>
-                            <div class="form-group"><label>الإيموجي</label><input type="text" name="image" value="📱" maxlength="4"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>رابط الصورة (اختياري)</label><input type="url" name="imageUrl" placeholder="https://..."></div>
                             <div class="form-group"><label>المعالج</label><input type="text" name="processor" placeholder="Snapdragon 8 Gen 3" maxlength="60"></div>
                         </div>
                         <div class="form-row">
@@ -1676,7 +2060,7 @@ const Admin = {
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>التخزين</label><input type="text" name="storage" placeholder="256 GB" maxlength="60"></div>
-                            <div class="form-group"><label>الكاميرا الخلفية</label><input type="text" name="camera" placeholder="200 MP" maxlength="80"></div>
+                            <div class="form-group"><label>الكاميرا</label><input type="text" name="camera" placeholder="200 MP" maxlength="80"></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>البطارية</label><input type="text" name="battery" placeholder="5000 mAh" maxlength="40"></div>
@@ -1713,8 +2097,7 @@ const Admin = {
             id: Helpers.generateId(),
             brand: data.get('brand').trim(),
             name: data.get('name').trim(),
-            image: data.get('image') || '📱',
-            imageUrl: data.get('imageUrl') || '',
+            image: "📱",
             category: data.get('category') || 'phone',
             releaseDate: Helpers.today(),
             badge: 'جديد',
@@ -1746,7 +2129,6 @@ const Admin = {
 
         this.showAlert('✅ تم إضافة الجهاز بنجاح!', 'success');
         form.reset();
-        form.image.value = '📱';
 
         this.renderList();
         this.refreshAll();
@@ -1765,7 +2147,7 @@ const Admin = {
         list.innerHTML = custom.map(d => `
             <div class="admin-device-item">
                 <div>
-                    <strong>${d.image} ${Helpers.escapeHtml(d.brand)} ${Helpers.escapeHtml(d.name)}</strong>
+                    <strong>${Helpers.escapeHtml(d.brand)} ${Helpers.escapeHtml(d.name)}</strong>
                     <div style="font-size: 13px; color: var(--gray); margin-top: 5px;">
                         ${Helpers.formatPrice(d.prices.SY || 0, 'SY')}
                     </div>
@@ -1814,21 +2196,17 @@ const Admin = {
 };
 
 /* ============================================================
-   15) App — نقطة البداية
+   18) App
    ============================================================ */
 
 const App = {
     init() {
         console.log('🚀 İQmobil - بدء التشغيل...');
 
-        // 🌙 تطبيق الثيم أول شيء
         Theme.init();
-
-        // تحميل البيانات
         State.loadCompare();
         State.loadFavorites();
 
-        // تهيئة المكونات
         this.initCountrySelector();
         this.initBrands();
         this.initFooter();
@@ -1837,14 +2215,11 @@ const App = {
         this.initYear();
         this.updateFavCount();
 
-        // تهيئة الفلاتر
         Filters.init();
         Filters.renderActiveTags();
 
-        // الراوتر
         Router.init();
 
-        // الصفحة الأولية
         const { page, params } = Router.parseHash();
         if (page && page !== 'home') {
             Router.handleHashChange();
@@ -1853,8 +2228,7 @@ const App = {
         }
 
         Compare.renderBar();
-
-        console.log('✅ İQmobil - جاهز!');
+        console.log(`✅ İQmobil - جاهز! (${Helpers.getAllDevices().length} جهاز)`);
     },
 
     initCountrySelector() {
@@ -1869,10 +2243,8 @@ const App = {
         select.addEventListener('change', (e) => {
             Storage.setCountry(e.target.value);
             const page = State.currentPage;
-            if (page === 'home') {
-                Home.renderDevicesGrid();
-                Filters.renderActiveTags();
-            } else if (page === 'device' && State.currentDevice) Device.render();
+            if (page === 'home') { Home.renderDevicesGrid(); Filters.renderActiveTags(); }
+            else if (page === 'device' && State.currentDevice) Device.render();
             else if (page === 'compare') Compare.render();
             else if (page === 'favorites') Favorites.render();
         });
@@ -1904,7 +2276,7 @@ const App = {
         const footer = document.getElementById('footerContent');
         if (!footer) return;
 
-        const brands = [...new Set(Helpers.getAllDevices().map(d => d.brand))].sort().slice(0, 4);
+        const brands = [...new Set(Helpers.getAllDevices().map(d => d.brand))].sort().slice(0, 6);
 
         footer.innerHTML = `
             <div class="footer-col">
@@ -1921,7 +2293,6 @@ const App = {
                     <li><a data-category="phone">الهواتف الذكية</a></li>
                     <li><a data-category="tablet">الأجهزة اللوحية</a></li>
                     <li><a data-category="watch">الساعات الذكية</a></li>
-                    <li><a data-category="laptop">اللابتوب</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -1936,7 +2307,6 @@ const App = {
                     <li><a>📘 فيسبوك</a></li>
                     <li><a>📷 إنستغرام</a></li>
                     <li><a>🐦 تويتر</a></li>
-                    <li><a>📺 يوتيوب</a></li>
                 </ul>
             </div>
         `;
@@ -1995,9 +2365,8 @@ const App = {
         if (!countEl) return;
         State.loadFavorites();
         const count = State.favorites.length;
-        countEl.textContent = count;
         if (count === 0) countEl.style.display = 'none';
-        else countEl.style.display = 'inline-flex';
+        else { countEl.style.display = 'inline-flex'; countEl.textContent = count; }
     }
 };
 
@@ -2009,9 +2378,8 @@ document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
 
-// للتصحيح في Console
 window.IQmobil = {
     State, Storage, Helpers, Auth, Theme,
     Router, Home, Filters, Device, Compare,
-    Favorites, Login, Admin, App
+    Favorites, Login, Admin, App, SVGGenerator
 };
