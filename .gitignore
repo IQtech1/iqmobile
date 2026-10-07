@@ -1,0 +1,45 @@
+# ===== نظام التشغيل =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===== المحررات (IDEs) =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# ===== Node.js =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ===== ملفات مؤقتة =====
+*.log
+*.tmp
+*.bak
+.cache/
+dist/
+build/
+
+# ===== متغيرات البيئة =====
+.env
+.env.local
+.env.*.local
+
+# ===== مفاتيح خاصة =====
+*.pem
+*.key
+secrets.json
