@@ -2,32 +2,27 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0a0e14">
 <title>İQCODE - محرر البرمجة الذكي</title>
-
 <style>
 :root[data-theme="dark"] {
   --bg: #0a0e14; --bg-2: #131820; --bg-3: #1c2330; --bg-4: #252d3d;
   --border: #2d3748; --border-2: #3d4a5c;
-  --text: #e6edf3; --text-dim: #8b949e; --text-bright: #ffffff;
+  --text: #e6edf3; --text-dim: #8b949e;
   --primary: #58a6ff; --primary-2: #1f6feb;
-  --success: #3fb950; --success-2: #2ea043;
-  --danger: #f85149; --danger-2: #da3633;
-  --warning: #d29922; --info: #58a6ff;
-  --accent: #a855f7; --pink: #ec4899;
+  --success: #3fb950; --danger: #f85149; --warning: #d29922;
+  --accent: #a855f7;
   --gradient: linear-gradient(135deg, #58a6ff, #a855f7, #ec4899);
   --gradient-success: linear-gradient(135deg, #3fb950, #2ea043);
 }
 :root[data-theme="light"] {
   --bg: #ffffff; --bg-2: #f6f8fa; --bg-3: #eaeef2; --bg-4: #dfe3e8;
   --border: #d0d7de; --border-2: #b8c0c8;
-  --text: #1f2328; --text-dim: #656d76; --text-bright: #000000;
+  --text: #1f2328; --text-dim: #656d76;
   --primary: #0969da; --primary-2: #0550ae;
-  --success: #1a7f37; --success-2: #166534;
-  --danger: #cf222e; --danger-2: #a40e26;
-  --warning: #9a6700; --info: #0969da;
-  --accent: #8250df; --pink: #bf3989;
+  --success: #1a7f37; --danger: #cf222e; --warning: #9a6700;
+  --accent: #8250df;
   --gradient: linear-gradient(135deg, #0969da, #8250df, #bf3989);
   --gradient-success: linear-gradient(135deg, #1a7f37, #166534);
 }
@@ -35,40 +30,38 @@
 * { margin: 0; padding: 0; box-sizing: border-box;
   font-family: 'Segoe UI', system-ui, Tahoma, sans-serif;
   -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s; }
+  -webkit-font-smoothing: antialiased; }
 
 html, body { height: 100%; overflow: hidden; }
 body { background: var(--bg); color: var(--text); overscroll-behavior: none; }
 .app { display: flex; height: 100vh; height: 100dvh; }
 
-/* ============ Sidebar ============ */
+/* Sidebar */
 .sidebar {
-  width: 280px; background: var(--bg-2);
+  width: 270px; background: var(--bg-2);
   border-left: 1px solid var(--border);
   display: flex; flex-direction: column;
   transition: transform 0.25s ease-out;
   z-index: 100; will-change: transform;
 }
-.sidebar-header { padding: 18px; border-bottom: 1px solid var(--border); }
+.sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); }
 .logo {
-  font-size: 26px; font-weight: 900;
+  font-size: 24px; font-weight: 900;
   background: var(--gradient);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   letter-spacing: 2px; line-height: 1;
 }
-.tagline { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+.tagline { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
 .sidebar-nav { flex: 1; padding: 10px; overflow-y: auto; }
 .nav-item {
   display: flex; align-items: center; gap: 12px;
   padding: 13px 15px; border-radius: 10px; cursor: pointer;
   color: var(--text); font-size: 14px; font-weight: 600;
-  margin-bottom: 5px; user-select: none;
+  margin-bottom: 4px; user-select: none;
 }
 .nav-item:hover { background: var(--bg-3); }
 .nav-item.active {
   background: var(--gradient); color: white;
-  box-shadow: 0 4px 12px rgba(88,166,255,0.25);
 }
 .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
 .nav-badge {
@@ -78,14 +71,14 @@ body { background: var(--bg); color: var(--text); overscroll-behavior: none; }
 .nav-item.active .nav-badge { background: rgba(255,255,255,0.25); color: white; }
 .sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
 .theme-toggle, .auto-run-toggle {
-  width: 100%; padding: 11px; background: var(--bg-3);
+  width: 100%; padding: 12px; background: var(--bg-3);
   border: 1px solid var(--border); color: var(--text);
   border-radius: 10px; cursor: pointer; font-size: 13px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-weight: 600; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; font-weight: 600; margin-bottom: 8px;
+  min-height: 44px;
 }
-.theme-toggle { justify-content: center; gap: 8px; }
-.theme-toggle:active, .auto-run-toggle:active { transform: scale(0.98); }
+.auto-run-toggle { justify-content: space-between; }
 .auto-run-toggle.on {
   background: var(--gradient-success); color: white; border-color: transparent;
 }
@@ -101,44 +94,46 @@ body { background: var(--bg); color: var(--text); overscroll-behavior: none; }
 }
 .auto-run-toggle.on .switch::after { transform: translateX(-16px); }
 
-/* ============ Content ============ */
+/* Content */
 .content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
 .topbar {
   background: var(--bg-2); border-bottom: 1px solid var(--border);
-  padding: 10px 12px; display: flex; align-items: center;
-  gap: 8px; flex-wrap: wrap; flex-shrink: 0;
+  padding: 10px; display: flex; align-items: center;
+  gap: 6px; flex-wrap: wrap; flex-shrink: 0;
 }
 .menu-btn {
   display: none; background: var(--bg-3); border: 1px solid var(--border);
-  color: var(--text); padding: 9px 13px; border-radius: 9px;
-  cursor: pointer; font-size: 17px; line-height: 1;
+  color: var(--text); padding: 10px 14px; border-radius: 9px;
+  cursor: pointer; font-size: 18px; line-height: 1;
+  min-width: 44px; min-height: 44px;
 }
-.menu-btn:active { transform: scale(0.95); }
 
 select, button, input {
   background: var(--bg-3); color: var(--text);
-  border: 1px solid var(--border); padding: 9px 12px;
+  border: 1px solid var(--border); padding: 10px 14px;
   border-radius: 9px; font-size: 13px; cursor: pointer;
-  outline: none; font-family: inherit; font-weight: 500;
+  outline: none; font-family: inherit; font-weight: 600;
+  min-height: 44px;
 }
 input { cursor: text; min-width: 120px; }
 select:focus, input:focus { border-color: var(--primary); }
+button { transition: transform 0.1s, background 0.15s; }
 button:active { transform: scale(0.96); }
 button.primary {
   background: var(--gradient-success); border: none;
-  color: white; font-weight: bold; padding: 9px 18px;
+  color: white; font-weight: bold; padding: 10px 20px;
 }
 button.danger { background: var(--danger); border: none; color: white; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 .lang-select { min-width: 150px; font-weight: 600; }
-.lang-select option { background: var(--bg-2); color: var(--text); padding: 10px; }
+.lang-select option { background: var(--bg-2); color: var(--text); }
 
-/* ============ Pages ============ */
+/* Pages */
 .page { flex: 1; display: none; overflow: hidden; flex-direction: column; }
 .page.active { display: flex; }
 
-/* ============ Editor ============ */
+/* Editor */
 .editor-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 .editor-area {
   flex: 1; position: relative; overflow: hidden; min-height: 100px;
@@ -172,22 +167,22 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   resize: none; outline: none; direction: ltr;
   text-align: left; tab-size: 2; white-space: pre;
   overflow: auto; caret-color: var(--primary);
-  -webkit-appearance: none;
+  -webkit-appearance: none; border-radius: 0;
 }
 
 .divider {
-  height: 6px; background: var(--bg-2); cursor: row-resize;
+  height: 8px; background: var(--bg-2); cursor: row-resize;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; border-top: 1px solid var(--border);
-  touch-action: none;
+  border-bottom: 1px solid var(--border);
+  touch-action: none; user-select: none;
 }
 .divider::before {
   content: ''; width: 44px; height: 3px;
   background: var(--border-2); border-radius: 2px;
 }
-.divider:active::before { background: var(--primary); }
 
-/* ============ Output ============ */
+/* Output */
 .output-section {
   background: var(--bg-2); display: flex; flex-direction: column;
   height: 42%; overflow: hidden; flex-shrink: 0;
@@ -199,10 +194,11 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
-  padding: 11px 15px; cursor: pointer;
+  padding: 12px 16px; cursor: pointer;
   border-bottom: 2px solid transparent; font-size: 12.5px;
   white-space: nowrap; user-select: none; font-weight: 600;
   color: var(--text-dim); display: flex; align-items: center; gap: 6px;
+  min-height: 44px;
 }
 .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--bg-2); }
 .tab-badge {
@@ -216,7 +212,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   font-family: 'Consolas', monospace; font-size: 13px;
   line-height: 1.6; direction: ltr; text-align: left;
   white-space: pre-wrap; word-break: break-word;
-  -webkit-overflow-scrolling: touch;
 }
 .tab-content.hidden { display: none; }
 #stdin {
@@ -227,7 +222,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 #previewFrame { width: 100%; height: 100%; border: none; background: white; }
 
-/* ============ Errors ============ */
+/* Errors */
 .error-item {
   background: linear-gradient(90deg, rgba(248,81,73,0.12), rgba(248,81,73,0.03));
   border-right: 4px solid var(--danger);
@@ -238,10 +233,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   border-right-color: var(--warning);
   background: linear-gradient(90deg, rgba(210,153,34,0.12), rgba(210,153,34,0.03));
 }
-.error-item.info {
-  border-right-color: var(--info);
-  background: linear-gradient(90deg, rgba(88,166,255,0.12), rgba(88,166,255,0.03));
-}
 .error-item .header {
   display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
 }
@@ -251,7 +242,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   background: rgba(248,81,73,0.2); padding: 2px 9px; border-radius: 5px;
 }
 .error-item.warning .line { color: var(--warning); background: rgba(210,153,34,0.2); }
-.error-item.info .line { color: var(--info); background: rgba(88,166,255,0.2); }
 .error-item .message {
   color: var(--text); margin-top: 5px;
   font-family: 'Consolas', monospace; font-size: 12.5px;
@@ -266,14 +256,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   border-right: 3px solid var(--success); font-weight: 500;
 }
 .error-item .suggestion::before { content: '💡 '; font-weight: bold; }
-.error-item .quick-fix {
-  margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;
-}
-.error-item .quick-fix button {
-  background: var(--primary-2); color: white; border: none;
-  padding: 6px 12px; border-radius: 6px; font-size: 11.5px;
-  font-weight: 600; cursor: pointer;
-}
 .empty-state {
   text-align: center; color: var(--text-dim); padding: 35px 20px;
   direction: rtl; font-size: 13.5px;
@@ -283,29 +265,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .empty-state.success { color: var(--success); }
 
-/* ============ Indicator ============ */
-.auto-indicator {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--text-dim); padding: 5px 10px;
-  background: var(--bg-3); border-radius: 16px;
-  border: 1px solid var(--border); font-weight: 600;
-}
-.auto-indicator.active {
-  background: var(--gradient-success); color: white; border-color: transparent;
-}
-.auto-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--success);
-}
-.auto-indicator.active .auto-dot {
-  background: white; animation: pulse 1.2s infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* ============ Status Bar ============ */
+/* Status Bar */
 .status-bar {
   background: var(--bg-3); border-top: 1px solid var(--border);
   padding: 5px 12px; font-size: 11px; color: var(--text-dim);
@@ -320,13 +280,14 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .status-dot.busy { background: var(--warning); animation: pulse 1s infinite; }
 .status-dot.error { background: var(--danger); }
+@keyframes pulse { 50% { opacity: 0.4; } }
 .status-info {
   background: var(--bg-4); padding: 2px 7px; border-radius: 5px;
   font-family: 'Consolas', monospace;
 }
 
-/* ============ Tips ============ */
-.tips-container { flex: 1; overflow-y: auto; padding: 18px; -webkit-overflow-scrolling: touch; }
+/* Tips */
+.tips-container { flex: 1; overflow-y: auto; padding: 18px; }
 .tips-lang-picker {
   background: var(--bg-2); padding: 16px; border-radius: 14px;
   margin-bottom: 18px; display: flex; gap: 10px;
@@ -334,16 +295,14 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   border: 1px solid var(--border);
 }
 .tips-lang-picker label { font-weight: bold; font-size: 13px; }
-.tips-lang-picker select { flex: 1; min-width: 200px; padding: 11px; font-weight: 600; }
+.tips-lang-picker select { flex: 1; min-width: 200px; font-weight: 600; }
 .tips-content h2 {
-  color: var(--text); margin-bottom: 16px; font-size: 21px;
+  color: var(--text); margin-bottom: 16px; font-size: 20px;
   display: flex; align-items: center; gap: 10px;
   padding-bottom: 12px; border-bottom: 2px solid var(--border);
   flex-wrap: wrap;
 }
-.tips-count {
-  font-size: 12px; color: var(--text-dim); font-weight: normal;
-}
+.tips-count { font-size: 12px; color: var(--text-dim); font-weight: normal; }
 .tips-section {
   background: var(--bg-2); border: 1px solid var(--border);
   border-radius: 14px; padding: 16px; margin-bottom: 14px;
@@ -357,7 +316,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   background: var(--bg-3); padding: 13px; border-radius: 10px;
   margin-bottom: 10px; border-right: 3px solid var(--primary);
 }
-.func-item:active { border-right-color: var(--accent); }
 .func-item .fname {
   color: var(--warning); font-family: 'Consolas', monospace;
   font-weight: bold; font-size: 13.5px;
@@ -379,13 +337,13 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .insert-btn {
   background: var(--primary-2); border: none; color: white;
-  padding: 7px 14px; border-radius: 7px;
-  font-size: 11.5px; cursor: pointer; font-weight: 600;
+  padding: 8px 14px; border-radius: 7px;
+  font-size: 12px; cursor: pointer; font-weight: 600;
+  min-height: 36px;
 }
-.insert-btn:active { transform: scale(0.96); }
 
-/* ============ Projects ============ */
-.projects-container { flex: 1; overflow-y: auto; padding: 18px; -webkit-overflow-scrolling: touch; }
+/* Projects */
+.projects-container { flex: 1; overflow-y: auto; padding: 18px; }
 .projects-header {
   display: flex; justify-content: space-between;
   align-items: center; margin-bottom: 18px;
@@ -422,11 +380,11 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .project-card .actions { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
 .project-card .actions button {
-  flex: 1; font-size: 12px; padding: 8px 10px;
-  min-width: 70px; font-weight: 600;
+  flex: 1; font-size: 12px; padding: 9px 10px;
+  min-width: 70px; font-weight: 600; min-height: 40px;
 }
 
-/* ============ Toast ============ */
+/* Toast */
 .toast {
   position: fixed; bottom: 20px; left: 50%;
   transform: translateX(-50%) translateY(80px);
@@ -439,8 +397,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: linear-gradient(135deg, var(--danger), var(--danger-2)); }
-.toast.info { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+.toast.error { background: linear-gradient(135deg, #f85149, #da3633); }
+.toast.info { background: linear-gradient(135deg, #58a6ff, #1f6feb); }
 
 .overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.5);
@@ -448,45 +406,56 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .overlay.show { display: block; }
 
-/* ============ Mobile ============ */
+/* Loading spinner */
+.loading {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mobile */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed; top: 0; right: 0; height: 100dvh;
     transform: translateX(100%);
     box-shadow: -6px 0 25px rgba(0,0,0,0.5);
-    width: 270px;
+    width: 260px;
   }
   .sidebar.open { transform: translateX(0); }
   .menu-btn { display: flex; align-items: center; justify-content: center; }
-  .topbar { padding: 8px; gap: 6px; }
-  select, button, input { font-size: 12.5px; padding: 8px 10px; }
-  input { min-width: 80px; flex: 1; }
-  .lang-select { min-width: 120px; font-size: 12px; }
+  .topbar { padding: 8px; gap: 5px; }
+  select, button, input { font-size: 12.5px; padding: 9px 10px; min-height: 42px; }
+  input { min-width: 70px; flex: 1; }
+  .lang-select { min-width: 110px; font-size: 12px; }
   .logo { font-size: 22px; }
-  .tab { padding: 10px 12px; font-size: 12px; }
+  .tab { padding: 10px 12px; font-size: 12px; min-height: 42px; }
   .tab-content { font-size: 12.5px; padding: 10px; }
   .projects-grid { grid-template-columns: 1fr; }
   .tips-container, .projects-container { padding: 12px; }
   .status-bar { font-size: 10px; padding: 4px 8px; }
   .status-info { padding: 1px 5px; font-size: 9.5px; }
-  .editor-wrapper { min-height: 0; }
   #codeEditor { font-size: 13.5px; padding: 10px; }
   .line-numbers { font-size: 13px; padding: 10px 6px; min-width: 40px; }
   .output-section { height: 40%; }
-  .auto-indicator { display: none; }
   .func-item .fexample { font-size: 11.5px; }
+  .topbar button:not(.primary):not(.menu-btn) {
+    padding: 9px 10px; font-size: 14px;
+  }
 }
 @media (max-width: 400px) {
   .topbar { padding: 6px; gap: 4px; }
-  select, button, input { font-size: 11.5px; padding: 7px 8px; }
-  button.primary { padding: 7px 12px; }
+  select, button, input { font-size: 11.5px; padding: 8px 8px; min-height: 40px; }
+  button.primary { padding: 8px 12px; }
+  .lang-select { min-width: 95px; }
 }
 
-/* ============ Scrollbar ============ */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 </style>
 </head>
 <body>
@@ -495,7 +464,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo">İQCODE</div>
-      <div class="tagline">محرر البرمجة الذكي • v8.0</div>
+      <div class="tagline">محرر البرمجة الذكي • v9.0</div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-item active" data-page="editor">
@@ -504,34 +473,34 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
       </div>
       <div class="nav-item" data-page="tips">
         <span class="icon">💡</span><span>النصائح والدوال</span>
-        <span class="nav-badge" id="tipsCountBadge">300+</span>
+        <span class="nav-badge">350+</span>
       </div>
       <div class="nav-item" data-page="projects">
         <span class="icon">📁</span><span>مشاريعي</span>
       </div>
     </nav>
     <div class="sidebar-footer">
-      <button class="auto-run-toggle on" id="autoRunToggle" onclick="toggleAutoRun()">
+      <button class="auto-run-toggle on" id="autoRunToggle" type="button">
         <span>⚡ تشغيل تلقائي</span>
         <div class="switch"></div>
       </button>
-      <button class="theme-toggle" onclick="toggleTheme()">
+      <button class="theme-toggle" id="themeBtn" type="button">
         <span id="themeIcon">🌙</span>
         <span id="themeText">ليلي</span>
       </button>
     </div>
   </aside>
 
-  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <div class="overlay" id="overlay"></div>
 
   <main class="content">
     <div class="topbar">
-      <button class="menu-btn" onclick="openSidebar()">☰</button>
-      <select id="langSelect" class="lang-select" onchange="changeLang()"></select>
+      <button class="menu-btn" id="menuBtn" type="button">☰</button>
+      <select id="langSelect" class="lang-select"></select>
       <input type="text" id="projectName" placeholder="اسم المشروع..." value="my_project">
-      <button class="primary" id="runBtn" onclick="runCode(true)">▶ تشغيل</button>
-      <button onclick="saveProject()">💾</button>
-      <button onclick="downloadCode()">⬇</button>
+      <button class="primary" id="runBtn" type="button">▶ تشغيل</button>
+      <button id="saveBtn" type="button" title="حفظ">💾</button>
+      <button id="downloadBtn" type="button" title="تنزيل">⬇</button>
     </div>
 
     <div class="page active" id="page-editor">
@@ -552,7 +521,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
           <div id="tab-output" class="tab-content">
             <div class="empty-state">
               <span class="big-icon">⚡</span>
-              اضغط "تشغيل" أو اكتب الكود
+              اضغط "تشغيل"
             </div>
           </div>
           <div id="tab-errors" class="tab-content hidden">
@@ -562,7 +531,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
             </div>
           </div>
           <div id="tab-input" class="tab-content hidden" style="padding:0;">
-            <textarea id="stdin" placeholder="اكتب الإدخال هنا (stdin)..."></textarea>
+            <textarea id="stdin" placeholder="اكتب الإدخال هنا..."></textarea>
           </div>
         </div>
         <div class="status-bar">
@@ -583,7 +552,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
       <div class="tips-container">
         <div class="tips-lang-picker">
           <label>💡 اختر اللغة:</label>
-          <select id="tipsLangSelect" onchange="loadTips()"></select>
+          <select id="tipsLangSelect"></select>
         </div>
         <div class="tips-content" id="tipsContent"></div>
       </div>
@@ -594,11 +563,11 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
         <div class="projects-header">
           <h2>📁 مشاريعي</h2>
           <div class="actions">
-            <button onclick="exportProjects()" style="background:var(--primary-2);color:white;border:none;">📤</button>
-            <button onclick="document.getElementById('importFile').click()" style="background:var(--accent);color:white;border:none;">📥</button>
-            <button class="danger" onclick="clearAllProjects()">🗑</button>
+            <button id="exportBtn" type="button" style="background:var(--primary-2);color:white;border:none;">📤 تصدير</button>
+            <button id="importBtn" type="button" style="background:var(--accent);color:white;border:none;">📥 استيراد</button>
+            <button class="danger" id="clearBtn" type="button">🗑 مسح</button>
           </div>
-          <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProjects(event)">
+          <input type="file" id="importFile" accept=".json" style="display:none;">
         </div>
         <div class="projects-grid" id="projectsGrid"></div>
       </div>
@@ -609,10 +578,33 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 <div class="toast" id="toast"></div>
 
 <script>
+'use strict';
+
 /* ============================================================
-   İQCODE v8.0 - Fast & Smart
+   İQCODE v9.0 - أزرار مضمونة + أداء سريع
    ============================================================ */
 
+// ============ State ============
+const State = {
+  currentLang: 'html',
+  isDark: true,
+  autoRun: true,
+  errorLines: [],
+  warningLines: [],
+  autoRunTimer: null,
+  lintTimer: null,
+  pyodideReady: false,
+  pyodide: null,
+  sqlReady: false,
+  SQL: null,
+  consoleMessages: []
+};
+
+// ============ Refs ============
+const $ = (id) => document.getElementById(id);
+let codeEditor, lineNumbers;
+
+// ============ Languages ============
 const LANGUAGES = {
   html:       { name: "HTML",       engine: "web",      fileExt: "html", icon: "🌐" },
   css:        { name: "CSS",        engine: "web",      fileExt: "css",  icon: "🎨" },
@@ -626,722 +618,464 @@ const LANGUAGES = {
 };
 
 const STARTER_CODE = {
-  html: `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>صفحتي</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      text-align: center;
-      padding: 60px 20px;
-      min-height: 100vh;
-      margin: 0;
-    }
-    h1 { font-size: 3em; }
-    button {
-      padding: 14px 32px;
-      font-size: 16px;
-      background: white;
-      color: #667eea;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <h1>👋 مرحباً!</h1>
-  <p>جرب تعديل الكود وشاهد التغييرات فوراً</p>
-  <button onclick="alert('مرحبا!')">اضغطني</button>
-</body>
-</html>`,
-
-  css: `<!DOCTYPE html>
-<html>
-<head>
-<style>
-  body {
-    background: #0a0e14;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial;
-  }
-  .card {
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    padding: 50px 60px;
-    border-radius: 24px;
-    color: white;
-    text-align: center;
-    box-shadow: 0 25px 80px rgba(245,87,108,0.5);
-  }
-  h1 { font-size: 2.5em; }
-</style>
-</head>
-<body>
-  <div class="card">
-    <h1>CSS يعمل! ✨</h1>
-    <p>جرب تعديل الألوان</p>
-  </div>
-</body>
-</html>`,
-
-  javascript: `// İQCODE - JavaScript
-console.log("Hello, World!");
-console.log("مرحباً!");
-
-const a = 10;
-const b = 5;
-console.log(\`\${a} + \${b} = \${a + b}\`);
-
-for (let i = 0; i < 5; i++) {
-  console.log("العدد: " + i);
-}
-
-const names = ["أحمد", "علي", "سارة"];
-names.forEach(name => console.log("مرحبا " + name));`,
-
-  python: `# İQCODE - Python
-print("Hello, World!")
-print("مرحباً!")
-
-name = "أحمد"
-age = 25
-print(f"الاسم: {name}, العمر: {age}")
-
-for i in range(5):
-    print(f"العدد: {i}")
-
-fruits = ["تفاح", "موز", "برتقال"]
-for fruit in fruits:
-    print(f"فاكهة: {fruit}")`,
-
-  sql: `-- İQCODE - SQL
-CREATE TABLE users (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  age INTEGER
-);
-
-INSERT INTO users (name, age) VALUES
-  ('أحمد', 25),
-  ('علي', 30),
-  ('سارة', 22);
-
-SELECT * FROM users;
-
-SELECT name, age FROM users WHERE age > 23;`,
-
-  markdown: `# İQCODE - Markdown
-
-## عنوان فرعي
-
-هذا **نص عريض** وهذا *نص مائل* وهذا ~~مشطوب~~.
-
-### القوائم
-
-- عنصر أول
-- عنصر ثاني
-- عنصر ثالث
-
-### المهام
-
-- [x] تعلم HTML
-- [ ] تعلم CSS
-
-### كود
-
-\`\`\`javascript
-const x = 5;
-\`\`\``,
-
-  json: `{
-  "name": "أحمد",
-  "age": 25,
-  "email": "ahmed@example.com",
-  "skills": ["HTML", "CSS", "JavaScript"],
-  "address": {
-    "city": "دمشق",
-    "country": "سوريا"
-  },
-  "active": true
-}`,
-
-  yaml: `name: أحمد
-age: 25
-email: ahmed@example.com
-skills:
-  - HTML
-  - CSS
-  - JavaScript
-address:
-  city: دمشق
-  country: سوريا
-active: true`,
-
-  xml: `<?xml version="1.0" encoding="UTF-8"?>
-<user>
-  <name>أحمد</name>
-  <age>25</age>
-  <email>ahmed@example.com</email>
-  <skills>
-    <skill>HTML</skill>
-    <skill>CSS</skill>
-    <skill>JavaScript</skill>
-  </skills>
-</user>`
+  html: '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      background: linear-gradient(135deg, #667eea, #764ba2);\n      color: white;\n      text-align: center;\n      padding: 60px 20px;\n      min-height: 100vh;\n      margin: 0;\n    }\n    h1 { font-size: 3em; }\n    button {\n      padding: 14px 32px;\n      font-size: 16px;\n      background: white;\n      color: #667eea;\n      border: none;\n      border-radius: 30px;\n      cursor: pointer;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <h1>👋 مرحباً!</h1>\n  <p>عدّل الكود وشاهد التغيير فوراً</p>\n  <button onclick="alert(\'مرحبا!\')">اضغطني</button>\n</body>\n</html>',
+  css: '<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body {\n    background: #0a0e14;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    margin: 0;\n    font-family: Arial;\n  }\n  .card {\n    background: linear-gradient(135deg, #f093fb, #f5576c);\n    padding: 50px 60px;\n    border-radius: 24px;\n    color: white;\n    text-align: center;\n    box-shadow: 0 25px 80px rgba(245,87,108,0.5);\n  }\n  h1 { font-size: 2.5em; }\n</style>\n</head>\n<body>\n  <div class="card">\n    <h1>CSS يعمل! ✨</h1>\n  </div>\n</body>\n</html>',
+  javascript: '// İQCODE - JavaScript\nconsole.log("Hello, World!");\nconsole.log("مرحباً!");\n\nconst a = 10;\nconst b = 5;\nconsole.log(`${a} + ${b} = ${a + b}`);\n\nfor (let i = 0; i < 5; i++) {\n  console.log("العدد: " + i);\n}\n',
+  python: '# İQCODE - Python\nprint("Hello, World!")\nprint("مرحباً!")\n\nname = "أحمد"\nage = 25\nprint(f"الاسم: {name}, العمر: {age}")\n\nfor i in range(5):\n    print(f"العدد: {i}")\n',
+  sql: "-- İQCODE - SQL\nCREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT,\n  age INTEGER\n);\n\nINSERT INTO users (name, age) VALUES\n  ('أحمد', 25),\n  ('علي', 30),\n  ('سارة', 22);\n\nSELECT * FROM users;\n",
+  markdown: '# İQCODE - Markdown\n\n## عنوان فرعي\n\nهذا **نص عريض** وهذا *نص مائل*.\n\n- عنصر 1\n- عنصر 2\n\n```javascript\nconst x = 5;\n```\n',
+  json: '{\n  "name": "أحمد",\n  "age": 25,\n  "skills": ["HTML", "CSS", "JS"],\n  "active": true\n}',
+  yaml: 'name: أحمد\nage: 25\nskills:\n  - HTML\n  - CSS\nactive: true',
+  xml: '<?xml version="1.0" encoding="UTF-8"?>\n<user>\n  <name>أحمد</name>\n  <age>25</age>\n</user>'
 };
 
-/* ============================================================
-   قاعدة نصائح موسّعة جداً - 300+ دالة
-   ============================================================ */
+// ============ Tips ============
 const TIPS = {
   html: { sections: [
     { title: "🏗️ الهيكل الأساسي", functions: [
       { name: "<!DOCTYPE html>", desc: "إعلان نوع المستند HTML5", example: '<!DOCTYPE html>\n<html>\n<head></head>\n<body></body>\n</html>' },
-      { name: "<html lang='ar' dir='rtl'>", desc: "العنصر الجذري مع اللغة والاتجاه", example: '<html lang="ar" dir="rtl">' },
-      { name: "<head>", desc: "رأس الصفحة: عنوان، meta، ستايل", example: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان</title>\n</head>' },
-      { name: "<body>", desc: "محتوى الصفحة المرئي", example: '<body><h1>مرحبا</h1></body>' },
+      { name: "<html lang='ar' dir='rtl'>", desc: "العنصر الجذري بالعربية", example: '<html lang="ar" dir="rtl">' },
+      { name: "<head>", desc: "رأس الصفحة", example: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان</title>\n</head>' },
+      { name: "<body>", desc: "المحتوى المرئي", example: '<body><h1>مرحبا</h1></body>' },
       { name: "<meta charset='UTF-8'>", desc: "ترميز الأحرف (مهم للعربية)", example: '<meta charset="UTF-8">' },
-      { name: "<meta viewport>", desc: "ضبط العرض على الجوال", example: '<meta name="viewport" content="width=device-width, initial-scale=1">' },
-      { name: "<title>", desc: "عنوان الصفحة في التبويب", example: '<title>موقعي</title>' },
-      { name: "<link rel='stylesheet'>", desc: "ربط ملف CSS خارجي", example: '<link rel="stylesheet" href="style.css">' },
-      { name: "<script>", desc: "كود JavaScript", example: '<script>\n  console.log("مرحبا");\n</script>' }
+      { name: "<meta viewport>", desc: "ضبط الجوال", example: '<meta name="viewport" content="width=device-width">' },
+      { name: "<title>", desc: "عنوان التبويب", example: '<title>موقعي</title>' },
+      { name: "<link rel='stylesheet'>", desc: "ربط CSS", example: '<link rel="stylesheet" href="style.css">' },
+      { name: "<script>", desc: "كود JS", example: '<script>\n  console.log("hi");\n</script>' }
     ]},
     { title: "📝 النصوص", functions: [
-      { name: "<h1>...<h6>", desc: "عناوين من الأكبر للأصغر", example: '<h1>عنوان رئيسي</h1>\n<h2>عنوان فرعي</h2>' },
-      { name: "<p>", desc: "فقرة نص", example: '<p>هذا نص في فقرة</p>' },
-      { name: "<strong>", desc: "نص عريض مهم", example: '<strong>مهم</strong>' },
-      { name: "<em>", desc: "نص مائل (تأكيد)", example: '<em>تأكيد</em>' },
-      { name: "<mark>", desc: "نص مُظلَّل", example: '<mark>مظلل</mark>' },
-      { name: "<small>", desc: "نص صغير", example: '<small>ملاحظة</small>' },
-      { name: "<del>", desc: "نص محذوف", example: '<del>قديم</del>' },
-      { name: "<ins>", desc: "نص مضاف", example: '<ins>جديد</ins>' },
-      { name: "<br>", desc: "سطر جديد", example: 'سطر أول<br>سطر ثاني' },
+      { name: "<h1>...<h6>", desc: "عناوين 6 مستويات", example: '<h1>رئيسي</h1>\n<h2>فرعي</h2>' },
+      { name: "<p>", desc: "فقرة", example: '<p>نص</p>' },
+      { name: "<strong>", desc: "عريض مهم", example: '<strong>مهم</strong>' },
+      { name: "<em>", desc: "مائل تأكيد", example: '<em>تأكيد</em>' },
+      { name: "<mark>", desc: "مظلل", example: '<mark>مظلل</mark>' },
+      { name: "<br>", desc: "سطر جديد", example: 'سطر<br>سطر' },
       { name: "<hr>", desc: "خط أفقي", example: '<hr>' },
-      { name: "<blockquote>", desc: "اقتباس", example: '<blockquote>اقتباس مهم</blockquote>' },
-      { name: "<code>", desc: "كود داخل النص", example: '<code>console.log()</code>' },
-      { name: "<pre>", desc: "نص منسّق مسبقاً", example: '<pre>\n  سطر 1\n  سطر 2\n</pre>' },
-      { name: "<sub>", desc: "نص سفلي", example: 'H<sub>2</sub>O' },
-      { name: "<sup>", desc: "نص علوي", example: 'x<sup>2</sup>' }
+      { name: "<code>", desc: "كود", example: '<code>console.log()</code>' },
+      { name: "<pre>", desc: "نص منسق", example: '<pre>سطر 1\nسطر 2</pre>' }
     ]},
-    { title: "🔗 الروابط والصور", functions: [
-      { name: "<a href='url'>", desc: "رابط", example: '<a href="https://google.com">جوجل</a>' },
-      { name: "<a target='_blank'>", desc: "فتح في تبويب جديد", example: '<a href="url" target="_blank">رابط</a>' },
-      { name: "<a href='#id'>", desc: "رابط داخلي", example: '<a href="#section1">اذهب للقسم</a>' },
-      { name: "<a href='mailto:'>", desc: "رابط بريد", example: '<a href="mailto:me@x.com">راسلني</a>' },
-      { name: "<a href='tel:'>", desc: "رابط هاتف", example: '<a href="tel:+963">اتصل</a>' },
-      { name: "<img src alt>", desc: "صورة مع وصف", example: '<img src="a.jpg" alt="وصف">' },
-      { name: "<img width height>", desc: "صورة بأبعاد", example: '<img src="a.jpg" width="200">' },
+    { title: "🔗 روابط وصور", functions: [
+      { name: "<a href>", desc: "رابط", example: '<a href="https://google.com">جوجل</a>' },
+      { name: "target='_blank'", desc: "تبويب جديد", example: '<a href="url" target="_blank">رابط</a>' },
+      { name: "<img>", desc: "صورة", example: '<img src="a.jpg" alt="وصف">' },
       { name: "<figure>", desc: "صورة مع وصف", example: '<figure>\n  <img src="a.jpg">\n  <figcaption>وصف</figcaption>\n</figure>' }
     ]},
-    { title: "📋 القوائم", functions: [
-      { name: "<ul><li>", desc: "قائمة نقطية", example: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
-      { name: "<ol><li>", desc: "قائمة مرقمة", example: '<ol>\n  <li>أولاً</li>\n  <li>ثانياً</li>\n</ol>' },
-      { name: "<ol type='A'>", desc: "قائمة بأحرف", example: '<ol type="A">\n  <li>أ</li>\n  <li>ب</li>\n</ol>' },
-      { name: "<dl><dt><dd>", desc: "قائمة تعريفات", example: '<dl>\n  <dt>HTML</dt>\n  <dd>لغة توصيف</dd>\n</dl>' },
-      { name: "<li value='5'>", desc: "قيمة مخصصة", example: '<ol>\n  <li value="5">يبدأ من 5</li>\n</ol>' }
+    { title: "📋 قوائم", functions: [
+      { name: "<ul><li>", desc: "نقاط", example: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
+      { name: "<ol><li>", desc: "مرقمة", example: '<ol>\n  <li>أولاً</li>\n</ol>' },
+      { name: "<dl>", desc: "تعريفات", example: '<dl>\n  <dt>HTML</dt>\n  <dd>لغة</dd>\n</dl>' }
     ]},
-    { title: "📊 الجداول", functions: [
+    { title: "📊 جداول", functions: [
       { name: "<table>", desc: "جدول", example: '<table>\n  <tr><th>اسم</th></tr>\n  <tr><td>أحمد</td></tr>\n</table>' },
-      { name: "<thead>", desc: "رأس الجدول", example: '<thead><tr><th>عنوان</th></tr></thead>' },
-      { name: "<tbody>", desc: "جسم الجدول", example: '<tbody><tr><td>بيانات</td></tr></tbody>' },
-      { name: "<tr>", desc: "صف", example: '<tr><td>خلية</td></tr>' },
-      { name: "<th>", desc: "خلية رأس", example: '<th>عنوان</th>' },
-      { name: "<td>", desc: "خلية عادية", example: '<td>قيمة</td>' },
-      { name: "colspan", desc: "دمج أعمدة", example: '<td colspan="2">مدمج</td>' },
-      { name: "rowspan", desc: "دمج صفوف", example: '<td rowspan="2">ممتد</td>' }
+      { name: "<thead>", desc: "رأس", example: '<thead><tr><th>عنوان</th></tr></thead>' },
+      { name: "<tbody>", desc: "جسم", example: '<tbody><tr><td>بيانات</td></tr></tbody>' },
+      { name: "colspan", desc: "دمج أعمدة", example: '<td colspan="2">مدمج</td>' }
     ]},
-    { title: "📝 النماذج", functions: [
-      { name: "<form>", desc: "نموذج", example: '<form action="/s" method="POST">\n  <input name="x">\n  <button>إرسال</button>\n</form>' },
-      { name: "input type='text'", desc: "نص", example: '<input type="text" placeholder="اسمك">' },
-      { name: "input type='email'", desc: "بريد", example: '<input type="email" required>' },
-      { name: "input type='password'", desc: "كلمة مرور", example: '<input type="password">' },
-      { name: "input type='number'", desc: "رقم", example: '<input type="number" min="1" max="100">' },
-      { name: "input type='date'", desc: "تاريخ", example: '<input type="date">' },
-      { name: "input type='time'", desc: "وقت", example: '<input type="time">' },
-      { name: "input type='color'", desc: "لون", example: '<input type="color" value="#ff0000">' },
-      { name: "input type='range'", desc: "شريط تمرير", example: '<input type="range" min="0" max="100">' },
-      { name: "input type='file'", desc: "رفع ملف", example: '<input type="file" accept="image/*">' },
-      { name: "input type='checkbox'", desc: "مربع اختيار", example: '<input type="checkbox" id="x">\n<label for="x">أوافق</label>' },
-      { name: "input type='radio'", desc: "زر راديو", example: '<input type="radio" name="g" value="m">ذكر' },
-      { name: "<textarea>", desc: "نص متعدد", example: '<textarea rows="5" cols="30"></textarea>' },
-      { name: "<select>", desc: "قائمة منسدلة", example: '<select>\n  <option value="py">Python</option>\n  <option value="js">JS</option>\n</select>' },
-      { name: "<button>", desc: "زر", example: '<button type="submit">إرسال</button>' },
-      { name: "<label>", desc: "تسمية حقل", example: '<label for="name">الاسم:</label>' }
+    { title: "📝 نماذج", functions: [
+      { name: "<form>", desc: "نموذج", example: '<form>\n  <input name="x">\n  <button>إرسال</button>\n</form>' },
+      { name: "<input type='text'>", desc: "نص", example: '<input type="text" placeholder="اسمك">' },
+      { name: "<input type='email'>", desc: "بريد", example: '<input type="email" required>' },
+      { name: "<input type='password'>", desc: "كلمة مرور", example: '<input type="password">' },
+      { name: "<input type='number'>", desc: "رقم", example: '<input type="number" min="1">' },
+      { name: "<input type='date'>", desc: "تاريخ", example: '<input type="date">' },
+      { name: "<input type='color'>", desc: "لون", example: '<input type="color">' },
+      { name: "<input type='checkbox'>", desc: "مربع", example: '<input type="checkbox" id="x">\n<label for="x">أوافق</label>' },
+      { name: "<textarea>", desc: "نص طويل", example: '<textarea rows="5"></textarea>' },
+      { name: "<select>", desc: "قائمة", example: '<select>\n  <option>Python</option>\n</select>' },
+      { name: "<label>", desc: "تسمية", example: '<label for="x">الاسم:</label>' }
     ]},
-    { title: "🖼️ العناصر الدلالية HTML5", functions: [
+    { title: "🖼️ HTML5 الدلالية", functions: [
       { name: "<header>", desc: "ترويسة", example: '<header><h1>موقعي</h1></header>' },
-      { name: "<nav>", desc: "قائمة تنقل", example: '<nav><a href="/">رئيسية</a></nav>' },
-      { name: "<main>", desc: "المحتوى الرئيسي", example: '<main>...</main>' },
-      { name: "<section>", desc: "قسم", example: '<section><h2>عنوان</h2></section>' },
-      { name: "<article>", desc: "مقال مستقل", example: '<article><h2>مقال</h2></article>' },
-      { name: "<aside>", desc: "محتوى جانبي", example: '<aside>ملاحظات</aside>' },
+      { name: "<nav>", desc: "تنقل", example: '<nav><a href="/">رئيسية</a></nav>' },
+      { name: "<main>", desc: "رئيسي", example: '<main>...</main>' },
+      { name: "<section>", desc: "قسم", example: '<section>...</section>' },
+      { name: "<article>", desc: "مقال", example: '<article>...</article>' },
+      { name: "<aside>", desc: "جانبي", example: '<aside>...</aside>' },
       { name: "<footer>", desc: "تذييل", example: '<footer>© 2024</footer>' },
-      { name: "<details>", desc: "قابل للطي", example: '<details>\n  <summary>اضغط</summary>\n  <p>محتوى مخفي</p>\n</details>' },
-      { name: "<dialog>", desc: "نافذة حوارية", example: '<dialog open>مرحبا</dialog>' }
+      { name: "<details>", desc: "قابل للطي", example: '<details>\n  <summary>اضغط</summary>\n  <p>محتوى</p>\n</details>' }
     ]},
-    { title: "⚙️ الخصائص العامة", functions: [
-      { name: "id='x'", desc: "معرّف فريد", example: '<div id="main">...</div>' },
-      { name: "class='x'", desc: "فئة CSS", example: '<div class="box large">...</div>' },
-      { name: "style=''", desc: "ستايل مباشر", example: '<p style="color:red">نص</p>' },
-      { name: "title='x'", desc: "تلميح عند المرور", example: '<span title="تلميح">نص</span>' },
+    { title: "⚙️ خصائص عامة", functions: [
+      { name: "id='x'", desc: "معرف فريد", example: '<div id="main">...</div>' },
+      { name: "class='x'", desc: "فئة", example: '<div class="box large">...</div>' },
+      { name: "style=''", desc: "ستايل", example: '<p style="color:red">نص</p>' },
+      { name: "title=''", desc: "تلميح", example: '<span title="تلميح">نص</span>' },
       { name: "hidden", desc: "إخفاء", example: '<div hidden>مخفي</div>' },
-      { name: "contenteditable", desc: "قابل للتحرير", example: '<div contenteditable="true">عدّلني</div>' },
-      { name: "data-*", desc: "بيانات مخصصة", example: '<div data-id="5" data-name="x">...</div>' }
+      { name: "contenteditable", desc: "قابل للتعديل", example: '<div contenteditable="true">عدلني</div>' },
+      { name: "data-*", desc: "بيانات", example: '<div data-id="5">...</div>' }
     ]}
   ]},
-
   css: { sections: [
-    { title: "🎨 الألوان", functions: [
-      { name: "color", desc: "لون النص", example: 'p { color: red; }\n.a { color: #ff0000; }\n.b { color: rgb(255,0,0); }' },
-      { name: "background", desc: "خلفية شاملة", example: 'body {\n  background: linear-gradient(90deg, red, blue);\n}' },
+    { title: "🎨 ألوان", functions: [
+      { name: "color", desc: "لون النص", example: 'p { color: red; }' },
+      { name: "background", desc: "خلفية", example: 'body { background: linear-gradient(90deg, red, blue); }' },
       { name: "background-color", desc: "لون الخلفية", example: '.box { background-color: #333; }' },
       { name: "background-image", desc: "صورة خلفية", example: 'body { background-image: url("bg.jpg"); }' },
-      { name: "background-size: cover", desc: "تغطية كاملة", example: 'body { background-size: cover; }' },
       { name: "opacity", desc: "شفافية", example: '.ghost { opacity: 0.5; }' },
-      { name: "linear-gradient", desc: "تدرج خطي", example: 'background: linear-gradient(45deg, #f00, #00f);' },
-      { name: "radial-gradient", desc: "تدرج دائري", example: 'background: radial-gradient(circle, red, blue);' }
+      { name: "linear-gradient", desc: "تدرج", example: 'background: linear-gradient(45deg, #f00, #00f);' }
     ]},
-    { title: "🔤 الخطوط والنصوص", functions: [
+    { title: "🔤 خطوط", functions: [
       { name: "font-family", desc: "نوع الخط", example: 'body { font-family: Arial, sans-serif; }' },
-      { name: "font-size", desc: "حجم الخط", example: 'h1 { font-size: 32px; }\np { font-size: 1.2rem; }' },
-      { name: "font-weight", desc: "سماكة", example: 'strong { font-weight: 700; }' },
-      { name: "font-style", desc: "نمط", example: 'em { font-style: italic; }' },
+      { name: "font-size", desc: "الحجم", example: 'h1 { font-size: 32px; }' },
+      { name: "font-weight", desc: "السماكة", example: 'strong { font-weight: 700; }' },
       { name: "text-align", desc: "محاذاة", example: 'h1 { text-align: center; }' },
       { name: "text-decoration", desc: "تزيين", example: 'a { text-decoration: none; }' },
-      { name: "text-transform", desc: "تحويل حالة", example: 'h1 { text-transform: uppercase; }' },
       { name: "line-height", desc: "ارتفاع السطر", example: 'p { line-height: 1.6; }' },
-      { name: "letter-spacing", desc: "تباعد الأحرف", example: 'h1 { letter-spacing: 2px; }' },
-      { name: "word-spacing", desc: "تباعد الكلمات", example: 'p { word-spacing: 5px; }' }
+      { name: "letter-spacing", desc: "تباعد", example: 'h1 { letter-spacing: 2px; }' }
     ]},
-    { title: "📏 الأبعاد", functions: [
-      { name: "width / height", desc: "العرض والارتفاع", example: '.box { width: 300px; height: 200px; }' },
-      { name: "max-width", desc: "أقصى عرض", example: '.c { max-width: 1200px; margin: 0 auto; }' },
-      { name: "min-height", desc: "أدنى ارتفاع", example: '.page { min-height: 100vh; }' },
-      { name: "padding", desc: "حشو داخلي", example: '.box { padding: 20px 10px; }' },
-      { name: "margin", desc: "هامش خارجي", example: '.box { margin: 0 auto; }' },
-      { name: "gap", desc: "مسافة في flex/grid", example: '.flex { display: flex; gap: 16px; }' }
+    { title: "📏 أبعاد", functions: [
+      { name: "width / height", desc: "الأبعاد", example: '.box { width: 300px; height: 200px; }' },
+      { name: "max-width", desc: "أقصى عرض", example: '.c { max-width: 1200px; }' },
+      { name: "padding", desc: "حشو داخلي", example: '.box { padding: 20px; }' },
+      { name: "margin", desc: "هامش", example: '.box { margin: 0 auto; }' },
+      { name: "gap", desc: "مسافة flex/grid", example: '.flex { gap: 16px; }' }
     ]},
-    { title: "🖼️ الحدود والظلال", functions: [
-      { name: "border", desc: "إطار", example: '.box { border: 2px solid #333; }' },
+    { title: "🖼️ حدود وظلال", functions: [
+      { name: "border", desc: "حدود", example: '.box { border: 2px solid #333; }' },
       { name: "border-radius", desc: "زوايا دائرية", example: '.btn { border-radius: 25px; }' },
-      { name: "border-top/right/bottom/left", desc: "إطار جزئي", example: '.box { border-bottom: 3px solid red; }' },
-      { name: "box-shadow", desc: "ظل خارجي", example: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' },
-      { name: "text-shadow", desc: "ظل النص", example: 'h1 { text-shadow: 2px 2px 4px #000; }' },
-      { name: "outline", desc: "خط خارجي", example: 'input:focus { outline: 2px solid blue; }' }
+      { name: "box-shadow", desc: "ظل", example: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' },
+      { name: "text-shadow", desc: "ظل النص", example: 'h1 { text-shadow: 2px 2px 4px #000; }' }
     ]},
-    { title: "📐 التخطيط", functions: [
-      { name: "display: flex", desc: "تخطيط مرن", example: '.c { display: flex; gap: 10px; }' },
-      { name: "justify-content", desc: "محاذاة أفقية", example: '.c { justify-content: space-between; }' },
-      { name: "align-items", desc: "محاذاة رأسية", example: '.c { align-items: center; }' },
+    { title: "📐 تخطيط", functions: [
+      { name: "display: flex", desc: "مرن", example: '.c { display: flex; gap: 10px; }' },
+      { name: "justify-content", desc: "أفقي", example: '.c { justify-content: space-between; }' },
+      { name: "align-items", desc: "رأسي", example: '.c { align-items: center; }' },
       { name: "flex-direction", desc: "اتجاه", example: '.col { flex-direction: column; }' },
-      { name: "flex-wrap", desc: "التفاف", example: '.c { flex-wrap: wrap; }' },
-      { name: "display: grid", desc: "شبكة", example: '.g {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 20px;\n}' },
-      { name: "grid-template-columns", desc: "أعمدة الشبكة", example: '.g { grid-template-columns: 200px 1fr; }' },
-      { name: "grid-area", desc: "منطقة في الشبكة", example: '.item { grid-area: 1 / 2 / 3 / 4; }' },
-      { name: "position", desc: "تحديد الموضع", example: '.fixed { position: fixed; top: 0; right: 0; }' },
-      { name: "z-index", desc: "ترتيب الطبقات", example: '.modal { z-index: 999; }' }
+      { name: "display: grid", desc: "شبكة", example: '.g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }' },
+      { name: "position", desc: "الموضع", example: '.fix { position: fixed; top: 0; }' }
     ]},
-    { title: "✨ التأثيرات والحركات", functions: [
-      { name: "transition", desc: "انتقال سلس", example: '.btn { transition: all 0.3s ease; }' },
+    { title: "✨ تأثيرات", functions: [
+      { name: "transition", desc: "انتقال", example: '.btn { transition: all 0.3s; }' },
       { name: "transform", desc: "تحويل", example: '.big { transform: scale(1.2); }' },
-      { name: "translate", desc: "إزاحة", example: '.m { transform: translateX(50px); }' },
-      { name: "rotate", desc: "تدوير", example: '.r { transform: rotate(45deg); }' },
-      { name: "animation", desc: "حركة", example: '.x { animation: fade 1s infinite; }\n@keyframes fade {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}' },
-      { name: "hover / active / focus", desc: "حالات تفاعلية", example: '.btn:hover { background: red; }' }
+      { name: "animation", desc: "حركة", example: '@keyframes f {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n.x { animation: f 1s; }' },
+      { name: ":hover", desc: "مرور", example: '.btn:hover { background: red; }' }
     ]},
-    { title: "📱 الاستجابة", functions: [
-      { name: "@media", desc: "استعلام وسائط", example: '@media (max-width: 768px) {\n  .sidebar { display: none; }\n}' },
-      { name: "وحدات نسبية", desc: "% em rem vh vw", example: '.box { width: 50%; }\n.text { font-size: 1.5rem; }' },
+    { title: "📱 استجابة", functions: [
+      { name: "@media", desc: "استعلام", example: '@media (max-width: 768px) {\n  .sidebar { display: none; }\n}' },
+      { name: "وحدات نسبية", desc: "% em rem vh vw", example: '.box { width: 50%; font-size: 1.5rem; }' },
       { name: "clamp()", desc: "قيمة مرنة", example: 'font-size: clamp(1rem, 4vw, 2rem);' }
     ]}
   ]},
-
   javascript: { sections: [
-    { title: "🖨️ الإخراج والتشخيص", functions: [
+    { title: "🖨️ إخراج", functions: [
       { name: "console.log(x)", desc: "طباعة", example: 'console.log("مرحبا");' },
-      { name: "console.error(x)", desc: "خطأ", example: 'console.error("خطأ!");' },
-      { name: "console.warn(x)", desc: "تحذير", example: 'console.warn("احترس");' },
-      { name: "console.table(arr)", desc: "جدول", example: 'console.table([{name:"أحمد"}]);' },
-      { name: "console.time/timeEnd", desc: "قياس الزمن", example: 'console.time("x");\n// كود\nconsole.timeEnd("x");' },
-      { name: "typeof x", desc: "نوع المتغير", example: 'typeof 5  // "number"' }
+      { name: "console.error(x)", desc: "خطأ", example: 'console.error("!");' },
+      { name: "console.warn(x)", desc: "تحذير", example: 'console.warn("!");' },
+      { name: "console.table(arr)", desc: "جدول", example: 'console.table([{n:"أ"}]);' },
+      { name: "typeof x", desc: "النوع", example: 'typeof 5  // "number"' }
     ]},
-    { title: "📦 المتغيرات", functions: [
-      { name: "let", desc: "متغير قابل للتغيير", example: 'let x = 5;\nx = 10;' },
+    { title: "📦 متغيرات", functions: [
+      { name: "let", desc: "قابل للتغيير", example: 'let x = 5;\nx = 10;' },
       { name: "const", desc: "ثابت", example: 'const PI = 3.14;' },
-      { name: "var", desc: "قديم - تجنبه", example: 'var x = 5;' },
-      { name: "Template Literal", desc: "نص بـ ` `", example: 'const n = "أحمد";\nconsole.log(`مرحبا ${n}`);' }
+      { name: "Template Literal", desc: "نص ديناميكي", example: 'const n = "أ";\nconsole.log(`مرحبا ${n}`);' }
     ]},
-    { title: "🔢 الأرقام", functions: [
-      { name: "parseInt()", desc: "نص إلى صحيح", example: 'parseInt("42")  // 42' },
-      { name: "parseFloat()", desc: "نص إلى عشري", example: 'parseFloat("3.14")' },
-      { name: "Number()", desc: "تحويل لرقم", example: 'Number("5")  // 5' },
-      { name: "toFixed(n)", desc: "أرقام عشرية", example: '(3.14159).toFixed(2)  // "3.14"' },
-      { name: "Math.floor()", desc: "تقريب لأسفل", example: 'Math.floor(3.7)  // 3' },
-      { name: "Math.ceil()", desc: "تقريب لأعلى", example: 'Math.ceil(3.2)  // 4' },
-      { name: "Math.round()", desc: "تقريب عادي", example: 'Math.round(3.5)  // 4' },
-      { name: "Math.random()", desc: "عشوائي 0-1", example: 'Math.random()' },
-      { name: "Math.max()", desc: "الأكبر", example: 'Math.max(1, 5, 3)  // 5' },
-      { name: "Math.min()", desc: "الأصغر", example: 'Math.min(1, 5, 3)  // 1' },
-      { name: "Math.abs()", desc: "مطلق", example: 'Math.abs(-5)  // 5' },
-      { name: "Math.pow()", desc: "قوة", example: 'Math.pow(2, 3)  // 8' },
+    { title: "🔢 أرقام", functions: [
+      { name: "parseInt()", desc: "نص→صحيح", example: 'parseInt("42")  // 42' },
+      { name: "parseFloat()", desc: "نص→عشري", example: 'parseFloat("3.14")' },
+      { name: "Number()", desc: "لرقم", example: 'Number("5")  // 5' },
+      { name: "toFixed(n)", desc: "أرقام عشرية", example: '(3.14).toFixed(2)' },
+      { name: "Math.floor()", desc: "تقريب أسفل", example: 'Math.floor(3.7)  // 3' },
+      { name: "Math.ceil()", desc: "تقريب أعلى", example: 'Math.ceil(3.2)  // 4' },
+      { name: "Math.round()", desc: "تقريب", example: 'Math.round(3.5)  // 4' },
+      { name: "Math.random()", desc: "عشوائي", example: 'Math.random()' },
+      { name: "Math.max()", desc: "الأكبر", example: 'Math.max(1, 5, 3)' },
+      { name: "Math.min()", desc: "الأصغر", example: 'Math.min(1, 5, 3)' },
+      { name: "Math.abs()", desc: "مطلق", example: 'Math.abs(-5)' },
       { name: "Math.sqrt()", desc: "جذر", example: 'Math.sqrt(16)  // 4' }
     ]},
-    { title: "🔤 النصوص", functions: [
-      { name: "str.length", desc: "الطول", example: '"hello".length  // 5' },
-      { name: "str.toUpperCase()", desc: "كبيرة", example: '"hi".toUpperCase()' },
-      { name: "str.toLowerCase()", desc: "صغيرة", example: '"HI".toLowerCase()' },
-      { name: "str.split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
-      { name: "str.replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
-      { name: "str.replaceAll(a,b)", desc: "استبدال الكل", example: '"aaa".replaceAll("a","b")' },
-      { name: "str.includes(s)", desc: "يحتوي", example: '"hello".includes("ell")  // true' },
-      { name: "str.indexOf(s)", desc: "موقع", example: '"hello".indexOf("l")  // 2' },
-      { name: "str.trim()", desc: "إزالة مسافات", example: '"  hi  ".trim()' },
-      { name: "str.charAt(i)", desc: "حرف في موقع", example: '"hi".charAt(1)  // "i"' },
-      { name: "str.slice(a,b)", desc: "قص", example: '"hello".slice(1,4)  // "ell"' },
-      { name: "str.substring(a,b)", desc: "قص بديل", example: '"hello".substring(1,4)' },
-      { name: "str.repeat(n)", desc: "تكرار", example: '"ab".repeat(3)  // "ababab"' },
-      { name: "str.padStart(n,c)", desc: "حشو بداية", example: '"5".padStart(3,"0")  // "005"' },
-      { name: "str.startsWith(s)", desc: "يبدأ بـ", example: '"hello".startsWith("he")  // true' },
-      { name: "str.endsWith(s)", desc: "ينتهي بـ", example: '"hello".endsWith("lo")  // true' }
+    { title: "🔤 نصوص", functions: [
+      { name: "length", desc: "الطول", example: '"hello".length  // 5' },
+      { name: "toUpperCase()", desc: "كبيرة", example: '"hi".toUpperCase()' },
+      { name: "toLowerCase()", desc: "صغيرة", example: '"HI".toLowerCase()' },
+      { name: "split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
+      { name: "replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
+      { name: "replaceAll(a,b)", desc: "استبدال الكل", example: '"aaa".replaceAll("a","b")' },
+      { name: "includes(s)", desc: "يحتوي", example: '"hello".includes("ell")' },
+      { name: "indexOf(s)", desc: "موقع", example: '"hello".indexOf("l")' },
+      { name: "trim()", desc: "مسافات", example: '"  hi  ".trim()' },
+      { name: "charAt(i)", desc: "حرف", example: '"hi".charAt(1)' },
+      { name: "slice(a,b)", desc: "قص", example: '"hello".slice(1,4)' },
+      { name: "repeat(n)", desc: "تكرار", example: '"ab".repeat(3)' },
+      { name: "startsWith(s)", desc: "يبدأ", example: '"hello".startsWith("he")' }
     ]},
-    { title: "📋 المصفوفات", functions: [
-      { name: "arr.push(x)", desc: "إضافة نهاية", example: 'let a=[1];\na.push(2);' },
-      { name: "arr.pop()", desc: "حذف نهاية", example: '[1,2].pop()  // 2' },
-      { name: "arr.unshift(x)", desc: "إضافة بداية", example: '[2].unshift(1)' },
-      { name: "arr.shift()", desc: "حذف بداية", example: '[1,2].shift()  // 1' },
-      { name: "arr.map(fn)", desc: "تحويل", example: '[1,2].map(x=>x*2)  // [2,4]' },
-      { name: "arr.filter(fn)", desc: "تصفية", example: '[1,2,3].filter(x=>x>1)  // [2,3]' },
-      { name: "arr.reduce(fn,i)", desc: "اختصار", example: '[1,2,3].reduce((a,b)=>a+b,0)  // 6' },
-      { name: "arr.forEach(fn)", desc: "مرور", example: '[1,2].forEach(x=>console.log(x))' },
-      { name: "arr.find(fn)", desc: "أول مطابق", example: '[1,2,3].find(x=>x>1)  // 2' },
-      { name: "arr.findIndex(fn)", desc: "فهرس أول", example: '[1,2,3].findIndex(x=>x===2)  // 1' },
-      { name: "arr.includes(x)", desc: "يحتوي", example: '[1,2].includes(2)  // true' },
-      { name: "arr.indexOf(x)", desc: "فهرس", example: '[1,2].indexOf(2)  // 1' },
-      { name: "arr.sort()", desc: "ترتيب", example: '[3,1,2].sort()  // [1,2,3]' },
-      { name: "arr.reverse()", desc: "عكس", example: '[1,2].reverse()  // [2,1]' },
-      { name: "arr.join(sep)", desc: "دمج", example: '[1,2].join("-")  // "1-2"' },
-      { name: "arr.slice(a,b)", desc: "نسخ جزء", example: '[1,2,3,4].slice(1,3)  // [2,3]' },
-      { name: "arr.splice(i,n)", desc: "حذف/إضافة", example: 'let a=[1,2,3];\na.splice(1,1);  // [1,3]' },
-      { name: "arr.concat(a2)", desc: "دمج", example: '[1].concat([2])  // [1,2]' },
-      { name: "arr.flat()", desc: "تسطيح", example: '[[1,2],[3]].flat()  // [1,2,3]' },
-      { name: "arr.flatMap(fn)", desc: "تسطيح + تحويل", example: '[1,2].flatMap(x=>[x,x])' },
-      { name: "arr.some(fn)", desc: "هل يوجد", example: '[1,2].some(x=>x>1)  // true' },
-      { name: "arr.every(fn)", desc: "هل الكل", example: '[1,2].every(x=>x>0)  // true' }
+    { title: "📋 مصفوفات", functions: [
+      { name: "push(x)", desc: "إضافة", example: '[1].push(2)' },
+      { name: "pop()", desc: "حذف آخر", example: '[1,2].pop()' },
+      { name: "unshift(x)", desc: "بداية", example: '[2].unshift(1)' },
+      { name: "shift()", desc: "حذف أول", example: '[1,2].shift()' },
+      { name: "map(fn)", desc: "تحويل", example: '[1,2].map(x=>x*2)' },
+      { name: "filter(fn)", desc: "تصفية", example: '[1,2,3].filter(x=>x>1)' },
+      { name: "reduce(fn,i)", desc: "اختصار", example: '[1,2].reduce((a,b)=>a+b,0)' },
+      { name: "forEach(fn)", desc: "مرور", example: '[1,2].forEach(x=>console.log(x))' },
+      { name: "find(fn)", desc: "أول", example: '[1,2].find(x=>x>1)' },
+      { name: "includes(x)", desc: "يحتوي", example: '[1,2].includes(2)' },
+      { name: "sort()", desc: "ترتيب", example: '[3,1,2].sort()' },
+      { name: "reverse()", desc: "عكس", example: '[1,2].reverse()' },
+      { name: "join(sep)", desc: "دمج", example: '[1,2].join("-")' },
+      { name: "slice(a,b)", desc: "جزء", example: '[1,2,3].slice(1,3)' },
+      { name: "splice(i,n)", desc: "حذف/إضافة", example: 'let a=[1,2,3];\na.splice(1,1)' },
+      { name: "concat()", desc: "دمج", example: '[1].concat([2])' },
+      { name: "some(fn)", desc: "هل يوجد", example: '[1,2].some(x=>x>1)' },
+      { name: "every(fn)", desc: "هل الكل", example: '[1,2].every(x=>x>0)' }
     ]},
-    { title: "📦 الكائنات", functions: [
-      { name: "obj.key", desc: "وصول", example: 'let p={name:"أ"}; p.name' },
-      { name: "obj['key']", desc: "وصول ديناميكي", example: 'p["name"]' },
-      { name: "Object.keys()", desc: "المفاتيح", example: 'Object.keys({a:1,b:2})' },
-      { name: "Object.values()", desc: "القيم", example: 'Object.values({a:1,b:2})' },
+    { title: "📦 كائنات", functions: [
+      { name: "obj.key", desc: "وصول", example: 'let p={n:"أ"}; p.n' },
+      { name: "Object.keys()", desc: "مفاتيح", example: 'Object.keys({a:1})' },
+      { name: "Object.values()", desc: "قيم", example: 'Object.values({a:1})' },
       { name: "Object.entries()", desc: "أزواج", example: 'Object.entries({a:1})' },
-      { name: "Object.assign()", desc: "دمج", example: 'Object.assign({}, {a:1})' },
       { name: "JSON.stringify()", desc: "كائن→نص", example: 'JSON.stringify({a:1})' },
       { name: "JSON.parse()", desc: "نص→كائن", example: 'JSON.parse(\'{"a":1}\')' }
     ]},
-    { title: "🔀 الشروط", functions: [
-      { name: "if / else", desc: "شروط", example: 'if (x>0) {...} else {...}' },
-      { name: "else if", desc: "شروط متعددة", example: 'if (x>0) {...} else if (x<0) {...}' },
-      { name: "ternary ?:", desc: "شرط مختصر", example: 'let s = x>0 ? "موجب" : "سالب";' },
-      { name: "switch", desc: "حالات", example: 'switch(x) {\n  case 1: break;\n  default: break;\n}' },
-      { name: "&& / || / !", desc: "منطقية", example: 'if (x>0 && y<5) {...}' },
-      { name: "?? (Nullish)", desc: "بديل إذا null", example: 'let x = a ?? "default";' },
-      { name: "?. (Optional)", desc: "وصول آمن", example: 'obj?.user?.name' }
+    { title: "🔀 شروط", functions: [
+      { name: "if/else", desc: "شروط", example: 'if(x>0){...} else {...}' },
+      { name: "ternary ?:", desc: "مختصر", example: 'let s = x>0 ? "+" : "-";' },
+      { name: "switch", desc: "حالات", example: 'switch(x){case 1:break;}' },
+      { name: "&& / ||", desc: "منطقية", example: 'if (x>0 && y<5) {}' },
+      { name: "??", desc: "بديل null", example: 'let x = a ?? "def";' },
+      { name: "?.", desc: "وصول آمن", example: 'obj?.user?.name' }
     ]},
-    { title: "🔄 الحلقات", functions: [
-      { name: "for", desc: "حلقة كلاسيكية", example: 'for (let i=0;i<5;i++) {}' },
-      { name: "for...of", desc: "مصفوفات", example: 'for (const x of [1,2]) {}' },
-      { name: "for...in", desc: "كائنات", example: 'for (const k in obj) {}' },
-      { name: "while", desc: "شرطية", example: 'while (i<5) { i++; }' },
-      { name: "do...while", desc: "تنفيذ مرة", example: 'do { } while (x<5);' },
-      { name: "break / continue", desc: "خروج/تخطي", example: 'for (...) { if (x) break; }' }
+    { title: "🔄 حلقات", functions: [
+      { name: "for", desc: "كلاسيكية", example: 'for(let i=0;i<5;i++){}' },
+      { name: "for...of", desc: "مصفوفات", example: 'for(const x of [1,2]){}' },
+      { name: "for...in", desc: "كائنات", example: 'for(const k in obj){}' },
+      { name: "while", desc: "شرطية", example: 'while(i<5){i++;}' },
+      { name: "do...while", desc: "مرة", example: 'do{}while(x<5);' },
+      { name: "break/continue", desc: "خروج/تخطي", example: 'for(...){if(x)break;}' }
     ]},
-    { title: "📚 الدوال", functions: [
-      { name: "function", desc: "دالة عادية", example: 'function greet(n) { return `hi ${n}`; }' },
-      { name: "arrow", desc: "سهمية", example: 'const sq = x => x*x;' },
-      { name: "default params", desc: "قيم افتراضية", example: 'function f(x=5) {}' },
-      { name: "rest ...", desc: "وسائط متعددة", example: 'function sum(...n) { return n.reduce((a,b)=>a+b); }' },
-      { name: "IIFE", desc: "دالة فورية", example: '(function() { console.log("hi"); })();' }
+    { title: "📚 دوال", functions: [
+      { name: "function", desc: "عادية", example: 'function f(x){return x;}' },
+      { name: "arrow =>", desc: "سهمية", example: 'const sq = x => x*x;' },
+      { name: "default params", desc: "افتراضية", example: 'function f(x=5){}' },
+      { name: "rest ...", desc: "متعددة", example: 'function sum(...n){return n.reduce((a,b)=>a+b);}' }
     ]},
     { title: "⚡ ES6+", functions: [
-      { name: "Destructuring", desc: "تفكيك", example: 'const [a,b] = [1,2];\nconst {x,y} = {x:1,y:2};' },
-      { name: "Spread ...", desc: "نشر", example: 'const a = [...[1,2], 3];' },
-      { name: "Map", desc: "خريطة", example: 'const m = new Map();\nm.set("k","v");' },
-      { name: "Set", desc: "مجموعة فريدة", example: 'const s = new Set([1,2,2,3]);' },
-      { name: "Promise", desc: "وعد", example: 'new Promise((res,rej) => res("ok"))\n  .then(x => console.log(x));' },
-      { name: "async / await", desc: "غير متزامن", example: 'async function f() {\n  const r = await fetch(url);\n}' }
+      { name: "Destructuring", desc: "تفكيك", example: 'const [a,b]=[1,2];\nconst {x,y}={x:1,y:2};' },
+      { name: "Spread ...", desc: "نشر", example: 'const a=[...[1,2],3];' },
+      { name: "Map", desc: "خريطة", example: 'const m=new Map();\nm.set("k","v");' },
+      { name: "Set", desc: "فريدة", example: 'const s=new Set([1,2,2]);' },
+      { name: "Promise", desc: "وعد", example: 'new Promise(r=>r("ok")).then(x=>console.log(x));' },
+      { name: "async/await", desc: "غير متزامن", example: 'async function f(){\n  const r = await fetch(u);\n}' }
     ]},
-    { title: "⏰ التوقيت", functions: [
-      { name: "setTimeout", desc: "تنفيذ مؤجل", example: 'setTimeout(() => {}, 1000);' },
-      { name: "setInterval", desc: "تنفيذ متكرر", example: 'const id = setInterval(() => {}, 1000);' },
-      { name: "clearInterval", desc: "إيقاف", example: 'clearInterval(id);' },
-      { name: "Date.now()", desc: "الوقت الحالي", example: 'Date.now()' },
-      { name: "new Date()", desc: "كائن تاريخ", example: 'const d = new Date();\nd.getFullYear();' }
+    { title: "⏰ توقيت", functions: [
+      { name: "setTimeout", desc: "مؤجل", example: 'setTimeout(()=>{}, 1000);' },
+      { name: "setInterval", desc: "متكرر", example: 'setInterval(()=>{}, 1000);' },
+      { name: "Date.now()", desc: "الآن", example: 'Date.now()' },
+      { name: "new Date()", desc: "تاريخ", example: 'const d=new Date();' }
     ]}
   ]},
-
   python: { sections: [
-    { title: "🖨️ الإخراج", functions: [
-      { name: "print(x)", desc: "طباعة", example: 'print("مرحبا")\nprint(42)' },
+    { title: "🖨️ إخراج", functions: [
+      { name: "print(x)", desc: "طباعة", example: 'print("مرحبا")' },
       { name: "print(sep='-')", desc: "فاصل", example: 'print("أ","ب",sep="-")' },
       { name: "print(end='')", desc: "بدون سطر", example: 'print("أ",end="")' },
       { name: "f-string", desc: "نص ديناميكي", example: 'n="أ"\nprint(f"مرحبا {n}")' },
       { name: "format()", desc: "تنسيق", example: '"مرحبا {}".format("أ")' }
     ]},
-    { title: "🔢 الأرقام", functions: [
+    { title: "🔢 أرقام", functions: [
       { name: "int(x)", desc: "صحيح", example: 'int("42")  # 42' },
       { name: "float(x)", desc: "عشري", example: 'float("3.14")' },
       { name: "str(x)", desc: "نص", example: 'str(123)' },
-      { name: "round(x,n)", desc: "تقريب", example: 'round(3.14159,2)  # 3.14' },
+      { name: "round(x,n)", desc: "تقريب", example: 'round(3.14,1)' },
       { name: "abs(x)", desc: "مطلق", example: 'abs(-5)  # 5' },
-      { name: "max()", desc: "الأكبر", example: 'max(1,2,3)  # 3' },
-      { name: "min()", desc: "الأصغر", example: 'min([1,2,3])  # 1' },
+      { name: "max()", desc: "الأكبر", example: 'max(1,2,3)' },
+      { name: "min()", desc: "الأصغر", example: 'min([1,2,3])' },
       { name: "sum()", desc: "المجموع", example: 'sum([1,2,3])  # 6' },
-      { name: "pow(x,y)", desc: "قوة", example: 'pow(2,3)  # 8' },
-      { name: "divmod(a,b)", desc: "قسمة + باقي", example: 'divmod(7,3)  # (2,1)' }
+      { name: "pow(x,y)", desc: "قوة", example: 'pow(2,3)  # 8' }
     ]},
-    { title: "🔤 النصوص", functions: [
-      { name: "str.upper()", desc: "كبيرة", example: '"hi".upper()  # "HI"' },
-      { name: "str.lower()", desc: "صغيرة", example: '"HI".lower()  # "hi"' },
-      { name: "str.title()", desc: "أول كبير", example: '"hello world".title()' },
-      { name: "str.capitalize()", desc: "أول حرف كبير", example: '"hello".capitalize()' },
-      { name: "str.split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
-      { name: "str.replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
-      { name: "str.strip()", desc: "إزالة مسافات", example: '"  hi  ".strip()' },
-      { name: "str.startswith(s)", desc: "يبدأ بـ", example: '"hi".startswith("h")' },
-      { name: "str.endswith(s)", desc: "ينتهي بـ", example: '"hi".endswith("i")' },
-      { name: "str.find(s)", desc: "موقع", example: '"hi".find("i")  # 1' },
-      { name: "str.count(s)", desc: "عدد", example: '"hello".count("l")  # 2' },
-      { name: '"sep".join(lst)', desc: "دمج", example: '"-".join(["a","b"])' },
-      { name: "str[a:b]", desc: "قص", example: 's = "hello"\ns[1:4]  # "ell"' },
-      { name: "str[::-1]", desc: "عكس النص", example: '"hello"[::-1]  # "olleh"' }
+    { title: "🔤 نصوص", functions: [
+      { name: "upper()", desc: "كبيرة", example: '"hi".upper()' },
+      { name: "lower()", desc: "صغيرة", example: '"HI".lower()' },
+      { name: "title()", desc: "عنوان", example: '"hi there".title()' },
+      { name: "split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
+      { name: "replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
+      { name: "strip()", desc: "مسافات", example: '"  hi  ".strip()' },
+      { name: "startswith()", desc: "يبدأ", example: '"hi".startswith("h")' },
+      { name: "endswith()", desc: "ينتهي", example: '"hi".endswith("i")' },
+      { name: "find(s)", desc: "موقع", example: '"hi".find("i")' },
+      { name: "count(s)", desc: "عدد", example: '"hello".count("l")' },
+      { name: '"sep".join(l)', desc: "دمج", example: '"-".join(["a","b"])' },
+      { name: "s[a:b]", desc: "قص", example: 's="hello"\ns[1:4]' },
+      { name: "s[::-1]", desc: "عكس", example: '"hello"[::-1]' }
     ]},
-    { title: "📋 القوائم", functions: [
-      { name: "list.append(x)", desc: "إضافة", example: 'l=[1,2]\nl.append(3)' },
-      { name: "list.insert(i,x)", desc: "إضافة في موقع", example: 'l.insert(0,0)' },
-      { name: "list.pop(i)", desc: "حذف وإرجاع", example: 'l.pop()' },
-      { name: "list.remove(x)", desc: "حذف قيمة", example: 'l.remove(2)' },
-      { name: "list.sort()", desc: "ترتيب", example: 'l=[3,1,2]\nl.sort()' },
-      { name: "list.reverse()", desc: "عكس", example: 'l.reverse()' },
-      { name: "list.index(x)", desc: "موقع", example: 'l.index(2)' },
-      { name: "list.count(x)", desc: "عدد", example: 'l.count(2)' },
-      { name: "list.extend()", desc: "دمج", example: 'l.extend([4,5])' },
-      { name: "list comprehension", desc: "قائمة ذكية", example: '[x*2 for x in range(5)]' },
-      { name: "if comprehension", desc: "مع شرط", example: '[x for x in range(10) if x%2==0]' }
+    { title: "📋 قوائم", functions: [
+      { name: "append(x)", desc: "إضافة", example: 'l=[1]\nl.append(2)' },
+      { name: "insert(i,x)", desc: "في موقع", example: 'l.insert(0,0)' },
+      { name: "pop()", desc: "حذف آخر", example: 'l.pop()' },
+      { name: "remove(x)", desc: "حذف قيمة", example: 'l.remove(2)' },
+      { name: "sort()", desc: "ترتيب", example: 'l=[3,1,2]\nl.sort()' },
+      { name: "reverse()", desc: "عكس", example: 'l.reverse()' },
+      { name: "index(x)", desc: "موقع", example: 'l.index(2)' },
+      { name: "count(x)", desc: "عدد", example: 'l.count(2)' },
+      { name: "extend(l2)", desc: "دمج", example: 'l.extend([4,5])' },
+      { name: "comprehension", desc: "قائمة ذكية", example: '[x*2 for x in range(5)]' }
     ]},
-    { title: "📚 القواميس", functions: [
-      { name: "{k: v}", desc: "إنشاء", example: 'd = {"name": "أ"}' },
-      { name: "d[key]", desc: "وصول", example: 'd["name"]' },
-      { name: "d.get(k,def)", desc: "وصول آمن", example: 'd.get("x", 0)' },
-      { name: "d.keys()", desc: "المفاتيح", example: 'd.keys()' },
-      { name: "d.values()", desc: "القيم", example: 'd.values()' },
+    { title: "📚 قواميس", functions: [
+      { name: "{k: v}", desc: "إنشاء", example: 'd={"n":"أ"}' },
+      { name: "d[key]", desc: "وصول", example: 'd["n"]' },
+      { name: "d.get(k,def)", desc: "آمن", example: 'd.get("x", 0)' },
+      { name: "d.keys()", desc: "مفاتيح", example: 'd.keys()' },
+      { name: "d.values()", desc: "قيم", example: 'd.values()' },
       { name: "d.items()", desc: "أزواج", example: 'd.items()' },
-      { name: "d.update(d2)", desc: "دمج", example: 'd.update({"age":25})' },
-      { name: "d.pop(k)", desc: "حذف", example: 'd.pop("age")' }
+      { name: "d.update(d2)", desc: "دمج", example: 'd.update({"age":25})' }
     ]},
-    { title: "🔀 الشروط", functions: [
+    { title: "🔀 شروط", functions: [
       { name: "if/elif/else", desc: "شروط", example: 'if x>0:\n    print("+")\nelif x<0:\n    print("-")\nelse:\n    print("0")' },
       { name: "ternary", desc: "مختصر", example: 's = "بالغ" if age>=18 else "قاصر"' },
-      { name: "in / not in", desc: "وجود", example: '"a" in "cat"  # True' },
-      { name: "and / or / not", desc: "منطقية", example: 'if x>0 and y<10: ...' }
+      { name: "in/not in", desc: "وجود", example: '"a" in "cat"' },
+      { name: "and/or/not", desc: "منطقية", example: 'if x>0 and y<10: ...' }
     ]},
-    { title: "🔄 الحلقات", functions: [
+    { title: "🔄 حلقات", functions: [
       { name: "for i in range()", desc: "تكرار", example: 'for i in range(5):\n    print(i)' },
-      { name: "range(a,b,c)", desc: "نطاق", example: 'range(1,10,2)  # 1,3,5,7,9' },
+      { name: "range(a,b,c)", desc: "نطاق", example: 'range(1,10,2)' },
       { name: "for x in list", desc: "مرور", example: 'for n in [1,2]:\n    print(n)' },
       { name: "enumerate()", desc: "مع فهرس", example: 'for i,v in enumerate(["a","b"]):\n    print(i,v)' },
       { name: "zip()", desc: "دمج", example: 'for a,b in zip([1,2],["أ","ب"]):\n    print(a,b)' },
       { name: "while", desc: "شرطية", example: 'i=0\nwhile i<5:\n    i+=1' },
       { name: "break/continue", desc: "خروج/تخطي", example: 'for i in range(10):\n    if i==5: break' }
     ]},
-    { title: "📚 الدوال", functions: [
+    { title: "📚 دوال", functions: [
       { name: "def", desc: "تعريف", example: 'def greet(n):\n    return f"hi {n}"' },
-      { name: "default params", desc: "افتراضية", example: 'def greet(n="زائر"): ...' },
+      { name: "default", desc: "افتراضية", example: 'def greet(n="زائر"): ...' },
       { name: "lambda", desc: "مختصرة", example: 'sq = lambda x: x*x' },
-      { name: "*args", desc: "وسائط متعددة", example: 'def f(*a): return sum(a)' },
+      { name: "*args", desc: "متعددة", example: 'def f(*a): return sum(a)' },
       { name: "**kwargs", desc: "مفتاحية", example: 'def f(**k): print(k)' }
     ]},
-    { title: "📦 الاستيراد", functions: [
-      { name: "import module", desc: "استيراد", example: 'import math' },
-      { name: "from x import y", desc: "استيراد محدد", example: 'from random import randint' },
+    { title: "📦 استيراد", functions: [
+      { name: "import x", desc: "استيراد", example: 'import math' },
+      { name: "from x import y", desc: "محدد", example: 'from random import randint' },
       { name: "import as", desc: "اختصار", example: 'import math as m' },
       { name: "math", desc: "رياضيات", example: 'import math\nmath.sqrt(16)' },
-      { name: "random", desc: "عشوائي", example: 'import random\nrandom.randint(1,10)' },
-      { name: "datetime", desc: "تاريخ", example: 'import datetime\ndatetime.datetime.now()' }
+      { name: "random", desc: "عشوائي", example: 'import random\nrandom.randint(1,10)' }
     ]}
   ]},
-
   sql: { sections: [
-    { title: "📋 الجداول", functions: [
-      { name: "CREATE TABLE", desc: "إنشاء", example: 'CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT\n);' },
-      { name: "DROP TABLE", desc: "حذف", example: 'DROP TABLE users;' },
-      { name: "ALTER TABLE ADD", desc: "إضافة عمود", example: 'ALTER TABLE users ADD COLUMN age INTEGER;' },
-      { name: "ALTER TABLE DROP", desc: "حذف عمود", example: 'ALTER TABLE users DROP COLUMN age;' }
+    { title: "📋 جداول", functions: [
+      { name: "CREATE TABLE", desc: "إنشاء", example: 'CREATE TABLE t (\n  id INTEGER PRIMARY KEY,\n  name TEXT\n);' },
+      { name: "DROP TABLE", desc: "حذف", example: 'DROP TABLE t;' },
+      { name: "ALTER ADD", desc: "إضافة عمود", example: 'ALTER TABLE t ADD COLUMN age INTEGER;' }
     ]},
-    { title: "📝 البيانات", functions: [
-      { name: "INSERT", desc: "إضافة", example: "INSERT INTO users (name) VALUES ('أحمد');" },
-      { name: "INSERT متعدد", desc: "صفوف متعددة", example: "INSERT INTO users (name) VALUES\n  ('أحمد'),\n  ('علي');" },
-      { name: "SELECT", desc: "اختيار", example: 'SELECT * FROM users;' },
-      { name: "SELECT أعمدة", desc: "أعمدة محددة", example: 'SELECT name, age FROM users;' },
-      { name: "UPDATE", desc: "تحديث", example: "UPDATE users SET age=26 WHERE name='أحمد';" },
-      { name: "DELETE", desc: "حذف", example: "DELETE FROM users WHERE age<18;" }
+    { title: "📝 بيانات", functions: [
+      { name: "INSERT", desc: "إضافة", example: "INSERT INTO t (name) VALUES ('أحمد');" },
+      { name: "SELECT", desc: "اختيار", example: 'SELECT * FROM t;' },
+      { name: "UPDATE", desc: "تحديث", example: "UPDATE t SET age=26 WHERE name='أحمد';" },
+      { name: "DELETE", desc: "حذف", example: "DELETE FROM t WHERE age<18;" }
     ]},
-    { title: "🔍 الفلترة", functions: [
-      { name: "WHERE", desc: "شرط", example: 'SELECT * FROM users WHERE age>25;' },
-      { name: "AND / OR", desc: "شروط", example: "WHERE age>20 AND name='أحمد'" },
+    { title: "🔍 فلترة", functions: [
+      { name: "WHERE", desc: "شرط", example: 'WHERE age>25' },
       { name: "ORDER BY", desc: "ترتيب", example: 'ORDER BY age DESC' },
       { name: "LIMIT", desc: "عدد", example: 'LIMIT 10' },
-      { name: "OFFSET", desc: "تخطي", example: 'LIMIT 10 OFFSET 20' },
       { name: "LIKE", desc: "بحث", example: "WHERE name LIKE 'أ%'" },
-      { name: "IN", desc: "قائمة", example: 'WHERE age IN (20,25,30)' },
+      { name: "IN", desc: "قائمة", example: 'WHERE age IN (20,25)' },
       { name: "BETWEEN", desc: "بين", example: 'WHERE age BETWEEN 20 AND 30' },
-      { name: "IS NULL", desc: "فارغ", example: 'WHERE email IS NULL' },
-      { name: "DISTINCT", desc: "فريد", example: 'SELECT DISTINCT age FROM users;' }
+      { name: "DISTINCT", desc: "فريد", example: 'SELECT DISTINCT age FROM t;' }
     ]},
-    { title: "🔢 التجميع", functions: [
-      { name: "COUNT()", desc: "عدد", example: 'SELECT COUNT(*) FROM users;' },
-      { name: "SUM()", desc: "مجموع", example: 'SELECT SUM(age) FROM users;' },
-      { name: "AVG()", desc: "متوسط", example: 'SELECT AVG(age) FROM users;' },
-      { name: "MAX()", desc: "أكبر", example: 'SELECT MAX(age) FROM users;' },
-      { name: "MIN()", desc: "أصغر", example: 'SELECT MIN(age) FROM users;' },
-      { name: "GROUP BY", desc: "تجميع", example: 'SELECT age, COUNT(*) FROM users GROUP BY age;' },
-      { name: "HAVING", desc: "شرط على تجميع", example: 'GROUP BY age HAVING COUNT(*)>1' }
+    { title: "🔢 تجميع", functions: [
+      { name: "COUNT()", desc: "عدد", example: 'SELECT COUNT(*) FROM t;' },
+      { name: "SUM()", desc: "مجموع", example: 'SELECT SUM(age) FROM t;' },
+      { name: "AVG()", desc: "متوسط", example: 'SELECT AVG(age) FROM t;' },
+      { name: "MAX()", desc: "أكبر", example: 'SELECT MAX(age) FROM t;' },
+      { name: "MIN()", desc: "أصغر", example: 'SELECT MIN(age) FROM t;' },
+      { name: "GROUP BY", desc: "تجميع", example: 'GROUP BY age' }
     ]},
-    { title: "🔗 الربط", functions: [
-      { name: "INNER JOIN", desc: "داخلي", example: 'SELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON u.id=o.user_id;' },
-      { name: "LEFT JOIN", desc: "يسار", example: 'LEFT JOIN orders o ON u.id=o.user_id' },
-      { name: "RIGHT JOIN", desc: "يمين", example: 'RIGHT JOIN orders o ON u.id=o.user_id' }
+    { title: "🔗 ربط", functions: [
+      { name: "INNER JOIN", desc: "داخلي", example: 'SELECT * FROM a INNER JOIN b ON a.id=b.a_id;' },
+      { name: "LEFT JOIN", desc: "يسار", example: 'SELECT * FROM a LEFT JOIN b ON a.id=b.a_id;' }
     ]}
   ]},
-
   markdown: { sections: [
-    { title: "📝 النصوص", functions: [
-      { name: "# عنوان", desc: "عناوين 1-6", example: '# عنوان 1\n## عنوان 2\n### عنوان 3' },
-      { name: "**نص**", desc: "عريض", example: 'هذا **مهم**' },
-      { name: "*نص*", desc: "مائل", example: 'هذا *مائل*' },
-      { name: "~~نص~~", desc: "مشطوب", example: 'هذا ~~قديم~~' },
-      { name: "> اقتباس", desc: "اقتباس", example: '> اقتباس مهم' },
-      { name: "---", desc: "خط فاصل", example: 'فقرة\n\n---\n\nفقرة' }
+    { title: "📝 نصوص", functions: [
+      { name: "# عنوان", desc: "عناوين", example: '# h1\n## h2\n### h3' },
+      { name: "**نص**", desc: "عريض", example: '**مهم**' },
+      { name: "*نص*", desc: "مائل", example: '*مائل*' },
+      { name: "~~نص~~", desc: "مشطوب", example: '~~قديم~~' },
+      { name: "> اقتباس", desc: "اقتباس", example: '> اقتباس' }
     ]},
-    { title: "📋 القوائم", functions: [
-      { name: "- عنصر", desc: "نقاط", example: '- عنصر 1\n- عنصر 2' },
-      { name: "1. عنصر", desc: "مرقمة", example: '1. أولاً\n2. ثانياً' },
-      { name: "- [x] مهمة", desc: "مهام", example: '- [x] منجزة\n- [ ] جارية' },
-      { name: "قائمة متداخلة", desc: "متداخلة", example: '- رئيسي\n  - فرعي' }
+    { title: "📋 قوائم", functions: [
+      { name: "- عنصر", desc: "نقاط", example: '- عنصر' },
+      { name: "1. عنصر", desc: "مرقمة", example: '1. أولاً' },
+      { name: "- [x]", desc: "مهام", example: '- [x] منجز\n- [ ] جاري' }
     ]},
-    { title: "🔗 الروابط والصور", functions: [
-      { name: "[نص](رابط)", desc: "رابط", example: '[جوجل](https://google.com)' },
+    { title: "🔗 روابط", functions: [
+      { name: "[نص](url)", desc: "رابط", example: '[جوجل](https://google.com)' },
       { name: "![alt](img)", desc: "صورة", example: '![شعار](logo.png)' }
     ]},
-    { title: "💻 الكود", functions: [
+    { title: "💻 كود", functions: [
       { name: "`كود`", desc: "سطري", example: 'استخدم `print()`' },
-      { name: "```lang", desc: "كتلة كود", example: '```js\nconst x = 5;\n```' }
-    ]},
-    { title: "📊 الجداول", functions: [
-      { name: "جداول", desc: "Markdown tables", example: '| اسم | عمر |\n|-----|-----|\n| أحمد | 25 |' }
+      { name: "```lang", desc: "كتلة", example: '```js\nconst x=5;\n```' }
     ]}
   ]},
-
   json: { sections: [
-    { title: "📦 البنية", functions: [
-      { name: "{...}", desc: "كائن", example: '{"name": "أحمد", "age": 25}' },
-      { name: "[...]", desc: "مصفوفة", example: '[1, 2, 3]' },
-      { name: "نص", desc: "String", example: '"هذا نص"' },
-      { name: "رقم", desc: "Number", example: '42\n3.14' },
-      { name: "منطقي", desc: "Boolean", example: 'true\nfalse' },
-      { name: "null", desc: "لا شيء", example: '"key": null' },
-      { name: "متداخل", desc: "Nested", example: '{"user": {"name": "أ"}}' }
+    { title: "📦 بنية", functions: [
+      { name: "{...}", desc: "كائن", example: '{"name":"أ"}' },
+      { name: "[...]", desc: "مصفوفة", example: '[1,2,3]' },
+      { name: "نص", desc: "String", example: '"نص"' },
+      { name: "رقم", desc: "Number", example: '42' },
+      { name: "منطقي", desc: "Boolean", example: 'true' },
+      { name: "null", desc: "فارغ", example: 'null' }
     ]},
-    { title: "⚠️ القواعد", functions: [
-      { name: "بدون تعليقات", desc: "لا // ولا /* */" },
-      { name: "علامات مزدوجة", desc: "استخدم \" وليس '" },
-      { name: "بدون فاصلة أخيرة", desc: "لا فاصلة بعد آخر عنصر" }
+    { title: "⚠️ قواعد", functions: [
+      { name: "بدون تعليقات", desc: "لا //" },
+      { name: "علامات مزدوجة", desc: 'استخدم "' },
+      { name: "بدون فاصلة أخيرة", desc: "لا فاصلة بعد الأخير" }
     ]}
   ]},
-
   yaml: { sections: [
-    { title: "📄 البنية", functions: [
+    { title: "📄 بنية", functions: [
       { name: "key: value", desc: "زوج", example: 'name: أحمد' },
-      { name: "قائمة", desc: "قائمة", example: 'items:\n  - HTML\n  - CSS' },
-      { name: "متداخل", desc: "Nested", example: 'user:\n  name: أ' },
-      { name: "نص متعدد", desc: "Multi-line", example: 'desc: |\n  سطر 1\n  سطر 2' },
-      { name: "تعليق", desc: "#", example: '# تعليق' }
+      { name: "قائمة", desc: "قائمة", example: 'items:\n  - a\n  - b' },
+      { name: "متداخل", desc: "Nested", example: 'user:\n  name: أ' }
     ]}
   ]},
-
   xml: { sections: [
-    { title: "📄 البنية", functions: [
-      { name: "<?xml?>", desc: "إعلان", example: '<?xml version="1.0" encoding="UTF-8"?>' },
-      { name: "<tag>x</tag>", desc: "عنصر", example: '<name>أحمد</name>' },
-      { name: "<tag attr='v'>", desc: "مع خاصية", example: '<user id="1">أحمد</user>' },
-      { name: "متداخل", desc: "Nested", example: '<user>\n  <name>أ</name>\n</user>' },
-      { name: "تعليق", desc: "تعليق", example: '<!-- تعليق -->' }
+    { title: "📄 بنية", functions: [
+      { name: "<?xml?>", desc: "إعلان", example: '<?xml version="1.0"?>' },
+      { name: "<tag>x</tag>", desc: "عنصر", example: '<name>أ</name>' },
+      { name: "<tag attr='v'>", desc: "مع خاصية", example: '<user id="1">أ</user>' }
     ]}
   ]}
 };
 
 /* ============================================================
-   State
-   ============================================================ */
-const codeEditor = document.getElementById('codeEditor');
-const lineNumbers = document.getElementById('lineNumbers');
-let currentLang = "html";
-let isDark = true;
-let errorLines = [];
-let warningLines = [];
-let autoRun = true;
-let autoRunTimer = null;
-let lintTimer = null;
-let pyodideReady = false;
-let pyodide = null;
-let sqlReady = false;
-let SQL = null;
-let consoleMessages = [];
-
-/* ============================================================
    Helpers
    ============================================================ */
-function setStatus(text, busy, error) {
-  document.getElementById('statusText').textContent = text;
-  const dot = document.getElementById('statusDot');
-  dot.className = 'status-dot' + (busy ? ' busy' : '') + (error ? ' error' : '');
-}
-
-function setEngine(text) {
-  document.getElementById('engineInfo').textContent = text;
-}
-
-function updateCursorInfo() {
-  const pos = codeEditor.selectionStart;
-  const text = codeEditor.value.substring(0, pos);
-  const line = text.split('\n').length;
-  const col = pos - text.lastIndexOf('\n');
-  document.getElementById('cursorInfo').textContent = line + ':' + col;
-}
-
-function escapeHtml(text) {
+function escHtml(text) {
   const d = document.createElement('div');
   d.textContent = text;
   return d.innerHTML;
+}
+
+function setStatus(text, type) {
+  const el = $('statusText');
+  if (el) el.textContent = text;
+  const dot = $('statusDot');
+  if (dot) {
+    dot.className = 'status-dot' + (type === 'busy' ? ' busy' : type === 'error' ? ' error' : '');
+  }
+}
+
+function setEngine(text) {
+  const el = $('engineInfo');
+  if (el) el.textContent = text;
+}
+
+function showToast(msg, type) {
+  const t = $('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.className = 'toast show' + (type === 'error' ? ' error' : type === 'info' ? ' info' : '');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => { t.className = 'toast'; }, 2000);
 }
 
 /* ============================================================
    Line Numbers
    ============================================================ */
 function updateLineNumbers() {
+  if (!codeEditor || !lineNumbers) return;
   const lines = codeEditor.value.split('\n');
   let html = '';
   for (let i = 1; i <= lines.length; i++) {
-    const isErr = errorLines.includes(i);
-    const isWarn = warningLines.includes(i);
+    const isErr = State.errorLines.indexOf(i) !== -1;
+    const isWarn = State.warningLines.indexOf(i) !== -1;
     let cls = '';
     if (isErr) cls = 'err-num';
     else if (isWarn) cls = 'warn-num';
@@ -1349,538 +1083,195 @@ function updateLineNumbers() {
   }
   lineNumbers.innerHTML = html;
   lineNumbers.scrollTop = codeEditor.scrollTop;
-  updateCursorInfo();
 }
 
-codeEditor.addEventListener('scroll', () => {
-  lineNumbers.scrollTop = codeEditor.scrollTop;
-});
-
-codeEditor.addEventListener('input', () => {
-  updateLineNumbers();
-  scheduleLint();
-  scheduleAutoRun();
-});
-
-codeEditor.addEventListener('click', updateCursorInfo);
-codeEditor.addEventListener('keyup', updateCursorInfo);
-
-codeEditor.addEventListener('keydown', (e) => {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const s = codeEditor.selectionStart;
-    codeEditor.value = codeEditor.value.substring(0, s) + '  ' + codeEditor.value.substring(codeEditor.selectionEnd);
-    codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
-    updateLineNumbers();
-  }
-});
+function updateCursorInfo() {
+  if (!codeEditor) return;
+  const pos = codeEditor.selectionStart;
+  const text = codeEditor.value.substring(0, pos);
+  const line = text.split('\n').length;
+  const col = pos - text.lastIndexOf('\n');
+  const el = $('cursorInfo');
+  if (el) el.textContent = line + ':' + col;
+}
 
 /* ============================================================
-   نظام الأخطاء الذكي - Linter
+   Linters
    ============================================================ */
-function scheduleLint() {
-  clearTimeout(lintTimer);
-  lintTimer = setTimeout(runLinter, 400);
-}
-
 function runLinter() {
+  if (!codeEditor) return;
   const code = codeEditor.value;
   const issues = [];
-  
   try {
-    if (currentLang === 'javascript') lintJS(code, issues);
-    else if (currentLang === 'python') lintPython(code, issues);
-    else if (currentLang === 'html') lintHTML(code, issues);
-    else if (currentLang === 'css') lintCSS(code, issues);
-    else if (currentLang === 'json') lintJSON(code, issues);
-    else if (currentLang === 'sql') lintSQL(code, issues);
-  } catch (e) {}
+    if (State.currentLang === 'javascript') lintJS(code, issues);
+    else if (State.currentLang === 'python') lintPython(code, issues);
+    else if (State.currentLang === 'html') lintHTML(code, issues);
+    else if (State.currentLang === 'css') lintCSS(code, issues);
+    else if (State.currentLang === 'json') lintJSON(code, issues);
+  } catch (e) { console.warn('lint error', e); }
   
-  // تحديث الأسطر
-  errorLines = issues.filter(i => i.severity === 'error').map(i => i.line);
-  warningLines = issues.filter(i => i.severity === 'warning').map(i => i.line);
+  State.errorLines = issues.filter(i => i.severity === 'error').map(i => i.line);
+  State.warningLines = issues.filter(i => i.severity === 'warning').map(i => i.line);
   updateLineNumbers();
   updateErrorBadge(issues);
   renderIssues(issues);
 }
 
 function updateErrorBadge(issues) {
-  const badge = document.getElementById('errorBadge');
-  const errors = issues.filter(i => i.severity === 'error').length;
-  const warnings = issues.filter(i => i.severity === 'warning').length;
-  
-  if (errors + warnings === 0) {
+  const badge = $('errorBadge');
+  if (!badge) return;
+  const errs = issues.filter(i => i.severity === 'error').length;
+  const warns = issues.filter(i => i.severity === 'warning').length;
+  if (errs + warns === 0) {
     badge.classList.add('hidden');
   } else {
-    badge.textContent = errors + warnings;
-    badge.className = 'tab-badge' + (errors === 0 ? ' warning' : '');
+    badge.textContent = errs + warns;
+    badge.className = 'tab-badge' + (errs === 0 ? ' warning' : '');
   }
 }
 
 function renderIssues(issues) {
-  const div = document.getElementById('tab-errors');
-  
+  const div = $('tab-errors');
+  if (!div) return;
   if (issues.length === 0) {
     div.innerHTML = '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء! كودك نظيف</div>';
     return;
   }
-  
   let html = '';
   issues.forEach(issue => {
     const icon = issue.severity === 'error' ? '❌' : '⚠️';
     const cls = issue.severity === 'error' ? '' : ' warning';
-    html += `
-      <div class="error-item${cls}">
-        <div class="header">
-          <span class="icon">${icon}</span>
-          <span class="line">السطر ${issue.line}${issue.col ? ':' + issue.col : ''}</span>
-        </div>
-        <div class="message">${escapeHtml(issue.message)}</div>
-        ${issue.suggestion ? '<div class="suggestion">' + escapeHtml(issue.suggestion) + '</div>' : ''}
-      </div>
-    `;
+    html += '<div class="error-item' + cls + '">' +
+      '<div class="header"><span class="icon">' + icon + '</span>' +
+      '<span class="line">السطر ' + issue.line + '</span></div>' +
+      '<div class="message">' + escHtml(issue.message) + '</div>' +
+      (issue.suggestion ? '<div class="suggestion">' + escHtml(issue.suggestion) + '</div>' : '') +
+      '</div>';
   });
   div.innerHTML = html;
 }
 
-/* ============================================================
-   Linters متخصصة
-   ============================================================ */
 function lintJS(code, issues) {
   const lines = code.split('\n');
   const stack = [];
-  
   lines.forEach((line, idx) => {
     const ln = idx + 1;
     const trimmed = line.trim();
-    
-    // تجاهل التعليقات والنصوص
     if (trimmed.startsWith('//')) return;
     
-    // فحص var
-    const varMatch = line.match(/\bvar\s+(\w+)/);
-    if (varMatch) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'استخدام var القديم',
-        suggestion: 'استخدم "let" أو "const" بدلاً من "var"'
-      });
+    if (/\bvar\s+\w+/.test(line)) {
+      issues.push({ line: ln, severity: 'warning', message: 'استخدام var قديم', suggestion: 'استخدم "let" أو "const"' });
     }
-    
-    // فحص == بدلاً من ===
     if (/[^=!<>]==[^=]/.test(line) && !line.includes('===')) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'استخدام == بدلاً من ===',
-        suggestion: 'استخدم === للمقارنة الصارمة (يمنع تحويل الأنواع)'
-      });
+      issues.push({ line: ln, severity: 'warning', message: 'استخدام == بدل ===', suggestion: 'استخدم === للمقارنة الصارمة' });
     }
     
-    // فحص !== بدلاً من !=
-    if (/[^!]!=[^=]/.test(line) && !line.includes('!==')) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'استخدام != بدلاً من !==',
-        suggestion: 'استخدم !== للمقارنة الصارمة'
-      });
-    }
-    
-    // فحص الأقواس غير المتوازنة
     for (let i = 0; i < line.length; i++) {
       const c = line[i];
       if (c === '{' || c === '(' || c === '[') stack.push({ c, ln });
       else if (c === '}' || c === ')' || c === ']') {
         const open = c === '}' ? '{' : c === ')' ? '(' : '[';
         if (stack.length === 0 || stack[stack.length - 1].c !== open) {
-          issues.push({
-            line: ln, severity: 'error',
-            message: 'قوس إغلاق "' + c + '" بدون فتح مطابق',
-            suggestion: 'تحقق من توازن الأقواس'
-          });
-        } else {
-          stack.pop();
-        }
+          issues.push({ line: ln, severity: 'error', message: 'قوس "' + c + '" بدون فتح مطابق', suggestion: 'تحقق من الأقواس' });
+        } else stack.pop();
       }
     }
-    
-    // فحص السطر بدون فاصلة منقوطة (إذا كان تعريف متغير)
-    if (/^(let|const|var)\s+\w+\s*=/.test(trimmed) && 
-        !trimmed.endsWith(';') && !trimmed.endsWith(',') &&
-        !trimmed.endsWith(')') && !trimmed.endsWith('{') &&
-        !trimmed.endsWith('`')) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'فاصلة منقوطة ; مفقودة',
-        suggestion: 'أضف ";" في نهاية السطر (اختياري في JS الحديث)'
-      });
-    }
-    
-    // فحص console.log في الإنتاج (نصيحة)
-    // تم تجاهله لتجنب الإزعاج
   });
-  
-  // أقواس لم تُغلق
-  stack.forEach(s => {
-    issues.push({
-      line: s.ln, severity: 'error',
-      message: 'قوس "' + s.c + '" لم يُغلق',
-      suggestion: 'أضف "' + (s.c === '{' ? '}' : s.c === '(' ? ')' : ']') + '" في نهاية الكتلة'
-    });
-  });
-  
-  // فحص الأنماط المشبوهة
-  if (/\bif\s*\([^)]*=[^=]/.test(code)) {
-    issues.push({
-      line: 1, severity: 'warning',
-      message: 'استخدام = بدل == في if',
-      suggestion: 'استخدم == أو === للمقارنة'
-    });
-  }
+  stack.forEach(s => issues.push({
+    line: s.ln, severity: 'error',
+    message: 'قوس "' + s.c + '" لم يُغلق',
+    suggestion: 'أضف "' + (s.c === '{' ? '}' : s.c === '(' ? ')' : ']') + '"'
+  }));
 }
 
 function lintPython(code, issues) {
   const lines = code.split('\n');
-  const indentStack = [];
-  
   lines.forEach((line, idx) => {
     const ln = idx + 1;
     const trimmed = line.trim();
-    
-    if (trimmed.startsWith('#')) return;
-    if (!trimmed) return;
-    
-    // فحص النقطتين
-    if (/^(if|elif|else|for|while|def|class|try|except|finally|with|async)\b/.test(trimmed)) {
-      if (!trimmed.endsWith(':') && !trimmed.includes('#')) {
-        issues.push({
-          line: ln, severity: 'error',
-          message: 'النقطتين ":" مفقودة بعد ' + trimmed.split(/\s/)[0],
-          suggestion: 'أضف ":" في نهاية السطر'
-        });
-      }
+    if (trimmed.startsWith('#') || !trimmed) return;
+    if (/^(if|elif|else|for|while|def|class|try|except|finally|with)\b/.test(trimmed) && !trimmed.endsWith(':') && !trimmed.includes('#')) {
+      issues.push({ line: ln, severity: 'error', message: 'نقطتين ":" مفقودة', suggestion: 'أضف ":" في نهاية السطر' });
     }
-    
-    // فحص print بدون أقواس (Python 2 style)
     if (/^print\s+["']/.test(trimmed) && !trimmed.includes('(')) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'print بدون أقواس',
-        suggestion: 'في Python 3: print("نص") بدلاً من print "نص"'
-      });
+      issues.push({ line: ln, severity: 'warning', message: 'print بدون أقواس', suggestion: 'استخدم print("نص")' });
     }
-    
-    // فحص = في if
-    if (/^if\s+[^=]*=[^=]/.test(trimmed)) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'استخدام = بدل == في الشرط',
-        suggestion: 'استخدم == للمقارنة'
-      });
-    }
-    
-    // فحص الأقواس
     const open = (line.match(/\(/g) || []).length;
     const close = (line.match(/\)/g) || []).length;
     if (open !== close) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'عدد الأقواس غير متوازن: ' + open + ' ( vs ' + close + ' )',
-        suggestion: 'تحقق من الأقواس'
-      });
-    }
-    
-    // فحص def بدون ()
-    if (/^def\s+\w+\s*[^\(:]/.test(trimmed) && !trimmed.startsWith('def ')) {
-      // تجاهل
+      issues.push({ line: ln, severity: 'warning', message: 'أقواس غير متوازنة: ' + open + ' ( vs ' + close + ' )', suggestion: 'تحقق من الأقواس' });
     }
   });
-  
-  // فحص جمل شائعة
-  if (code.match(/\binput\s*\(/)) {
-    issues.push({
-      line: 1, severity: 'warning',
-      message: 'استخدام input()',
-      suggestion: 'input() لا يعمل في Pyodide (لا يوجد stdin تفاعلي)'
-    });
-  }
-  
-  if (/\bfile\s*\(/.test(code) || /\bopen\s*\(/.test(code)) {
-    issues.push({
-      line: 1, severity: 'warning',
-      message: 'عمليات الملفات محدودة',
-      suggestion: 'قد لا تعمل عمليات الملفات في المتصفح'
-    });
-  }
 }
 
 function lintHTML(code, issues) {
   const lines = code.split('\n');
   const stack = [];
-  const voidTags = new Set(['br','hr','img','input','meta','link','area','base','col','embed','source','track','wbr']);
-  
+  const voidTags = ['br','hr','img','input','meta','link','area','base','col','embed','source','track','wbr'];
   lines.forEach((line, idx) => {
     const ln = idx + 1;
-    
-    // تجاهل التعليقات
     const cleaned = line.replace(/<!--[\s\S]*?-->/g, '');
-    
-    // إيجاد الوسوم
-    const tagRegex = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
-    let match;
-    while ((match = tagRegex.exec(cleaned)) !== null) {
-      const fullTag = match[0];
-      const tagName = match[1].toLowerCase();
-      const selfClose = match[2] === '/';
-      
-      if (fullTag.startsWith('</')) {
+    const re = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
+    let m;
+    while ((m = re.exec(cleaned)) !== null) {
+      const full = m[0];
+      const tag = m[1].toLowerCase();
+      const selfClose = m[2] === '/';
+      if (full.startsWith('</')) {
         if (stack.length === 0) {
-          issues.push({
-            line: ln, severity: 'error',
-            message: 'وسم إغلاق </' + tagName + '> بدون فتح',
-            suggestion: 'تحقق من توازن الوسوم'
-          });
+          issues.push({ line: ln, severity: 'error', message: 'وسم إغلاق </' + tag + '> بدون فتح', suggestion: 'تحقق من الوسوم' });
         } else {
           const last = stack.pop();
-          if (last.tag !== tagName) {
-            issues.push({
-              line: ln, severity: 'error',
-              message: 'وسم الإغلاق </' + tagName + '> لا يطابق <' + last.tag + '> (المفتوح في السطر ' + last.ln + ')',
-              suggestion: 'أغلق <' + last.tag + '> أولاً'
-            });
+          if (last.tag !== tag) {
+            issues.push({ line: ln, severity: 'error', message: '</' + tag + '> لا يطابق <' + last.tag + '>', suggestion: 'أغلق <' + last.tag + '> أولاً' });
           }
         }
-      } else if (!selfClose && !voidTags.has(tagName)) {
-        stack.push({ tag: tagName, ln });
+      } else if (!selfClose && voidTags.indexOf(tag) === -1) {
+        stack.push({ tag, ln });
       }
     }
   });
-  
-  stack.forEach(s => {
-    issues.push({
-      line: s.ln, severity: 'warning',
-      message: 'وسم <' + s.tag + '> لم يُغلق',
-      suggestion: 'أضف </' + s.tag + '>'
-    });
-  });
-  
-  // فحص وجود DOCTYPE
-  if (code.trim() && !code.includes('<!DOCTYPE') && !code.includes('<!doctype')) {
-    issues.push({
-      line: 1, severity: 'warning',
-      message: 'DOCTYPE مفقود',
-      suggestion: 'أضف <!DOCTYPE html> في أول سطر'
-    });
-  }
-  
-  // فحص charset
-  if (code.includes('<head>') && !code.includes('charset')) {
-    issues.push({
-      line: 1, severity: 'warning',
-      message: 'charset غير محدد',
-      suggestion: 'أضف <meta charset="UTF-8"> لدعم العربية'
-    });
-  }
+  stack.forEach(s => issues.push({ line: s.ln, severity: 'warning', message: 'وسم <' + s.tag + '> لم يُغلق', suggestion: 'أضف </' + s.tag + '>' }));
 }
 
 function lintCSS(code, issues) {
   const lines = code.split('\n');
-  let braceCount = 0;
-  
+  let count = 0;
   lines.forEach((line, idx) => {
     const ln = idx + 1;
     const cleaned = line.replace(/\/\*[\s\S]*?\*\//g, '');
-    
     const open = (cleaned.match(/{/g) || []).length;
     const close = (cleaned.match(/}/g) || []).length;
-    braceCount += open - close;
-    
-    if (braceCount < 0) {
-      issues.push({
-        line: ln, severity: 'error',
-        message: 'قوس إغلاق } بدون فتح',
-        suggestion: 'تحقق من توازن الأقواس'
-      });
-      braceCount = 0;
-    }
-    
-    // فحص فاصلة منقوطة ناقصة
-    if (/[a-z-]+\s*:\s*[^;{}]+$/.test(cleaned) && 
-        !cleaned.includes('{') && !cleaned.includes('}') &&
-        !cleaned.trim().endsWith(',') &&
-        !cleaned.trim().endsWith(';')) {
-      issues.push({
-        line: ln, severity: 'warning',
-        message: 'فاصلة منقوطة ; مفقودة',
-        suggestion: 'أضف ";" في نهاية الخاصية'
-      });
+    count += open - close;
+    if (count < 0) {
+      issues.push({ line: ln, severity: 'error', message: 'قوس } بدون فتح', suggestion: 'تحقق من الأقواس' });
+      count = 0;
     }
   });
-  
-  if (braceCount > 0) {
-    issues.push({
-      line: lines.length, severity: 'warning',
-      message: braceCount + ' قوس { لم يُغلق',
-      suggestion: 'أضف "}" لإغلاق الكتلة'
-    });
-  }
+  if (count > 0) issues.push({ line: lines.length, severity: 'warning', message: count + ' قوس { لم يُغلق', suggestion: 'أضف "}"' });
 }
 
 function lintJSON(code, issues) {
   if (!code.trim()) return;
-  try {
-    JSON.parse(code);
-  } catch (e) {
-    const posMatch = e.message.match(/position (\d+)/);
+  try { JSON.parse(code); }
+  catch (e) {
+    const m = e.message.match(/position (\d+)/);
     let ln = 1;
-    if (posMatch) {
-      const pos = parseInt(posMatch[1]);
-      ln = code.substring(0, pos).split('\n').length;
-    }
-    issues.push({
-      line: ln, severity: 'error',
-      message: e.message,
-      suggestion: 'تحقق من الفواصل والعلامات المزدوجة " والأقواس'
-    });
-  }
-}
-
-function lintSQL(code, issues) {
-  const lines = code.split('\n');
-  lines.forEach((line, idx) => {
-    const ln = idx + 1;
-    const trimmed = line.trim();
-    if (trimmed.startsWith('--')) return;
-    
-    // فحص SELECT بدون FROM (تنبيه فقط، قد يكون صحيحاً)
-    // لا نضيف تنبيهات مزعجة
-  });
-}
-
-/* ============================================================
-   Auto-Run
-   ============================================================ */
-function toggleAutoRun() {
-  autoRun = !autoRun;
-  const toggle = document.getElementById('autoRunToggle');
-  if (autoRun) {
-    toggle.classList.add('on');
-    showToast('⚡ التشغيل التلقائي مُفعّل');
-    scheduleAutoRun();
-  } else {
-    toggle.classList.remove('on');
-    showToast('⏸ التشغيل التلقائي متوقف', 'info');
-  }
-}
-
-function scheduleAutoRun() {
-  if (!autoRun) return;
-  clearTimeout(autoRunTimer);
-  autoRunTimer = setTimeout(() => runCode(false), 1500);
-}
-
-/* ============================================================
-   Languages
-   ============================================================ */
-function populateLangLists() {
-  const ls = document.getElementById('langSelect');
-  const ts = document.getElementById('tipsLangSelect');
-  Object.keys(LANGUAGES).forEach(key => {
-    const lang = LANGUAGES[key];
-    const o1 = document.createElement('option');
-    o1.value = key;
-    o1.textContent = lang.icon + ' ' + lang.name;
-    ls.appendChild(o1);
-    const o2 = document.createElement('option');
-    o2.value = key;
-    o2.textContent = lang.icon + ' ' + lang.name;
-    ts.appendChild(o2);
-  });
-  ls.value = 'html';
-  ts.value = 'html';
-}
-
-function changeLang() {
-  currentLang = document.getElementById('langSelect').value;
-  codeEditor.value = STARTER_CODE[currentLang] || '';
-  updateLineNumbers();
-  errorLines = []; warningLines = [];
-  setEngine(LANGUAGES[currentLang].name);
-  showToast(LANGUAGES[currentLang].icon + ' ' + LANGUAGES[currentLang].name, 'info');
-  scheduleLint();
-  scheduleAutoRun();
-}
-
-/* ============================================================
-   Navigation
-   ============================================================ */
-function initNavigation() {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const page = item.dataset.page;
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
-      if (page === 'projects') loadProjects();
-      if (page === 'tips') loadTips();
-      closeSidebar();
-    });
-  });
-  
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-      tab.classList.add('active');
-      document.getElementById('tab-' + target).classList.remove('hidden');
-    });
-  });
-}
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === name);
-  });
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-  const t = document.getElementById('tab-' + name);
-  if (t) t.classList.remove('hidden');
-}
-
-/* ============================================================
-   Theme
-   ============================================================ */
-function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-  document.getElementById('themeText').textContent = isDark ? 'ليلي' : 'نهاري';
-  localStorage.setItem('iqcode-theme', isDark ? 'dark' : 'light');
-}
-
-function restoreTheme() {
-  if (localStorage.getItem('iqcode-theme') === 'light') {
-    isDark = false;
-    document.documentElement.setAttribute('data-theme', 'light');
-    document.getElementById('themeIcon').textContent = '☀️';
-    document.getElementById('themeText').textContent = 'نهاري';
+    if (m) ln = code.substring(0, parseInt(m[1])).split('\n').length;
+    issues.push({ line: ln, severity: 'error', message: e.message, suggestion: 'تحقق من الفواصل والعلامات' });
   }
 }
 
 /* ============================================================
-   Run
+   Run Code
    ============================================================ */
-async function runCode(manual = false) {
-  const lang = LANGUAGES[currentLang];
+async function runCode(manual) {
+  const lang = LANGUAGES[State.currentLang];
   if (!lang) return;
-  
   const code = codeEditor.value;
-  const runBtn = document.getElementById('runBtn');
+  const runBtn = $('runBtn');
   
-  if (!code.trim()) {
-    showOutput('⚠️ لا يوجد كود');
-    return;
-  }
+  if (!code.trim()) { showOutput('⚠️ لا يوجد كود'); return; }
   
   if (manual) {
     runBtn.disabled = true;
@@ -1888,7 +1279,7 @@ async function runCode(manual = false) {
   }
   
   try {
-    if (lang.engine === 'web') runWeb(code, currentLang);
+    if (lang.engine === 'web') runWeb(code, State.currentLang);
     else if (lang.engine === 'pyodide') await runPython(code);
     else if (lang.engine === 'sqlite') await runSQL(code);
     else if (lang.engine === 'markdown') runMarkdown(code);
@@ -1897,13 +1288,14 @@ async function runCode(manual = false) {
     else if (lang.engine === 'xml') runXML(code);
     
     const now = new Date();
-    document.getElementById('lastRunInfo').textContent = 
-      now.getHours().toString().padStart(2,'0') + ':' +
-      now.getMinutes().toString().padStart(2,'0') + ':' +
-      now.getSeconds().toString().padStart(2,'0');
+    $('lastRunInfo').textContent = 
+      String(now.getHours()).padStart(2,'0') + ':' +
+      String(now.getMinutes()).padStart(2,'0') + ':' +
+      String(now.getSeconds()).padStart(2,'0');
   } catch (err) {
+    console.error(err);
     showOutput('❌ خطأ:\n' + err.message);
-    setStatus('خطأ', false, true);
+    setStatus('خطأ', 'error');
   } finally {
     if (manual) {
       runBtn.disabled = false;
@@ -1912,138 +1304,79 @@ async function runCode(manual = false) {
   }
 }
 
-/* ============================================================
-   Web Engine
-   ============================================================ */
 function runWeb(code, langKey) {
-  consoleMessages = [];
-  
-  let frame = document.getElementById('previewFrame');
+  State.consoleMessages = [];
+  let frame = $('previewFrame');
   if (!frame) {
-    const out = document.getElementById('tab-output');
+    const out = $('tab-output');
     out.innerHTML = '';
     frame = document.createElement('iframe');
     frame.id = 'previewFrame';
     frame.sandbox = 'allow-scripts allow-modals allow-forms allow-popups';
     out.appendChild(frame);
   }
-  
   let html = code;
-  if (langKey === 'css' && !code.toLowerCase().includes('<html')) {
+  if (langKey === 'css' && code.toLowerCase().indexOf('<html') === -1) {
     html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + code + '</style></head><body><h1>تجربة</h1><p>نص</p><div class="card box">صندوق</div><button>زر</button></body></html>';
   }
-  
-  const consoleScript = '<script>(function(){var send=function(t,a){try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){if(typeof x==="object"){try{return JSON.stringify(x);}catch(e){return String(x);}}return String(x);}).join(" ")},"*");}catch(e){}};var _l=console.log,_e=console.error,_w=console.warn;console.log=function(){send("log",arguments);_l.apply(console,arguments);};console.error=function(){send("error",arguments);_e.apply(console,arguments);};console.warn=function(){send("warn",arguments);_w.apply(console,arguments);};window.addEventListener("error",function(e){send("error",["❌ "+e.message+" (سطر "+e.lineno+")"]);});})();<\/script>';
-  
-  if (html.indexOf('</head>') !== -1) {
-    html = html.replace('</head>', consoleScript + '</head>');
-  } else if (html.indexOf('<body') !== -1) {
-    html = html.replace('<body', consoleScript + '<body');
-  } else {
-    html = consoleScript + html;
-  }
+  const consoleScript = '<script>(function(){function s(t,a){try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){if(typeof x==="object"){try{return JSON.stringify(x);}catch(e){return String(x);}}return String(x);}).join(" ")},"*");}catch(e){}}var l=console.log,e=console.error,w=console.warn;console.log=function(){s("log",arguments);l.apply(console,arguments);};console.error=function(){s("error",arguments);e.apply(console,arguments);};console.warn=function(){s("warn",arguments);w.apply(console,arguments);};window.addEventListener("error",function(ev){s("error",["❌ "+ev.message+" (سطر "+ev.lineno+")"]);});})();<\/script>';
+  if (html.indexOf('</head>') !== -1) html = html.replace('</head>', consoleScript + '</head>');
+  else if (html.indexOf('<body') !== -1) html = html.replace('<body', consoleScript + '<body');
+  else html = consoleScript + html;
   
   window.onmessage = (e) => {
     if (e.data && e.data.type === 'console') {
-      consoleMessages.push({ level: e.data.level, text: e.data.args });
+      State.consoleMessages.push({ level: e.data.level, text: e.data.args });
       updateConsoleErrors();
     }
   };
   
   frame.srcdoc = html;
   switchTab('output');
-  setStatus('تم التشغيل', false);
+  setStatus('تم التشغيل');
   setEngine(LANGUAGES[langKey].name);
-  
-  setTimeout(() => {
-    if (consoleMessages.length === 0) {
-      document.getElementById('errorBadge').classList.add('hidden');
-    }
-  }, 500);
 }
 
 function updateConsoleErrors() {
-  const errors = consoleMessages.filter(m => m.level === 'error');
-  const warns = consoleMessages.filter(m => m.level === 'warn');
-  
-  if (errors.length === 0 && warns.length === 0) return;
-  
-  const div = document.getElementById('tab-errors');
+  const errs = State.consoleMessages.filter(m => m.level === 'error');
+  const warns = State.consoleMessages.filter(m => m.level === 'warn');
+  if (errs.length + warns.length === 0) return;
+  const div = $('tab-errors');
   let html = '';
-  
-  errors.forEach(err => {
-    html += `<div class="error-item">
-      <div class="header"><span class="icon">❌</span><span class="line">خطأ تشغيل</span></div>
-      <div class="message">${escapeHtml(err.text)}</div>
-    </div>`;
+  errs.forEach(e => {
+    html += '<div class="error-item"><div class="header"><span class="icon">❌</span><span class="line">خطأ تشغيل</span></div><div class="message">' + escHtml(e.text) + '</div></div>';
   });
-  
   warns.forEach(w => {
-    html += `<div class="error-item warning">
-      <div class="header"><span class="icon">⚠️</span><span class="line">تحذير</span></div>
-      <div class="message">${escapeHtml(w.text)}</div>
-    </div>`;
+    html += '<div class="error-item warning"><div class="header"><span class="icon">⚠️</span><span class="line">تحذير</span></div><div class="message">' + escHtml(w.text) + '</div></div>';
   });
-  
-  // دمج مع الأخطاء النحوية الحالية
-  const lintIssues = [];
-  if (currentLang === 'html') lintHTML(codeEditor.value, lintIssues);
-  else if (currentLang === 'css') lintCSS(codeEditor.value, lintIssues);
-  else if (currentLang === 'javascript') lintJS(codeEditor.value, lintIssues);
-  
-  lintIssues.forEach(issue => {
-    const icon = issue.severity === 'error' ? '❌' : '⚠️';
-    const cls = issue.severity === 'error' ? '' : ' warning';
-    html += `<div class="error-item${cls}">
-      <div class="header"><span class="icon">${icon}</span><span class="line">السطر ${issue.line}</span></div>
-      <div class="message">${escapeHtml(issue.message)}</div>
-      ${issue.suggestion ? '<div class="suggestion">' + escapeHtml(issue.suggestion) + '</div>' : ''}
-    </div>`;
-  });
-  
   div.innerHTML = html;
-  
-  const badge = document.getElementById('errorBadge');
-  badge.textContent = errors.length + warns.length + lintIssues.length;
-  badge.className = 'tab-badge' + (errors.length === 0 ? ' warning' : '');
+  const badge = $('errorBadge');
+  badge.textContent = errs.length + warns.length;
+  badge.className = 'tab-badge' + (errs.length === 0 ? ' warning' : '');
   badge.classList.remove('hidden');
-}
-
-/* ============================================================
-   Python Engine
-   ============================================================ */
-async function loadPyodide() {
-  if (pyodideReady) return pyodide;
-  
-  showOutput('⏳ تحميل محرك Python...\n(مرة واحدة فقط، ~10 ميجا)');
-  setStatus('تحميل Python...', true);
-  
-  return new Promise((resolve, reject) => {
-    const load = () => {
-      window.loadPyodide({
-        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
-      }).then(py => {
-        pyodide = py;
-        pyodideReady = true;
-        resolve(py);
-      }).catch(reject);
-    };
-    
-    if (window.loadPyodide) return load();
-    
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-    script.onload = load;
-    script.onerror = () => reject(new Error('فشل تحميل Pyodide'));
-    document.head.appendChild(script);
-  });
 }
 
 async function runPython(code) {
   try {
-    const py = await loadPyodide();
+    if (!State.pyodideReady) {
+      showOutput('⏳ تحميل محرك Python...\n(مرة واحدة فقط)');
+      setStatus('تحميل Python...', 'busy');
+      await new Promise((resolve, reject) => {
+        const load = () => {
+          window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' })
+            .then(py => { State.pyodide = py; State.pyodideReady = true; resolve(); })
+            .catch(reject);
+        };
+        if (window.loadPyodide) return load();
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+        s.onload = load;
+        s.onerror = () => reject(new Error('فشل التحميل'));
+        document.head.appendChild(s);
+      });
+    }
+    const py = State.pyodide;
     py.runPython('import sys, io\n_buf = io.StringIO()\nsys.stdout = _buf\nsys.stderr = _buf');
-    
     let output = '', errText = '';
     try {
       py.runPython(code);
@@ -2054,185 +1387,122 @@ async function runPython(code) {
     } finally {
       py.runPython('sys.stdout = sys.__stdout__\nsys.stderr = sys.__stderr__');
     }
-    
     if (errText) {
-      if (output) {
-        const outDiv = document.getElementById('tab-output');
-        outDiv.innerHTML = '';
-        const pre = document.createElement('div');
-        pre.style.whiteSpace = 'pre-wrap';
-        pre.textContent = output;
-        outDiv.appendChild(pre);
-      } else {
-        showOutput('');
-      }
-      
-      const lineMatch = errText.match(/line (\d+)/);
-      const lineNum = lineMatch ? lineMatch[1] : null;
-      
-      const errDiv = document.getElementById('tab-errors');
-      errDiv.innerHTML = `<div class="error-item">
-        <div class="header">
-          <span class="icon">🐛</span>
-          ${lineNum ? '<span class="line">السطر ' + lineNum + '</span>' : '<span class="line">خطأ Python</span>'}
-        </div>
-        <div class="message">${escapeHtml(errText)}</div>
-        ${generatePythonSuggestion(errText) ? '<div class="suggestion">' + escapeHtml(generatePythonSuggestion(errText)) + '</div>' : ''}
-      </div>`;
-      
-      if (lineNum) { errorLines = [parseInt(lineNum)]; updateLineNumbers(); }
-      
-      const badge = document.getElementById('errorBadge');
-      badge.textContent = '1';
-      badge.className = 'tab-badge';
-      badge.classList.remove('hidden');
-      
-      setStatus('خطأ', false, true);
+      showOutput(output || '');
+      const m = errText.match(/line (\d+)/);
+      const ln = m ? m[1] : null;
+      const div = $('tab-errors');
+      div.innerHTML = '<div class="error-item"><div class="header"><span class="icon">🐛</span>' +
+        (ln ? '<span class="line">السطر ' + ln + '</span>' : '<span class="line">خطأ Python</span>') +
+        '</div><div class="message">' + escHtml(errText) + '</div>' +
+        (pySuggestion(errText) ? '<div class="suggestion">' + escHtml(pySuggestion(errText)) + '</div>' : '') +
+        '</div>';
+      if (ln) { State.errorLines = [parseInt(ln)]; updateLineNumbers(); }
+      const b = $('errorBadge');
+      b.textContent = '1'; b.className = 'tab-badge'; b.classList.remove('hidden');
+      setStatus('خطأ', 'error');
     } else {
-      showOutput(output || '✅ تم التنفيذ بدون مخرجات');
-      errorLines = [];
-      updateLineNumbers();
-      document.getElementById('errorBadge').classList.add('hidden');
-      setStatus('نجح ✅', false);
+      showOutput(output || '✅ تم بنجاح');
+      State.errorLines = []; updateLineNumbers();
+      $('errorBadge').classList.add('hidden');
+      setStatus('نجح');
     }
-    
     setEngine('Python');
   } catch (err) {
     showOutput('❌ فشل: ' + err.message);
-    setStatus('فشل', false, true);
+    setStatus('فشل', 'error');
   }
 }
 
-function generatePythonSuggestion(msg) {
+function pySuggestion(msg) {
   const m = msg.toLowerCase();
-  if (m.includes('indentation')) return 'تحقق من المسافات البادئة (4 مسافات ثابتة)';
-  if (m.includes('syntax')) return 'خطأ في الصياغة — تحقق من الأقواس والنقطتين ":"';
-  if (m.includes('nameerror')) {
+  if (m.indexOf('indentation') !== -1) return 'تحقق من المسافات البادئة (4 ثابتة)';
+  if (m.indexOf('syntax') !== -1) return 'خطأ في الصياغة';
+  if (m.indexOf('nameerror') !== -1) {
     const x = msg.match(/name '(\w+)'/);
-    return x ? `"${x[1]}" غير معرّف` : 'اسم غير معرّف';
+    return x ? '"' + x[1] + '" غير معرّف' : 'اسم غير معرّف';
   }
-  if (m.includes('typeerror')) return 'خطأ في نوع البيانات';
-  if (m.includes('zerodivision')) return 'القسمة على صفر';
-  if (m.includes('indexerror')) return 'الفهرس خارج النطاق';
-  if (m.includes('keyerror')) return 'المفتاح غير موجود';
-  if (m.includes('attributeerror')) return 'الخاصية غير موجودة';
-  if (m.includes('valueerror')) return 'قيمة غير صحيحة';
-  if (m.includes('importerror') || m.includes('modulenotfound')) return 'المكتبة غير مثبتة';
+  if (m.indexOf('typeerror') !== -1) return 'خطأ في النوع';
+  if (m.indexOf('zerodivision') !== -1) return 'القسمة على صفر';
+  if (m.indexOf('indexerror') !== -1) return 'الفهرس خارج النطاق';
+  if (m.indexOf('keyerror') !== -1) return 'المفتاح غير موجود';
   return null;
-}
-
-/* ============================================================
-   SQL Engine
-   ============================================================ */
-async function loadSQL() {
-  if (sqlReady) return SQL;
-  
-  showOutput('⏳ تحميل SQLite...');
-  setStatus('تحميل SQL...', true);
-  
-  return new Promise((resolve, reject) => {
-    const init = () => {
-      window.initSqlJs({
-        locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/' + f
-      }).then(SQLModule => {
-        SQL = SQLModule;
-        sqlReady = true;
-        resolve(SQLModule);
-      }).catch(reject);
-    };
-    
-    if (window.initSqlJs) return init();
-    
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js';
-    script.onload = init;
-    script.onerror = () => reject(new Error('فشل تحميل SQLite'));
-    document.head.appendChild(script);
-  });
 }
 
 async function runSQL(code) {
   try {
-    const SQLModule = await loadSQL();
-    const db = new SQLModule.Database();
-    const statements = code.split(';').map(s => s.trim()).filter(s => s);
-    let output = '';
+    if (!State.sqlReady) {
+      showOutput('⏳ تحميل SQLite...');
+      setStatus('تحميل SQL...', 'busy');
+      await new Promise((resolve, reject) => {
+        const init = () => {
+          window.initSqlJs({ locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/' + f })
+            .then(S => { State.SQL = S; State.sqlReady = true; resolve(); })
+            .catch(reject);
+        };
+        if (window.initSqlJs) return init();
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js';
+        s.onload = init;
+        s.onerror = () => reject(new Error('فشل التحميل'));
+        document.head.appendChild(s);
+      });
+    }
+    const db = new State.SQL.Database();
+    const stmts = code.split(';').map(s => s.trim()).filter(s => s);
+    let out = '';
     const errors = [];
-    
-    for (const stmt of statements) {
+    for (const s of stmts) {
       try {
-        const result = db.exec(stmt);
-        if (result.length > 0) {
-          for (const r of result) {
-            output += '📋 ' + r.columns.join(' | ') + '\n';
-            output += '─'.repeat(50) + '\n';
-            for (const row of r.values) {
-              output += row.map(v => String(v ?? 'NULL')).join(' | ') + '\n';
-            }
-            output += '\n📊 عدد الصفوف: ' + r.values.length + '\n\n';
+        const r = db.exec(s);
+        if (r.length > 0) {
+          for (const x of r) {
+            out += '📋 ' + x.columns.join(' | ') + '\n';
+            out += '─'.repeat(40) + '\n';
+            for (const row of x.values) out += row.map(v => String(v ?? 'NULL')).join(' | ') + '\n';
+            out += '\n';
           }
         } else {
-          output += '✅ تم: ' + stmt.substring(0, 60).replace(/\s+/g, ' ') + '\n\n';
+          out += '✅ ' + s.substring(0, 50) + '\n\n';
         }
-      } catch (e) {
-        errors.push({ msg: e.message });
-        output += '❌ ' + e.message + '\n\n';
-      }
+      } catch (e) { errors.push(e.message); out += '❌ ' + e.message + '\n'; }
     }
-    
-    showOutput(output || '✅ تم');
-    
-    if (errors.length > 0) {
-      const errDiv = document.getElementById('tab-errors');
-      errDiv.innerHTML = errors.map(e => `<div class="error-item">
-        <div class="header"><span class="icon">❌</span><span class="line">خطأ SQL</span></div>
-        <div class="message">${escapeHtml(e.msg)}</div>
-      </div>`).join('');
-      const badge = document.getElementById('errorBadge');
-      badge.textContent = errors.length;
-      badge.className = 'tab-badge';
-      badge.classList.remove('hidden');
-      setStatus('خطأ', false, true);
+    showOutput(out || '✅ تم');
+    if (errors.length) {
+      $('tab-errors').innerHTML = errors.map(e => '<div class="error-item"><div class="header"><span class="icon">❌</span></div><div class="message">' + escHtml(e) + '</div></div>').join('');
+      const b = $('errorBadge'); b.textContent = errors.length; b.className = 'tab-badge'; b.classList.remove('hidden');
+      setStatus('خطأ', 'error');
     } else {
-      document.getElementById('errorBadge').classList.add('hidden');
-      setStatus('نجح ✅', false);
+      $('errorBadge').classList.add('hidden');
+      setStatus('نجح');
     }
     setEngine('SQLite');
   } catch (err) {
     showOutput('❌ ' + err.message);
-    setStatus('فشل', false, true);
+    setStatus('فشل', 'error');
   }
 }
 
-/* ============================================================
-   Markdown
-   ============================================================ */
 function runMarkdown(code) {
   let html = code
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px;overflow-x:auto"><code>$2</code></pre>')
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px"><code>$2</code></pre>')
     .replace(/^### (.*)$/gm, '<h3>$1</h3>')
     .replace(/^## (.*)$/gm, '<h2>$1</h2>')
     .replace(/^# (.*)$/gm, '<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/~~(.+?)~~/g, '<del>$1</del>')
-    .replace(/`([^`]+)`/g, '<code style="background:#1c2330;color:#f85149;padding:2px 6px;border-radius:4px;font-family:monospace">$1</code>')
+    .replace(/`([^`]+)`/g, '<code style="background:#1c2330;color:#f85149;padding:2px 6px;border-radius:4px">$1</code>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" style="color:#58a6ff">$1</a>')
     .replace(/^- \[x\] (.+)$/gm, '<li style="list-style:none">✅ $1</li>')
     .replace(/^- \[ \] (.+)$/gm, '<li style="list-style:none">⬜ $1</li>')
     .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
-    .replace(/^> (.+)$/gm, '<blockquote style="border-right:4px solid #58a6ff;padding:8px 16px;margin:8px 0;background:rgba(88,166,255,0.1)">$1</blockquote>')
-    .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #30363d;margin:20px 0">')
     .replace(/\n/g, '<br>');
-  
   html = html.replace(/(<li>.*<\/li>)/s, '<ul style="padding-right:20px">$1</ul>');
-  
-  const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;line-height:1.7;background:white;color:#222;max-width:800px;margin:0 auto}h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}h2{color:#8250df;margin-top:24px}h3{color:#bf3989}a{color:#0969da}</style></head><body>' + html + '</body></html>';
-  
-  let frame = document.getElementById('previewFrame');
+  const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;line-height:1.7;background:white;color:#222}h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}h2{color:#8250df;margin-top:24px}</style></head><body>' + html + '</body></html>';
+  let frame = $('previewFrame');
   if (!frame) {
-    const out = document.getElementById('tab-output');
+    const out = $('tab-output');
     out.innerHTML = '';
     frame = document.createElement('iframe');
     frame.id = 'previewFrame';
@@ -2241,71 +1511,56 @@ function runMarkdown(code) {
   frame.srcdoc = full;
   switchTab('output');
   setEngine('Markdown');
-  setStatus('نجح ✅', false);
-  document.getElementById('errorBadge').classList.add('hidden');
+  setStatus('نجح');
+  $('errorBadge').classList.add('hidden');
 }
 
-/* ============================================================
-   JSON
-   ============================================================ */
 function runJSON(code) {
   try {
     const obj = JSON.parse(code);
-    let stats = '✅ JSON صالح!\n\n📊 إحصائيات:\n';
-    stats += '• الأحرف: ' + code.length + '\n';
-    stats += '• الأسطر: ' + code.split('\n').length + '\n';
-    
-    if (Array.isArray(obj)) {
-      stats += '• النوع: مصفوفة (' + obj.length + ' عنصر)\n';
-    } else if (typeof obj === 'object' && obj !== null) {
-      stats += '• النوع: كائن (' + Object.keys(obj).length + ' خصائص)\n';
-    }
-    
-    stats += '\n📄 النسخة المنسّقة:\n' + JSON.stringify(obj, null, 2);
-    showOutput(stats);
+    let s = '✅ JSON صالح!\n\n📊 إحصائيات:\n';
+    s += '• الأحرف: ' + code.length + '\n';
+    s += '• الأسطر: ' + code.split('\n').length + '\n';
+    if (Array.isArray(obj)) s += '• النوع: مصفوفة (' + obj.length + ' عنصر)\n';
+    else if (typeof obj === 'object') s += '• النوع: كائن (' + Object.keys(obj).length + ' خصائص)\n';
+    s += '\n📄 النسخة المنسقة:\n' + JSON.stringify(obj, null, 2);
+    showOutput(s);
     setEngine('JSON');
-    setStatus('صالح ✅', false);
-    errorLines = [];
+    setStatus('صالح');
+    State.errorLines = [];
     updateLineNumbers();
-    document.getElementById('errorBadge').classList.add('hidden');
+    $('errorBadge').classList.add('hidden');
   } catch (e) {
     showOutput('❌ JSON غير صالح:\n\n' + e.message);
-    const posMatch = e.message.match(/position (\d+)/);
-    if (posMatch) {
-      errorLines = [code.substring(0, parseInt(posMatch[1])).split('\n').length];
-      updateLineNumbers();
-    }
-    setStatus('خطأ', false, true);
+    const m = e.message.match(/position (\d+)/);
+    if (m) { State.errorLines = [code.substring(0, parseInt(m[1])).split('\n').length]; updateLineNumbers(); }
+    setStatus('خطأ', 'error');
   }
 }
 
-/* ============================================================
-   YAML/XML
-   ============================================================ */
 function runYAML(code) {
   const lines = code.split('\n');
   const errors = [];
   lines.forEach((line, idx) => {
     if (line.trim().startsWith('#') || !line.trim()) return;
-    if (!line.startsWith(' ') && !line.startsWith('-') && !line.includes(':') && /[a-zA-Z\u0600-\u06FF]/.test(line)) {
-      errors.push({ line: idx + 1, msg: 'يفتقد ":" بعد المفتاح' });
+    if (!line.startsWith(' ') && !line.startsWith('-') && line.indexOf(':') === -1 && /[a-zA-Z\u0600-\u06FF]/.test(line)) {
+      errors.push({ line: idx + 1 });
     }
   });
-  
   let out = '📄 YAML\n\nالأسطر: ' + lines.length + '\n\n';
-  if (errors.length > 0) {
+  if (errors.length) {
     out += '⚠️ تحذيرات:\n';
-    errors.forEach(e => out += '  • السطر ' + e.line + ': ' + e.msg + '\n');
-    warningLines = errors.map(e => e.line);
+    errors.forEach(e => out += '  • السطر ' + e.line + '\n');
+    State.warningLines = errors.map(e => e.line);
     updateLineNumbers();
   } else {
     out += '✅ البنية سليمة';
-    warningLines = [];
+    State.warningLines = [];
     updateLineNumbers();
   }
   showOutput(out);
   setEngine('YAML');
-  setStatus(errors.length ? 'تحذيرات' : 'صالح ✅', false);
+  setStatus(errors.length ? 'تحذيرات' : 'صالح');
 }
 
 function runXML(code) {
@@ -2313,34 +1568,29 @@ function runXML(code) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(code, 'text/xml');
     const err = doc.querySelector('parsererror');
-    
     if (err) {
       showOutput('❌ XML غير صالح:\n\n' + err.textContent);
       const m = err.textContent.match(/line (\d+)/);
-      if (m) { errorLines = [parseInt(m[1])]; updateLineNumbers(); }
-      setStatus('خطأ', false, true);
+      if (m) { State.errorLines = [parseInt(m[1])]; updateLineNumbers(); }
+      setStatus('خطأ', 'error');
       return;
     }
-    
-    let out = '✅ XML صالح!\n\n';
-    out += 'الجذر: ' + doc.documentElement.nodeName + '\n';
+    let out = '✅ XML صالح!\n\nالجذر: ' + doc.documentElement.nodeName + '\n';
     out += 'العناصر: ' + doc.getElementsByTagName('*').length + '\n';
     showOutput(out);
     setEngine('XML');
-    setStatus('صالح ✅', false);
-    errorLines = [];
+    setStatus('صالح');
+    State.errorLines = [];
     updateLineNumbers();
   } catch (e) {
     showOutput('❌ ' + e.message);
-    setStatus('خطأ', false, true);
+    setStatus('خطأ', 'error');
   }
 }
 
-/* ============================================================
-   Output
-   ============================================================ */
 function showOutput(text) {
-  const out = document.getElementById('tab-output');
+  const out = $('tab-output');
+  if (!out) return;
   out.innerHTML = '';
   const div = document.createElement('div');
   div.style.whiteSpace = 'pre-wrap';
@@ -2348,51 +1598,64 @@ function showOutput(text) {
   out.appendChild(div);
 }
 
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+  const t = $('tab-' + name);
+  if (t) t.classList.remove('hidden');
+}
+
 /* ============================================================
    Tips
    ============================================================ */
 function loadTips() {
-  const key = document.getElementById('tipsLangSelect').value;
+  const key = $('tipsLangSelect').value;
   const tips = TIPS[key];
   const langName = LANGUAGES[key] ? LANGUAGES[key].name : key;
   const icon = LANGUAGES[key] ? LANGUAGES[key].icon : '';
-  const container = document.getElementById('tipsContent');
-  
+  const container = $('tipsContent');
   if (!tips) {
     container.innerHTML = '<h2>' + icon + ' ' + langName + '</h2><div class="tips-section"><p>لا توجد نصائح</p></div>';
     return;
   }
-  
   let total = 0;
   tips.sections.forEach(s => total += s.functions.length);
-  
   let html = '<h2>' + icon + ' نصائح ' + langName + ' <span class="tips-count">(' + total + ' دالة)</span></h2>';
-  
   tips.sections.forEach(section => {
     html += '<div class="tips-section"><h3>' + section.title + '</h3>';
     section.functions.forEach((fn, i) => {
       const sid = 'snip_' + key + '_' + i;
       window[sid] = fn.example;
       html += '<div class="func-item">' +
-        '<span class="fname">' + escapeHtml(fn.name) + '</span>' +
-        '<div class="fdesc">' + escapeHtml(fn.desc) + '</div>' +
-        (fn.example ? '<div class="fexample">' + escapeHtml(fn.example) + '</div>' +
-          '<button class="insert-btn" onclick="insertSnippetById(\'' + sid + '\')">➕ إدراج</button>' : '') +
+        '<span class="fname">' + escHtml(fn.name) + '</span>' +
+        '<div class="fdesc">' + escHtml(fn.desc) + '</div>' +
+        (fn.example ? '<div class="fexample">' + escHtml(fn.example) + '</div>' +
+          '<button class="insert-btn" type="button" data-snippet="' + sid + '">➕ إدراج</button>' : '') +
         '</div>';
     });
     html += '</div>';
   });
-  
   container.innerHTML = html;
+  
+  // ربط أزرار الإدراج بـ addEventListener بدل onclick
+  container.querySelectorAll('[data-snippet]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-snippet');
+      insertSnippetById(id);
+    });
+  });
 }
 
 function insertSnippetById(id) {
   const code = window[id];
   if (!code) return;
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  document.querySelector('[data-page="editor"]').classList.add('active');
+  const editorNav = document.querySelector('[data-page="editor"]');
+  if (editorNav) editorNav.classList.add('active');
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-editor').classList.add('active');
+  $('page-editor').classList.add('active');
   codeEditor.value = codeEditor.value + '\n' + code + '\n';
   updateLineNumbers();
   showToast('✅ تم الإدراج');
@@ -2405,19 +1668,23 @@ function insertSnippetById(id) {
    Projects
    ============================================================ */
 function saveProject() {
-  const name = document.getElementById('projectName').value.trim() || 'مشروع';
-  const code = codeEditor.value;
-  if (!code.trim()) { showToast('⚠️ لا يوجد كود', 'error'); return; }
-  const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-  const idx = projects.findIndex(p => p.name === name);
-  const project = { name, code, lang: currentLang, date: new Date().toISOString(), id: idx >= 0 ? projects[idx].id : Date.now() };
-  if (idx >= 0) { projects[idx] = project; showToast('💾 تم التحديث'); }
-  else { projects.push(project); showToast('💾 تم الحفظ'); }
-  localStorage.setItem('iqcode-projects', JSON.stringify(projects));
+  try {
+    const name = $('projectName').value.trim() || 'مشروع';
+    const code = codeEditor.value;
+    if (!code.trim()) { showToast('⚠️ لا يوجد كود', 'error'); return; }
+    const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+    const idx = projects.findIndex(p => p.name === name);
+    const project = { name, code, lang: State.currentLang, date: new Date().toISOString(), id: idx >= 0 ? projects[idx].id : Date.now() };
+    if (idx >= 0) { projects[idx] = project; showToast('💾 تم التحديث'); }
+    else { projects.push(project); showToast('💾 تم الحفظ'); }
+    localStorage.setItem('iqcode-projects', JSON.stringify(projects));
+  } catch (e) {
+    showToast('❌ خطأ في الحفظ', 'error');
+  }
 }
 
 function loadProjects() {
-  const grid = document.getElementById('projectsGrid');
+  const grid = $('projectsGrid');
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   if (projects.length === 0) {
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="big-icon">📭</span>لا توجد مشاريع</div>';
@@ -2428,14 +1695,20 @@ function loadProjects() {
     const card = document.createElement('div');
     card.className = 'project-card';
     const lang = LANGUAGES[p.lang];
-    card.innerHTML = '<span class="lang-badge">' + (lang?.icon || '') + ' ' + (lang?.name || p.lang) + '</span>' +
-      '<h3>' + escapeHtml(p.name) + '</h3>' +
+    card.innerHTML = '<span class="lang-badge">' + (lang ? lang.icon + ' ' + lang.name : p.lang) + '</span>' +
+      '<h3>' + escHtml(p.name) + '</h3>' +
       '<div class="meta">📅 ' + new Date(p.date).toLocaleString('ar-EG') + '</div>' +
       '<div class="actions">' +
-      '<button onclick="openProject(' + p.id + ')" style="background:var(--primary-2);color:white;border:none;">📂 فتح</button>' +
-      '<button class="danger" onclick="deleteProject(' + p.id + ')">🗑</button>' +
+      '<button type="button" data-open="' + p.id + '" style="background:var(--primary-2);color:white;border:none;">📂 فتح</button>' +
+      '<button type="button" class="danger" data-del="' + p.id + '">🗑 حذف</button>' +
       '</div>';
     grid.appendChild(card);
+  });
+  grid.querySelectorAll('[data-open]').forEach(b => {
+    b.addEventListener('click', () => openProject(parseInt(b.getAttribute('data-open'))));
+  });
+  grid.querySelectorAll('[data-del]').forEach(b => {
+    b.addEventListener('click', () => deleteProject(parseInt(b.getAttribute('data-del'))));
   });
 }
 
@@ -2443,16 +1716,17 @@ function openProject(id) {
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   const p = projects.find(x => x.id === id);
   if (!p) return;
-  currentLang = p.lang;
-  document.getElementById('langSelect').value = p.lang;
-  document.getElementById('projectName').value = p.name;
+  State.currentLang = p.lang;
+  $('langSelect').value = p.lang;
+  $('projectName').value = p.name;
   codeEditor.value = p.code;
   updateLineNumbers();
-  errorLines = []; warningLines = [];
+  State.errorLines = []; State.warningLines = [];
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  document.querySelector('[data-page="editor"]').classList.add('active');
+  const editorNav = document.querySelector('[data-page="editor"]');
+  if (editorNav) editorNav.classList.add('active');
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-  document.getElementById('page-editor').classList.add('active');
+  $('page-editor').classList.add('active');
   showToast('📂 تم الفتح');
   scheduleLint();
   scheduleAutoRun();
@@ -2477,7 +1751,7 @@ function clearAllProjects() {
 function exportProjects() {
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   if (projects.length === 0) { showToast('⚠️ لا توجد مشاريع', 'error'); return; }
-  const blob = new Blob([JSON.stringify({ app: 'İQCODE', version: '8.0', exportedAt: new Date().toISOString(), projects }, null, 2)], { type: 'application/json;charset=utf-8' });
+  const blob = new Blob([JSON.stringify({ app: 'İQCODE', version: '9.0', exportedAt: new Date().toISOString(), projects }, null, 2)], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -2485,7 +1759,7 @@ function exportProjects() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
   showToast('📤 ' + projects.length + ' مشروع');
 }
 
@@ -2517,14 +1791,11 @@ function importProjects(e) {
   e.target.value = '';
 }
 
-/* ============================================================
-   Download
-   ============================================================ */
 function downloadCode() {
-  const lang = LANGUAGES[currentLang];
+  const lang = LANGUAGES[State.currentLang];
   if (!lang) return;
   const code = codeEditor.value;
-  const name = (document.getElementById('projectName').value.trim() || 'project').replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
+  const name = ($('projectName').value.trim() || 'project').replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
   const filename = name + '.' + lang.fileExt;
   const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -2534,39 +1805,106 @@ function downloadCode() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
   showToast('⬇ ' + filename);
 }
 
 /* ============================================================
-   Toast
+   Sidebar / Theme
    ============================================================ */
-function showToast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (type === 'error' ? ' error' : type === 'info' ? ' info' : '');
-  clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => t.className = 'toast', 2000);
+function openSidebar() {
+  $('sidebar').classList.add('open');
+  $('overlay').classList.add('show');
+}
+function closeSidebar() {
+  $('sidebar').classList.remove('open');
+  $('overlay').classList.remove('show');
+}
+
+function toggleTheme() {
+  State.isDark = !State.isDark;
+  document.documentElement.setAttribute('data-theme', State.isDark ? 'dark' : 'light');
+  $('themeIcon').textContent = State.isDark ? '🌙' : '☀️';
+  $('themeText').textContent = State.isDark ? 'ليلي' : 'نهاري';
+  localStorage.setItem('iqcode-theme', State.isDark ? 'dark' : 'light');
+}
+
+function toggleAutoRun() {
+  State.autoRun = !State.autoRun;
+  const t = $('autoRunToggle');
+  if (State.autoRun) {
+    t.classList.add('on');
+    showToast('⚡ التشغيل التلقائي مفعّل');
+    scheduleAutoRun();
+  } else {
+    t.classList.remove('on');
+    showToast('⏸ التشغيل التلقائي متوقف', 'info');
+  }
+}
+
+function scheduleAutoRun() {
+  if (!State.autoRun) return;
+  clearTimeout(State.autoRunTimer);
+  State.autoRunTimer = setTimeout(() => runCode(false), 1500);
+}
+
+function scheduleLint() {
+  clearTimeout(State.lintTimer);
+  State.lintTimer = setTimeout(runLinter, 400);
 }
 
 /* ============================================================
-   Sidebar
+   Init Navigation
    ============================================================ */
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
+function initNavigation() {
+  // Sidebar nav
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const page = item.getAttribute('data-page');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = $('page-' + page);
+      if (target) target.classList.add('active');
+      if (page === 'projects') loadProjects();
+      if (page === 'tips') loadTips();
+      closeSidebar();
+    });
+  });
+  
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      tab.classList.add('active');
+      const t = $('tab-' + target);
+      if (t) t.classList.remove('hidden');
+    });
+  });
 }
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
+
+/* ============================================================
+   Language Select
+   ============================================================ */
+function changeLang() {
+  State.currentLang = $('langSelect').value;
+  codeEditor.value = STARTER_CODE[State.currentLang] || '';
+  updateLineNumbers();
+  State.errorLines = []; State.warningLines = [];
+  setEngine(LANGUAGES[State.currentLang].name);
+  showToast(LANGUAGES[State.currentLang].icon + ' ' + LANGUAGES[State.currentLang].name, 'info');
+  scheduleLint();
+  scheduleAutoRun();
 }
 
 /* ============================================================
    Divider
    ============================================================ */
 function initDivider() {
-  const divider = document.getElementById('divider');
-  const outSec = document.getElementById('outputSection');
+  const divider = $('divider');
+  const outSec = $('outputSection');
   let dragging = false;
   
   const start = (e) => { dragging = true; e.preventDefault(); };
@@ -2576,9 +1914,7 @@ function initDivider() {
     const wrapper = document.querySelector('.editor-wrapper');
     const rect = wrapper.getBoundingClientRect();
     const h = rect.bottom - y - 25;
-    if (h > 80 && h < rect.height - 80) {
-      outSec.style.height = h + 'px';
-    }
+    if (h > 80 && h < rect.height - 80) outSec.style.height = h + 'px';
   };
   
   divider.addEventListener('mousedown', start);
@@ -2590,50 +1926,153 @@ function initDivider() {
 }
 
 /* ============================================================
-   Shortcuts
+   Wire up all buttons
    ============================================================ */
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    e.preventDefault();
-    runCode(true);
+function wireButtons() {
+  const bind = (id, fn) => {
+    const el = $(id);
+    if (el) {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        try { fn(); } catch (err) { console.error(id + ' error:', err); showToast('❌ خطأ', 'error'); }
+      });
+    } else {
+      console.warn('Button not found:', id);
+    }
+  };
+  
+  bind('menuBtn', openSidebar);
+  bind('overlay', closeSidebar);
+  bind('runBtn', () => runCode(true));
+  bind('saveBtn', saveProject);
+  bind('downloadBtn', downloadCode);
+  bind('themeBtn', toggleTheme);
+  bind('autoRunToggle', toggleAutoRun);
+  bind('exportBtn', exportProjects);
+  bind('importBtn', () => $('importFile').click());
+  bind('clearBtn', clearAllProjects);
+  
+  const imp = $('importFile');
+  if (imp) imp.addEventListener('change', importProjects);
+  
+  const ls = $('langSelect');
+  if (ls) ls.addEventListener('change', changeLang);
+  
+  const tls = $('tipsLangSelect');
+  if (tls) tls.addEventListener('change', loadTips);
+  
+  // Editor events
+  if (codeEditor) {
+    codeEditor.addEventListener('scroll', () => {
+      if (lineNumbers) lineNumbers.scrollTop = codeEditor.scrollTop;
+    });
+    codeEditor.addEventListener('input', () => {
+      updateLineNumbers();
+      scheduleLint();
+      scheduleAutoRun();
+    });
+    codeEditor.addEventListener('click', updateCursorInfo);
+    codeEditor.addEventListener('keyup', updateCursorInfo);
+    codeEditor.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const s = codeEditor.selectionStart;
+        codeEditor.value = codeEditor.value.substring(0, s) + '  ' + codeEditor.value.substring(codeEditor.selectionEnd);
+        codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
+        updateLineNumbers();
+      }
+    });
   }
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    e.preventDefault();
-    saveProject();
-  }
-});
+  
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runCode(true);
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      saveProject();
+    }
+  });
+}
 
 /* ============================================================
    Init
    ============================================================ */
-(function init() {
+function init() {
   try {
-    restoreTheme();
-    populateLangLists();
+    console.log('İQCODE v9.0 starting...');
+    
+    codeEditor = $('codeEditor');
+    lineNumbers = $('lineNumbers');
+    
+    if (!codeEditor) { console.error('codeEditor not found!'); return; }
+    
+    // Theme restore
+    if (localStorage.getItem('iqcode-theme') === 'light') {
+      State.isDark = false;
+      document.documentElement.setAttribute('data-theme', 'light');
+      const ti = $('themeIcon'); if (ti) ti.textContent = '☀️';
+      const tt = $('themeText'); if (tt) tt.textContent = 'نهاري';
+    }
+    
+    // Populate languages
+    const ls = $('langSelect');
+    const tls = $('tipsLangSelect');
+    Object.keys(LANGUAGES).forEach(key => {
+      const lang = LANGUAGES[key];
+      if (ls) {
+        const o = document.createElement('option');
+        o.value = key;
+        o.textContent = lang.icon + ' ' + lang.name;
+        ls.appendChild(o);
+      }
+      if (tls) {
+        const o = document.createElement('option');
+        o.value = key;
+        o.textContent = lang.icon + ' ' + lang.name;
+        tls.appendChild(o);
+      }
+    });
+    if (ls) ls.value = 'html';
+    if (tls) tls.value = 'html';
+    
+    // Navigation
     initNavigation();
     initDivider();
     
-    currentLang = 'html';
+    // Initial content
+    State.currentLang = 'html';
     codeEditor.value = STARTER_CODE.html;
     updateLineNumbers();
     loadTips();
     
-    setStatus('جاهز', false);
+    setStatus('جاهز');
     setEngine('HTML');
     
-    // Auto-run مفعّل
-    document.getElementById('autoRunToggle').classList.add('on');
+    // Wire ALL buttons
+    wireButtons();
     
-    // تشغيل أولي + lint
+    // Auto-run initial
     setTimeout(() => {
       runLinter();
       runCode(false);
     }, 500);
     
+    console.log('✅ İQCODE ready');
   } catch (e) {
     console.error('Init error:', e);
+    alert('خطأ في التهيئة: ' + e.message);
   }
-})();
+}
+
+// Start when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
