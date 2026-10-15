@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e14">
 <title>İQCODE - محرر البرمجة الذكي</title>
 
 <style>
@@ -10,179 +11,154 @@
   --bg: #0a0e14; --bg-2: #131820; --bg-3: #1c2330; --bg-4: #252d3d;
   --border: #2d3748; --border-2: #3d4a5c;
   --text: #e6edf3; --text-dim: #8b949e; --text-bright: #ffffff;
-  --primary: #58a6ff; --primary-2: #1f6feb; --primary-glow: rgba(88,166,255,0.3);
+  --primary: #58a6ff; --primary-2: #1f6feb;
   --success: #3fb950; --success-2: #2ea043;
   --danger: #f85149; --danger-2: #da3633;
   --warning: #d29922; --info: #58a6ff;
-  --accent: #a855f7; --accent-2: #9333ea;
-  --pink: #ec4899;
+  --accent: #a855f7; --pink: #ec4899;
   --gradient: linear-gradient(135deg, #58a6ff, #a855f7, #ec4899);
   --gradient-success: linear-gradient(135deg, #3fb950, #2ea043);
-  --shadow: 0 4px 20px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
 }
 :root[data-theme="light"] {
   --bg: #ffffff; --bg-2: #f6f8fa; --bg-3: #eaeef2; --bg-4: #dfe3e8;
   --border: #d0d7de; --border-2: #b8c0c8;
   --text: #1f2328; --text-dim: #656d76; --text-bright: #000000;
-  --primary: #0969da; --primary-2: #0550ae; --primary-glow: rgba(9,105,218,0.2);
+  --primary: #0969da; --primary-2: #0550ae;
   --success: #1a7f37; --success-2: #166534;
   --danger: #cf222e; --danger-2: #a40e26;
   --warning: #9a6700; --info: #0969da;
-  --accent: #8250df; --accent-2: #6b21a8;
-  --pink: #bf3989;
+  --accent: #8250df; --pink: #bf3989;
   --gradient: linear-gradient(135deg, #0969da, #8250df, #bf3989);
   --gradient-success: linear-gradient(135deg, #1a7f37, #166534);
-  --shadow: 0 4px 20px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, -apple-system, Tahoma, sans-serif;
+  font-family: 'Segoe UI', system-ui, Tahoma, sans-serif;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s; }
 
-body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
-.app { display: flex; height: 100vh; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--text); overscroll-behavior: none; }
+.app { display: flex; height: 100vh; height: 100dvh; }
 
-/* ===================== القائمة الجانبية ===================== */
+/* ============ Sidebar ============ */
 .sidebar {
   width: 280px; background: var(--bg-2);
   border-left: 1px solid var(--border);
   display: flex; flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 100;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease-out;
+  z-index: 100; will-change: transform;
 }
-.sidebar-header { padding: 20px 18px; border-bottom: 1px solid var(--border); }
+.sidebar-header { padding: 18px; border-bottom: 1px solid var(--border); }
 .logo {
-  font-size: 28px; font-weight: 900;
+  font-size: 26px; font-weight: 900;
   background: var(--gradient);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   letter-spacing: 2px; line-height: 1;
 }
-.tagline { font-size: 11px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.5px; }
-.sidebar-nav { flex: 1; padding: 14px 10px; overflow-y: auto; }
+.tagline { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+.sidebar-nav { flex: 1; padding: 10px; overflow-y: auto; }
 .nav-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 16px; border-radius: 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 15px; border-radius: 10px; cursor: pointer;
   color: var(--text); font-size: 14px; font-weight: 600;
-  margin-bottom: 6px; user-select: none;
-  position: relative; overflow: hidden;
-}
-.nav-item::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--primary); opacity: 0; transition: opacity 0.3s;
+  margin-bottom: 5px; user-select: none;
 }
 .nav-item:hover { background: var(--bg-3); }
 .nav-item.active {
   background: var(--gradient); color: white;
-  box-shadow: 0 4px 15px var(--primary-glow);
+  box-shadow: 0 4px 12px rgba(88,166,255,0.25);
 }
-.nav-item .icon { font-size: 20px; width: 24px; text-align: center; }
+.nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
 .nav-badge {
   margin-right: auto; background: var(--bg-4); color: var(--text-dim);
-  font-size: 10px; padding: 2px 8px; border-radius: 10px;
-  font-weight: bold;
+  font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: bold;
 }
 .nav-item.active .nav-badge { background: rgba(255,255,255,0.25); color: white; }
-
-.sidebar-footer { padding: 14px; border-top: 1px solid var(--border); }
-.theme-toggle {
-  width: 100%; padding: 12px; background: var(--bg-3);
+.sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
+.theme-toggle, .auto-run-toggle {
+  width: 100%; padding: 11px; background: var(--bg-3);
   border: 1px solid var(--border); color: var(--text);
   border-radius: 10px; cursor: pointer; font-size: 13px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  font-weight: 600;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 600; margin-bottom: 8px;
 }
-.theme-toggle:hover { border-color: var(--primary); background: var(--bg-4); }
-
-.auto-run-toggle {
-  width: 100%; padding: 12px; margin-bottom: 10px;
-  background: var(--bg-3); border: 1px solid var(--border);
-  color: var(--text); border-radius: 10px; cursor: pointer;
-  font-size: 13px; display: flex; align-items: center;
-  justify-content: space-between; font-weight: 600;
-}
+.theme-toggle { justify-content: center; gap: 8px; }
+.theme-toggle:active, .auto-run-toggle:active { transform: scale(0.98); }
 .auto-run-toggle.on {
   background: var(--gradient-success); color: white; border-color: transparent;
 }
 .switch {
-  width: 36px; height: 20px; background: var(--bg-4);
-  border-radius: 10px; position: relative; transition: background 0.3s;
+  width: 34px; height: 18px; background: var(--bg-4);
+  border-radius: 10px; position: relative;
 }
-.auto-run-toggle.on .switch { background: rgba(255,255,255,0.35); }
+.auto-run-toggle.on .switch { background: rgba(255,255,255,0.4); }
 .switch::after {
-  content: ''; position: absolute; width: 16px; height: 16px;
+  content: ''; position: absolute; width: 14px; height: 14px;
   background: white; border-radius: 50%; top: 2px; right: 2px;
-  transition: transform 0.3s;
+  transition: transform 0.2s;
 }
 .auto-run-toggle.on .switch::after { transform: translateX(-16px); }
 
-/* ===================== منطقة المحتوى ===================== */
-.content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+/* ============ Content ============ */
+.content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
 .topbar {
   background: var(--bg-2); border-bottom: 1px solid var(--border);
-  padding: 12px 16px; display: flex; align-items: center;
-  gap: 10px; flex-wrap: wrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 10px 12px; display: flex; align-items: center;
+  gap: 8px; flex-wrap: wrap; flex-shrink: 0;
 }
 .menu-btn {
   display: none; background: var(--bg-3); border: 1px solid var(--border);
-  color: var(--text); padding: 10px 14px; border-radius: 10px;
-  cursor: pointer; font-size: 18px;
+  color: var(--text); padding: 9px 13px; border-radius: 9px;
+  cursor: pointer; font-size: 17px; line-height: 1;
 }
+.menu-btn:active { transform: scale(0.95); }
 
 select, button, input {
   background: var(--bg-3); color: var(--text);
-  border: 1px solid var(--border); padding: 10px 14px;
-  border-radius: 10px; font-size: 13px; cursor: pointer;
+  border: 1px solid var(--border); padding: 9px 12px;
+  border-radius: 9px; font-size: 13px; cursor: pointer;
   outline: none; font-family: inherit; font-weight: 500;
 }
-input { cursor: text; min-width: 140px; }
-select:hover, button:hover { border-color: var(--primary); background: var(--bg-4); }
+input { cursor: text; min-width: 120px; }
+select:focus, input:focus { border-color: var(--primary); }
+button:active { transform: scale(0.96); }
 button.primary {
-  background: var(--gradient-success);
-  border: none; color: white; font-weight: bold;
-  box-shadow: 0 4px 15px rgba(63,185,80,0.3);
-  padding: 10px 20px;
+  background: var(--gradient-success); border: none;
+  color: white; font-weight: bold; padding: 9px 18px;
 }
-button.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(63,185,80,0.4); }
 button.danger { background: var(--danger); border: none; color: white; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
+.lang-select { min-width: 150px; font-weight: 600; }
+.lang-select option { background: var(--bg-2); color: var(--text); padding: 10px; }
 
-.lang-select {
-  min-width: 180px; font-weight: 600;
-  background: var(--bg-3);
-}
-.lang-select option { background: var(--bg-2); color: var(--text); padding: 8px; }
-
-/* ===================== الصفحات ===================== */
+/* ============ Pages ============ */
 .page { flex: 1; display: none; overflow: hidden; flex-direction: column; }
 .page.active { display: flex; }
 
-/* ===================== المحرر ===================== */
-.editor-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+/* ============ Editor ============ */
+.editor-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 .editor-area {
-  flex: 1; position: relative; overflow: hidden; min-height: 150px;
+  flex: 1; position: relative; overflow: hidden; min-height: 100px;
   display: flex; background: var(--bg);
 }
 .line-numbers {
   background: var(--bg-2); color: var(--text-dim);
   font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 14px; line-height: 1.65;
-  padding: 14px 10px; text-align: right; user-select: none;
-  overflow: hidden; min-width: 50px;
+  font-size: 13.5px; line-height: 1.6;
+  padding: 12px 8px; text-align: right; user-select: none;
+  overflow: hidden; min-width: 46px;
   border-left: 1px solid var(--border);
   direction: ltr; font-weight: 600;
 }
 .line-numbers .err-num {
   color: var(--danger); background: rgba(248,81,73,0.2);
-  font-weight: bold; position: relative;
+  font-weight: bold;
 }
 .line-numbers .err-num::before {
-  content: '●'; color: var(--danger); margin-left: 4px;
-  font-size: 10px;
+  content: '● '; color: var(--danger); font-size: 10px;
 }
 .line-numbers .warn-num {
   color: var(--warning); background: rgba(210,153,34,0.15);
@@ -190,28 +166,28 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 #codeEditor {
   flex: 1; width: 100%; height: 100%;
   background: var(--bg); color: var(--text);
-  border: none; padding: 14px;
+  border: none; padding: 12px;
   font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 14px; line-height: 1.65;
+  font-size: 14px; line-height: 1.6;
   resize: none; outline: none; direction: ltr;
   text-align: left; tab-size: 2; white-space: pre;
   overflow: auto; caret-color: var(--primary);
+  -webkit-appearance: none;
 }
-#codeEditor::selection { background: var(--primary); color: white; }
 
 .divider {
-  height: 8px; background: var(--bg-2); cursor: row-resize;
+  height: 6px; background: var(--bg-2); cursor: row-resize;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  touch-action: none;
 }
 .divider::before {
-  content: ''; width: 50px; height: 4px;
+  content: ''; width: 44px; height: 3px;
   background: var(--border-2); border-radius: 2px;
 }
-.divider:hover::before { background: var(--primary); }
+.divider:active::before { background: var(--primary); }
 
-/* ===================== قسم المخرجات ===================== */
+/* ============ Output ============ */
 .output-section {
   background: var(--bg-2); display: flex; flex-direction: column;
   height: 42%; overflow: hidden; flex-shrink: 0;
@@ -219,389 +195,352 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .tabs {
   display: flex; background: var(--bg);
   border-bottom: 1px solid var(--border); overflow-x: auto;
+  scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-  padding: 12px 18px; cursor: pointer;
-  border-bottom: 3px solid transparent; font-size: 13px;
+  padding: 11px 15px; cursor: pointer;
+  border-bottom: 2px solid transparent; font-size: 12.5px;
   white-space: nowrap; user-select: none; font-weight: 600;
   color: var(--text-dim); display: flex; align-items: center; gap: 6px;
-  position: relative;
 }
-.tab:hover { color: var(--text); background: var(--bg-2); }
-.tab.active {
-  color: var(--primary); border-bottom-color: var(--primary);
-  background: var(--bg-2);
-}
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--bg-2); }
 .tab-badge {
   background: var(--danger); color: white;
-  padding: 1px 7px; border-radius: 10px; font-size: 10px;
-  font-weight: bold;
+  padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: bold;
 }
 .tab-badge.warning { background: var(--warning); }
+.tab-badge.hidden { display: none; }
 .tab-content {
-  flex: 1; padding: 14px; overflow-y: auto;
+  flex: 1; padding: 12px; overflow-y: auto;
   font-family: 'Consolas', monospace; font-size: 13px;
-  line-height: 1.7; direction: ltr; text-align: left;
+  line-height: 1.6; direction: ltr; text-align: left;
   white-space: pre-wrap; word-break: break-word;
+  -webkit-overflow-scrolling: touch;
 }
 .tab-content.hidden { display: none; }
 #stdin {
   width: 100%; height: 100%; background: var(--bg);
-  color: var(--text); border: none; padding: 14px;
+  color: var(--text); border: none; padding: 12px;
   font-family: monospace; font-size: 13px;
   resize: none; outline: none;
 }
 #previewFrame { width: 100%; height: 100%; border: none; background: white; }
 
-/* ===================== الأخطاء ===================== */
+/* ============ Errors ============ */
 .error-item {
-  background: linear-gradient(90deg, rgba(248,81,73,0.15), rgba(248,81,73,0.05));
+  background: linear-gradient(90deg, rgba(248,81,73,0.12), rgba(248,81,73,0.03));
   border-right: 4px solid var(--danger);
-  padding: 14px 16px; margin-bottom: 10px;
+  padding: 12px 14px; margin-bottom: 8px;
   border-radius: 10px; direction: rtl; text-align: right;
-  animation: slideIn 0.3s ease-out;
-}
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
 }
 .error-item.warning {
   border-right-color: var(--warning);
-  background: linear-gradient(90deg, rgba(210,153,34,0.15), rgba(210,153,34,0.05));
+  background: linear-gradient(90deg, rgba(210,153,34,0.12), rgba(210,153,34,0.03));
 }
 .error-item.info {
   border-right-color: var(--info);
-  background: linear-gradient(90deg, rgba(88,166,255,0.15), rgba(88,166,255,0.05));
+  background: linear-gradient(90deg, rgba(88,166,255,0.12), rgba(88,166,255,0.03));
 }
 .error-item .header {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
 }
-.error-item .icon {
-  font-size: 18px;
-}
+.error-item .icon { font-size: 16px; }
 .error-item .line {
-  color: var(--danger); font-weight: bold; font-size: 13px;
-  background: rgba(248,81,73,0.2); padding: 3px 10px; border-radius: 6px;
+  color: var(--danger); font-weight: bold; font-size: 12.5px;
+  background: rgba(248,81,73,0.2); padding: 2px 9px; border-radius: 5px;
 }
-.error-item.warning .line {
-  color: var(--warning); background: rgba(210,153,34,0.2);
-}
-.error-item.info .line {
-  color: var(--info); background: rgba(88,166,255,0.2);
-}
+.error-item.warning .line { color: var(--warning); background: rgba(210,153,34,0.2); }
+.error-item.info .line { color: var(--info); background: rgba(88,166,255,0.2); }
 .error-item .message {
-  color: var(--text); margin-top: 6px;
+  color: var(--text); margin-top: 5px;
   font-family: 'Consolas', monospace; font-size: 12.5px;
   direction: ltr; text-align: left;
-  background: var(--bg); padding: 8px 12px; border-radius: 6px;
-  border: 1px solid var(--border);
+  background: var(--bg); padding: 8px 10px; border-radius: 6px;
+  border: 1px solid var(--border); word-break: break-word;
 }
 .error-item .suggestion {
-  color: var(--success); margin-top: 10px;
-  padding: 10px 14px; background: rgba(63,185,80,0.1);
-  border-radius: 8px; font-size: 12.5px;
-  border-right: 3px solid var(--success);
-  font-weight: 500;
+  color: var(--success); margin-top: 8px;
+  padding: 9px 12px; background: rgba(63,185,80,0.1);
+  border-radius: 7px; font-size: 12.5px;
+  border-right: 3px solid var(--success); font-weight: 500;
 }
-.error-item .suggestion::before {
-  content: '💡 '; font-weight: bold;
+.error-item .suggestion::before { content: '💡 '; font-weight: bold; }
+.error-item .quick-fix {
+  margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;
+}
+.error-item .quick-fix button {
+  background: var(--primary-2); color: white; border: none;
+  padding: 6px 12px; border-radius: 6px; font-size: 11.5px;
+  font-weight: 600; cursor: pointer;
 }
 .empty-state {
-  text-align: center; color: var(--text-dim); padding: 40px 20px;
-  direction: rtl; font-size: 14px;
+  text-align: center; color: var(--text-dim); padding: 35px 20px;
+  direction: rtl; font-size: 13.5px;
 }
 .empty-state .big-icon {
-  font-size: 60px; display: block; margin-bottom: 15px; opacity: 0.6;
+  font-size: 50px; display: block; margin-bottom: 12px; opacity: 0.5;
 }
 .empty-state.success { color: var(--success); }
 
-/* ===================== مؤشر التشغيل التلقائي ===================== */
+/* ============ Indicator ============ */
 .auto-indicator {
   display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--text-dim); padding: 4px 10px;
-  background: var(--bg-3); border-radius: 20px;
-  border: 1px solid var(--border);
+  font-size: 11px; color: var(--text-dim); padding: 5px 10px;
+  background: var(--bg-3); border-radius: 16px;
+  border: 1px solid var(--border); font-weight: 600;
 }
 .auto-indicator.active {
-  background: var(--gradient-success); color: white;
-  border-color: transparent;
+  background: var(--gradient-success); color: white; border-color: transparent;
 }
 .auto-dot {
-  width: 8px; height: 8px; border-radius: 50%;
+  width: 7px; height: 7px; border-radius: 50%;
   background: var(--success);
 }
 .auto-indicator.active .auto-dot {
-  background: white;
-  animation: pulse 1.2s infinite;
+  background: white; animation: pulse 1.2s infinite;
 }
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.3); }
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
-/* ===================== شريط الحالة ===================== */
+/* ============ Status Bar ============ */
 .status-bar {
   background: var(--bg-3); border-top: 1px solid var(--border);
-  padding: 6px 14px; font-size: 11.5px; color: var(--text-dim);
+  padding: 5px 12px; font-size: 11px; color: var(--text-dim);
   display: flex; justify-content: space-between; align-items: center;
-  font-weight: 500;
+  font-weight: 500; flex-shrink: 0;
 }
-.status-left { display: flex; align-items: center; gap: 12px; }
+.status-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .status-dot {
-  display: inline-block; width: 9px; height: 9px;
+  display: inline-block; width: 8px; height: 8px;
   border-radius: 50%; background: var(--success);
-  margin-left: 6px; box-shadow: 0 0 6px var(--success);
+  margin-left: 5px;
 }
-.status-dot.busy {
-  background: var(--warning); box-shadow: 0 0 6px var(--warning);
-  animation: pulse 1s infinite;
-}
-.status-dot.error { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+.status-dot.busy { background: var(--warning); animation: pulse 1s infinite; }
+.status-dot.error { background: var(--danger); }
 .status-info {
-  background: var(--bg-4); padding: 2px 8px; border-radius: 6px;
+  background: var(--bg-4); padding: 2px 7px; border-radius: 5px;
   font-family: 'Consolas', monospace;
 }
 
-/* ===================== النصائح ===================== */
-.tips-container { flex: 1; overflow-y: auto; padding: 24px; }
+/* ============ Tips ============ */
+.tips-container { flex: 1; overflow-y: auto; padding: 18px; -webkit-overflow-scrolling: touch; }
 .tips-lang-picker {
-  background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
-  padding: 20px; border-radius: 16px;
-  margin-bottom: 24px; display: flex; gap: 12px;
+  background: var(--bg-2); padding: 16px; border-radius: 14px;
+  margin-bottom: 18px; display: flex; gap: 10px;
   align-items: center; flex-wrap: wrap;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
 }
-.tips-lang-picker label { font-weight: bold; font-size: 14px; }
-.tips-lang-picker select {
-  flex: 1; min-width: 220px; padding: 12px 16px;
-  font-size: 14px; font-weight: 600;
-}
+.tips-lang-picker label { font-weight: bold; font-size: 13px; }
+.tips-lang-picker select { flex: 1; min-width: 200px; padding: 11px; font-weight: 600; }
 .tips-content h2 {
-  color: var(--text); margin-bottom: 20px; font-size: 24px;
+  color: var(--text); margin-bottom: 16px; font-size: 21px;
   display: flex; align-items: center; gap: 10px;
   padding-bottom: 12px; border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+}
+.tips-count {
+  font-size: 12px; color: var(--text-dim); font-weight: normal;
 }
 .tips-section {
   background: var(--bg-2); border: 1px solid var(--border);
-  border-radius: 16px; padding: 20px; margin-bottom: 18px;
-  box-shadow: var(--shadow);
+  border-radius: 14px; padding: 16px; margin-bottom: 14px;
 }
 .tips-section h3 {
-  color: var(--accent); margin-bottom: 16px; font-size: 18px;
+  color: var(--accent); margin-bottom: 14px; font-size: 16px;
   display: flex; align-items: center; gap: 8px;
-  padding-bottom: 10px; border-bottom: 1px dashed var(--border);
+  padding-bottom: 8px; border-bottom: 1px dashed var(--border);
 }
 .func-item {
-  background: var(--bg-3); padding: 16px; border-radius: 12px;
-  margin-bottom: 12px; border-right: 4px solid var(--primary);
-  transition: all 0.2s;
+  background: var(--bg-3); padding: 13px; border-radius: 10px;
+  margin-bottom: 10px; border-right: 3px solid var(--primary);
 }
-.func-item:hover {
-  border-right-color: var(--accent);
-  transform: translateX(-4px);
-  box-shadow: var(--shadow);
-}
+.func-item:active { border-right-color: var(--accent); }
 .func-item .fname {
   color: var(--warning); font-family: 'Consolas', monospace;
-  font-weight: bold; font-size: 14.5px;
-  direction: ltr; text-align: left; display: block;
-  margin-bottom: 8px;
+  font-weight: bold; font-size: 13.5px;
+  direction: ltr; text-align: left;
   background: rgba(210,153,34,0.1);
-  padding: 4px 10px; border-radius: 6px;
-  display: inline-block;
+  padding: 3px 9px; border-radius: 5px;
+  display: inline-block; margin-bottom: 7px;
 }
 .func-item .fdesc {
-  color: var(--text); font-size: 13.5px; margin-bottom: 10px;
-  line-height: 1.6;
+  color: var(--text); font-size: 13px; margin-bottom: 9px;
+  line-height: 1.5;
 }
 .func-item .fexample {
-  background: var(--bg); padding: 12px 14px; border-radius: 8px;
-  font-family: 'Consolas', monospace; font-size: 12.5px;
+  background: var(--bg); padding: 10px 12px; border-radius: 7px;
+  font-family: 'Consolas', monospace; font-size: 12px;
   color: var(--success); direction: ltr; text-align: left;
-  overflow-x: auto; white-space: pre; margin-bottom: 10px;
-  border: 1px solid var(--border);
-  line-height: 1.6;
+  overflow-x: auto; white-space: pre; margin-bottom: 9px;
+  border: 1px solid var(--border); line-height: 1.5;
 }
 .insert-btn {
   background: var(--primary-2); border: none; color: white;
-  padding: 8px 16px; border-radius: 8px;
-  font-size: 12px; cursor: pointer; font-weight: 600;
-  transition: all 0.2s;
+  padding: 7px 14px; border-radius: 7px;
+  font-size: 11.5px; cursor: pointer; font-weight: 600;
 }
-.insert-btn:hover {
-  background: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--primary-glow);
-}
+.insert-btn:active { transform: scale(0.96); }
 
-/* ===================== المشاريع ===================== */
-.projects-container { flex: 1; overflow-y: auto; padding: 24px; }
+/* ============ Projects ============ */
+.projects-container { flex: 1; overflow-y: auto; padding: 18px; -webkit-overflow-scrolling: touch; }
 .projects-header {
   display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 24px;
-  flex-wrap: wrap; gap: 12px;
-  padding-bottom: 16px; border-bottom: 2px solid var(--border);
+  align-items: center; margin-bottom: 18px;
+  flex-wrap: wrap; gap: 10px;
+  padding-bottom: 12px; border-bottom: 2px solid var(--border);
 }
-.projects-header h2 {
-  color: var(--text); display: flex; align-items: center; gap: 10px;
-}
-.projects-header .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.projects-header h2 { color: var(--text); font-size: 19px; }
+.projects-header .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .projects-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 18px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
 }
 .project-card {
   background: var(--bg-2); border: 1px solid var(--border);
-  border-radius: 16px; padding: 18px;
-  transition: all 0.25s;
-  box-shadow: var(--shadow);
+  border-radius: 14px; padding: 16px;
   position: relative; overflow: hidden;
 }
 .project-card::before {
   content: ''; position: absolute; top: 0; right: 0;
-  width: 100%; height: 4px; background: var(--gradient);
-}
-.project-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  width: 100%; height: 3px; background: var(--gradient);
 }
 .project-card h3 {
-  color: var(--text); margin-bottom: 10px; font-size: 16px;
+  color: var(--text); margin-bottom: 8px; font-size: 15px;
   word-break: break-word; font-weight: 700;
 }
 .project-card .meta {
-  color: var(--text-dim); font-size: 12px; margin-bottom: 14px;
-  display: flex; align-items: center; gap: 6px;
+  color: var(--text-dim); font-size: 11.5px; margin-bottom: 12px;
 }
 .project-card .lang-badge {
   background: var(--gradient); color: white;
-  padding: 4px 12px; border-radius: 12px;
-  font-size: 11px; display: inline-block; margin-bottom: 12px;
-  font-weight: 700; letter-spacing: 0.5px;
+  padding: 3px 10px; border-radius: 10px;
+  font-size: 10.5px; display: inline-block; margin-bottom: 10px;
+  font-weight: 700;
 }
-.project-card .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.project-card .actions { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
 .project-card .actions button {
   flex: 1; font-size: 12px; padding: 8px 10px;
   min-width: 70px; font-weight: 600;
 }
 
-/* ===================== الإشعارات ===================== */
+/* ============ Toast ============ */
 .toast {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
   background: var(--gradient-success); color: white;
-  padding: 14px 28px; border-radius: 12px;
-  box-shadow: var(--shadow-lg);
-  opacity: 0; transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-  z-index: 9999; font-size: 14px; font-weight: 600;
-  max-width: 90%; text-align: center;
+  padding: 12px 22px; border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  opacity: 0; transition: all 0.25s ease-out;
+  z-index: 9999; font-size: 13.5px; font-weight: 600;
+  max-width: calc(100% - 40px); text-align: center;
+  pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.error { background: linear-gradient(135deg, var(--danger), var(--danger-2)); }
 .toast.info { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
 
-/* ===================== الجوال ===================== */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 99; display: none;
+}
+.overlay.show { display: block; }
+
+/* ============ Mobile ============ */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed; top: 0; right: 0; height: 100vh;
+    position: fixed; top: 0; right: 0; height: 100dvh;
     transform: translateX(100%);
-    box-shadow: -8px 0 30px rgba(0,0,0,0.5);
-    width: 260px;
+    box-shadow: -6px 0 25px rgba(0,0,0,0.5);
+    width: 270px;
   }
   .sidebar.open { transform: translateX(0); }
-  .menu-btn { display: block; }
-  .topbar { padding: 10px; gap: 8px; }
-  select, button, input { font-size: 12px; padding: 9px 12px; }
-  input { min-width: 90px; flex: 1; }
-  .lang-select { min-width: 140px; }
-  .tab { padding: 10px 14px; font-size: 12px; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .tips-container, .projects-container { padding: 14px; }
+  .menu-btn { display: flex; align-items: center; justify-content: center; }
+  .topbar { padding: 8px; gap: 6px; }
+  select, button, input { font-size: 12.5px; padding: 8px 10px; }
+  input { min-width: 80px; flex: 1; }
+  .lang-select { min-width: 120px; font-size: 12px; }
   .logo { font-size: 22px; }
-  .overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-    z-index: 99; display: none; backdrop-filter: blur(2px);
-  }
-  .overlay.show { display: block; }
-  .status-bar { font-size: 10.5px; padding: 5px 10px; }
+  .tab { padding: 10px 12px; font-size: 12px; }
+  .tab-content { font-size: 12.5px; padding: 10px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .tips-container, .projects-container { padding: 12px; }
+  .status-bar { font-size: 10px; padding: 4px 8px; }
+  .status-info { padding: 1px 5px; font-size: 9.5px; }
+  .editor-wrapper { min-height: 0; }
+  #codeEditor { font-size: 13.5px; padding: 10px; }
+  .line-numbers { font-size: 13px; padding: 10px 6px; min-width: 40px; }
+  .output-section { height: 40%; }
+  .auto-indicator { display: none; }
+  .func-item .fexample { font-size: 11.5px; }
 }
+@media (max-width: 400px) {
+  .topbar { padding: 6px; gap: 4px; }
+  select, button, input { font-size: 11.5px; padding: 7px 8px; }
+  button.primary { padding: 7px 12px; }
+}
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <!-- القائمة الجانبية -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo">İQCODE</div>
-      <div class="tagline">محرر البرمجة الذكي • v7.0</div>
+      <div class="tagline">محرر البرمجة الذكي • v8.0</div>
     </div>
-    
     <nav class="sidebar-nav">
       <div class="nav-item active" data-page="editor">
-        <span class="icon">💻</span>
-        <span>المحرر</span>
+        <span class="icon">💻</span><span>المحرر</span>
         <span class="nav-badge">9 لغات</span>
       </div>
       <div class="nav-item" data-page="tips">
-        <span class="icon">💡</span>
-        <span>النصائح والدوال</span>
-        <span class="nav-badge">200+</span>
+        <span class="icon">💡</span><span>النصائح والدوال</span>
+        <span class="nav-badge" id="tipsCountBadge">300+</span>
       </div>
       <div class="nav-item" data-page="projects">
-        <span class="icon">📁</span>
-        <span>مشاريعي المحفوظة</span>
+        <span class="icon">📁</span><span>مشاريعي</span>
       </div>
     </nav>
-    
     <div class="sidebar-footer">
-      <button class="auto-run-toggle" id="autoRunToggle" onclick="toggleAutoRun()">
+      <button class="auto-run-toggle on" id="autoRunToggle" onclick="toggleAutoRun()">
         <span>⚡ تشغيل تلقائي</span>
         <div class="switch"></div>
       </button>
       <button class="theme-toggle" onclick="toggleTheme()">
         <span id="themeIcon">🌙</span>
-        <span id="themeText">الوضع الليلي</span>
+        <span id="themeText">ليلي</span>
       </button>
     </div>
   </aside>
 
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-  <!-- المحتوى الرئيسي -->
   <main class="content">
     <div class="topbar">
       <button class="menu-btn" onclick="openSidebar()">☰</button>
-      
       <select id="langSelect" class="lang-select" onchange="changeLang()"></select>
-      
       <input type="text" id="projectName" placeholder="اسم المشروع..." value="my_project">
-      
       <button class="primary" id="runBtn" onclick="runCode(true)">▶ تشغيل</button>
-      
-      <button onclick="saveProject()">💾 حفظ</button>
-      
-      <button onclick="downloadCode()">⬇ تنزيل</button>
-      
-      <div class="auto-indicator" id="autoIndicator">
-        <div class="auto-dot"></div>
-        <span id="autoText">جاهز</span>
-      </div>
+      <button onclick="saveProject()">💾</button>
+      <button onclick="downloadCode()">⬇</button>
     </div>
 
-    <!-- صفحة المحرر -->
     <div class="page active" id="page-editor">
       <div class="editor-wrapper">
         <div class="editor-area">
           <div class="line-numbers" id="lineNumbers">1</div>
           <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
         </div>
-        
         <div class="divider" id="divider"></div>
-        
         <div class="output-section" id="outputSection">
           <div class="tabs">
             <div class="tab active" data-tab="output">📤 المخرجات</div>
@@ -610,41 +549,36 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
             </div>
             <div class="tab" data-tab="input">⌨️ الإدخال</div>
           </div>
-          
           <div id="tab-output" class="tab-content">
             <div class="empty-state">
               <span class="big-icon">⚡</span>
-              اضغط "تشغيل" أو شغّل الوضع التلقائي
+              اضغط "تشغيل" أو اكتب الكود
             </div>
           </div>
-          
           <div id="tab-errors" class="tab-content hidden">
             <div class="empty-state">
               <span class="big-icon">✨</span>
-              لا توجد أخطاء حتى الآن
+              لا توجد أخطاء
             </div>
           </div>
-          
           <div id="tab-input" class="tab-content hidden" style="padding:0;">
             <textarea id="stdin" placeholder="اكتب الإدخال هنا (stdin)..."></textarea>
           </div>
         </div>
-        
         <div class="status-bar">
           <div class="status-left">
             <span>
               <span class="status-dot" id="statusDot"></span>
               <span id="statusText">جاهز</span>
             </span>
-            <span class="status-info" id="cursorInfo">السطر 1:1</span>
-            <span class="status-info" id="engineInfo">HTML محلي</span>
+            <span class="status-info" id="cursorInfo">1:1</span>
+            <span class="status-info" id="engineInfo">HTML</span>
           </div>
-          <span id="lastRunInfo">لم يُشغّل بعد</span>
+          <span id="lastRunInfo">—</span>
         </div>
       </div>
     </div>
 
-    <!-- صفحة النصائح -->
     <div class="page" id="page-tips">
       <div class="tips-container">
         <div class="tips-lang-picker">
@@ -655,15 +589,14 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
       </div>
     </div>
 
-    <!-- صفحة المشاريع -->
     <div class="page" id="page-projects">
       <div class="projects-container">
         <div class="projects-header">
-          <h2>📁 مشاريعي المحفوظة</h2>
+          <h2>📁 مشاريعي</h2>
           <div class="actions">
-            <button onclick="exportProjects()" style="background:var(--primary-2);color:white;border:none;">📤 تصدير</button>
-            <button onclick="document.getElementById('importFile').click()" style="background:var(--accent);color:white;border:none;">📥 استيراد</button>
-            <button class="danger" onclick="clearAllProjects()">🗑 مسح الكل</button>
+            <button onclick="exportProjects()" style="background:var(--primary-2);color:white;border:none;">📤</button>
+            <button onclick="document.getElementById('importFile').click()" style="background:var(--accent);color:white;border:none;">📥</button>
+            <button class="danger" onclick="clearAllProjects()">🗑</button>
           </div>
           <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importProjects(event)">
         </div>
@@ -677,29 +610,27 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 <script>
 /* ============================================================
-   İQCODE v7.0 - 9 لغات محلية فقط + تشغيل تلقائي
+   İQCODE v8.0 - Fast & Smart
    ============================================================ */
 
-/* ============ اللغات المحلية فقط ============ */
 const LANGUAGES = {
-  html:       { name: "HTML",       ext: "html",       engine: "web",      fileExt: "html", icon: "🌐" },
-  css:        { name: "CSS",        ext: "css",        engine: "web",      fileExt: "css",  icon: "🎨" },
-  javascript: { name: "JavaScript", ext: "javascript", engine: "web",      fileExt: "js",   icon: "⚡" },
-  python:     { name: "Python",     ext: "python",     engine: "pyodide",  fileExt: "py",   icon: "🐍" },
-  sql:        { name: "SQL",        ext: "sql",        engine: "sqlite",   fileExt: "sql",  icon: "🗄️" },
-  markdown:   { name: "Markdown",   ext: "markdown",   engine: "markdown", fileExt: "md",   icon: "📝" },
-  json:       { name: "JSON",       ext: "json",       engine: "json",     fileExt: "json", icon: "📦" },
-  yaml:       { name: "YAML",       ext: "yaml",       engine: "yaml",     fileExt: "yaml", icon: "📄" },
-  xml:        { name: "XML",        ext: "xml",        engine: "xml",      fileExt: "xml",  icon: "📄" }
+  html:       { name: "HTML",       engine: "web",      fileExt: "html", icon: "🌐" },
+  css:        { name: "CSS",        engine: "web",      fileExt: "css",  icon: "🎨" },
+  javascript: { name: "JavaScript", engine: "web",      fileExt: "js",   icon: "⚡" },
+  python:     { name: "Python",     engine: "pyodide",  fileExt: "py",   icon: "🐍" },
+  sql:        { name: "SQL",        engine: "sqlite",   fileExt: "sql",  icon: "🗄️" },
+  markdown:   { name: "Markdown",   engine: "markdown", fileExt: "md",   icon: "📝" },
+  json:       { name: "JSON",       engine: "json",     fileExt: "json", icon: "📦" },
+  yaml:       { name: "YAML",       engine: "yaml",     fileExt: "yaml", icon: "📄" },
+  xml:        { name: "XML",        engine: "xml",      fileExt: "xml",  icon: "📄" }
 };
 
-/* ============ كود البداية ============ */
 const STARTER_CODE = {
   html: `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>صفحتي الأولى</title>
+  <title>صفحتي</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -710,7 +641,7 @@ const STARTER_CODE = {
       min-height: 100vh;
       margin: 0;
     }
-    h1 { font-size: 3em; margin-bottom: 20px; }
+    h1 { font-size: 3em; }
     button {
       padding: 14px 32px;
       font-size: 16px;
@@ -720,15 +651,13 @@ const STARTER_CODE = {
       border-radius: 30px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    button:hover { transform: scale(1.05); }
   </style>
 </head>
 <body>
-  <h1>👋 مرحباً بالعالم!</h1>
-  <p>هذه صفحة HTML تعمل مباشرة في متصفحك</p>
-  <button onclick="alert('مرحبا من İQCODE!')">اضغطني</button>
+  <h1>👋 مرحباً!</h1>
+  <p>جرب تعديل الكود وشاهد التغييرات فوراً</p>
+  <button onclick="alert('مرحبا!')">اضغطني</button>
 </body>
 </html>`,
 
@@ -736,14 +665,14 @@ const STARTER_CODE = {
 <html>
 <head>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: #0a0e14;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: Arial;
   }
   .card {
     background: linear-gradient(135deg, #f093fb, #f5576c);
@@ -751,63 +680,50 @@ const STARTER_CODE = {
     border-radius: 24px;
     color: white;
     text-align: center;
-    box-shadow: 0 25px 80px rgba(245, 87, 108, 0.5);
-    animation: float 3s ease-in-out infinite;
+    box-shadow: 0 25px 80px rgba(245,87,108,0.5);
   }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-  }
-  h1 { font-size: 2.5em; margin-bottom: 15px; }
+  h1 { font-size: 2.5em; }
 </style>
 </head>
 <body>
   <div class="card">
     <h1>CSS يعمل! ✨</h1>
-    <p>جرب تعديل الألوان والأحجام</p>
+    <p>جرب تعديل الألوان</p>
   </div>
 </body>
 </html>`,
 
   javascript: `// İQCODE - JavaScript
-// يعمل مباشرة في المتصفح
-
 console.log("Hello, World!");
 console.log("مرحباً!");
 
-// عمليات رياضية
 const a = 10;
 const b = 5;
 console.log(\`\${a} + \${b} = \${a + b}\`);
 
-// حلقة تكرار
 for (let i = 0; i < 5; i++) {
   console.log("العدد: " + i);
 }
 
-// مصفوفة
 const names = ["أحمد", "علي", "سارة"];
 names.forEach(name => console.log("مرحبا " + name));`,
 
-  python: `# İQCODE - Python (يعمل عبر Pyodide)
+  python: `# İQCODE - Python
 print("Hello, World!")
 print("مرحباً!")
 
-# متغيرات
 name = "أحمد"
 age = 25
 print(f"الاسم: {name}, العمر: {age}")
 
-# حلقة
 for i in range(5):
     print(f"العدد: {i}")
 
-# قائمة
 fruits = ["تفاح", "موز", "برتقال"]
 for fruit in fruits:
     print(f"فاكهة: {fruit}")`,
 
-  sql: `-- İQCODE - SQL (SQLite)
+  sql: `-- İQCODE - SQL
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
@@ -838,12 +754,9 @@ SELECT name, age FROM users WHERE age > 23;`,
 ### المهام
 
 - [x] تعلم HTML
-- [x] تعلم CSS
-- [ ] تعلم JavaScript
+- [ ] تعلم CSS
 
-### الروابط والكود
-
-زر [جوجل](https://google.com) واستخدم \`console.log()\`.
+### كود
 
 \`\`\`javascript
 const x = 5;
@@ -887,600 +800,496 @@ active: true`,
 };
 
 /* ============================================================
-   قاعدة بيانات النصائح الموسّعة جداً
+   قاعدة نصائح موسّعة جداً - 300+ دالة
    ============================================================ */
 const TIPS = {
   html: { sections: [
-    {
-      title: "🏗️ الهيكل الأساسي",
-      functions: [
-        { name: "<!DOCTYPE html>", desc: "إعلان نوع المستند HTML5 (يوضع في أول سطر)", example: '<!DOCTYPE html>\n<html>\n<head></head>\n<body></body>\n</html>' },
-        { name: "<html>", desc: "العنصر الجذري الذي يحتوي كل شيء", example: '<html lang="ar" dir="rtl">\n  ...\n</html>' },
-        { name: "<head>", desc: "رأس الصفحة: عنوان، meta، ستايل، سكربتات", example: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان الصفحة</title>\n</head>' },
-        { name: "<body>", desc: "كل المحتوى المرئي للمستخدم", example: '<body>\n  <h1>مرحبا</h1>\n</body>' },
-        { name: "<meta>", desc: "معلومات وصفية عن الصفحة", example: '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width">' },
-        { name: "<title>", desc: "عنوان الصفحة (يظهر في تبويب المتصفح)", example: '<title>موقعي</title>' }
-      ]
-    },
-    {
-      title: "📝 النصوص والعناوين",
-      functions: [
-        { name: "<h1>...<h6>", desc: "عناوين بستة مستويات (h1 الأكبر)", example: '<h1>عنوان رئيسي</h1>\n<h2>عنوان فرعي</h2>\n<h3>عنوان أصغر</h3>' },
-        { name: "<p>", desc: "فقرة نص عادية", example: '<p>هذا نص طويل في فقرة</p>' },
-        { name: "<strong>", desc: "نص عريض (مهم دلالياً)", example: '<strong>نص مهم</strong>' },
-        { name: "<em>", desc: "نص مائل (تأكيد)", example: '<em>نص مؤكد</em>' },
-        { name: "<br>", desc: "سطر جديد", example: 'سطر أول<br>سطر ثاني' },
-        { name: "<hr>", desc: "خط أفقي فاصل", example: '<hr>' },
-        { name: "<blockquote>", desc: "اقتباس", example: '<blockquote>هذا اقتباس</blockquote>' },
-        { name: "<code>", desc: "كود برمجي", example: '<code>console.log()</code>' },
-        { name: "<pre>", desc: "نص منسق مسبقاً", example: '<pre>\n  سطر 1\n  سطر 2\n</pre>' }
-      ]
-    },
-    {
-      title: "🔗 الروابط والصور",
-      functions: [
-        { name: "<a href='...'>", desc: "رابط تشعبي", example: '<a href="https://google.com">جوجل</a>' },
-        { name: "<a target='_blank'>", desc: "فتح في تبويب جديد", example: '<a href="https://google.com" target="_blank">جوجل</a>' },
-        { name: "<img>", desc: "صورة", example: '<img src="photo.jpg" alt="وصف الصورة">' },
-        { name: "<img width=''>", desc: "صورة بأبعاد محددة", example: '<img src="photo.jpg" width="200" height="150">' },
-        { name: "<figure>", desc: "صورة مع وصف", example: '<figure>\n  <img src="a.jpg">\n  <figcaption>وصف الصورة</figcaption>\n</figure>' }
-      ]
-    },
-    {
-      title: "📋 القوائم",
-      functions: [
-        { name: "<ul><li>", desc: "قائمة غير مرتبة (نقاط)", example: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
-        { name: "<ol><li>", desc: "قائمة مرتبة (أرقام)", example: '<ol>\n  <li>أولاً</li>\n  <li>ثانياً</li>\n</ol>' },
-        { name: "<dl>", desc: "قائمة تعريفات", example: '<dl>\n  <dt>HTML</dt>\n  <dd>لغة توصيف</dd>\n</dl>' }
-      ]
-    },
-    {
-      title: "📊 الجداول",
-      functions: [
-        { name: "<table>", desc: "جدول", example: '<table border="1">\n  <tr><th>الاسم</th><th>العمر</th></tr>\n  <tr><td>أحمد</td><td>25</td></tr>\n</table>' },
-        { name: "<thead>", desc: "رأس الجدول", example: '<thead><tr><th>عنوان</th></tr></thead>' },
-        { name: "<tbody>", desc: "جسم الجدول", example: '<tbody><tr><td>بيانات</td></tr></tbody>' },
-        { name: "<tr>", desc: "صف في الجدول", example: '<tr><td>خلية</td></tr>' },
-        { name: "<th>", desc: "خلية رأس (عريضة)", example: '<th>عنوان</th>' },
-        { name: "<td>", desc: "خلية عادية", example: '<td>قيمة</td>' }
-      ]
-    },
-    {
-      title: "📝 النماذج (Forms)",
-      functions: [
-        { name: "<form>", desc: "نموذج إدخال", example: '<form action="/submit" method="POST">...</form>' },
-        { name: "<input type='text'>", desc: "حقل نص", example: '<input type="text" placeholder="اسمك">' },
-        { name: "<input type='email'>", desc: "بريد إلكتروني", example: '<input type="email" required>' },
-        { name: "<input type='password'>", desc: "كلمة مرور", example: '<input type="password">' },
-        { name: "<input type='number'>", desc: "أرقام فقط", example: '<input type="number" min="1" max="100">' },
-        { name: "<input type='checkbox'>", desc: "مربع اختيار", example: '<input type="checkbox" id="x">\n<label for="x">أوافق</label>' },
-        { name: "<input type='radio'>", desc: "زر راديو", example: '<input type="radio" name="g" value="m">ذكر\n<input type="radio" name="g" value="f">أنثى' },
-        { name: "<textarea>", desc: "نص متعدد الأسطر", example: '<textarea rows="5" cols="30"></textarea>' },
-        { name: "<select>", desc: "قائمة منسدلة", example: '<select>\n  <option>Python</option>\n  <option>JS</option>\n</select>' },
-        { name: "<button>", desc: "زر", example: '<button type="submit">إرسال</button>' },
-        { name: "<label>", desc: "تسمية حقل", example: '<label for="name">الاسم:</label>\n<input id="name">' }
-      ]
-    },
-    {
-      title: "🎨 الحاويات والتنسيق",
-      functions: [
-        { name: "<div>", desc: "حاوية عامة (block)", example: '<div class="container">محتوى</div>' },
-        { name: "<span>", desc: "حاوية سطرية (inline)", example: '<span style="color:red">نص أحمر</span>' },
-        { name: "<style>", desc: "CSS داخلي", example: '<style>\n  p { color: red; }\n</style>' },
-        { name: "class='...'", desc: "فئة CSS (متعددة)", example: '<div class="box large">...</div>' },
-        { name: "id='...'", desc: "معرّف فريد", example: '<div id="main">...</div>' },
-        { name: "style='...'", desc: "ستايل مباشر", example: '<p style="color:blue; font-size:20px;">نص</p>' }
-      ]
-    },
-    {
-      title: "🖼️ العناصر الدلالية HTML5",
-      functions: [
-        { name: "<header>", desc: "ترويسة الصفحة", example: '<header><h1>موقعي</h1></header>' },
-        { name: "<nav>", desc: "قائمة تنقل", example: '<nav><a href="/">رئيسية</a></nav>' },
-        { name: "<main>", desc: "المحتوى الرئيسي", example: '<main>...</main>' },
-        { name: "<section>", desc: "قسم", example: '<section><h2>عنوان</h2></section>' },
-        { name: "<article>", desc: "مقال مستقل", example: '<article><h2>مقال</h2></article>' },
-        { name: "<aside>", desc: "محتوى جانبي", example: '<aside>معلومات إضافية</aside>' },
-        { name: "<footer>", desc: "تذييل", example: '<footer>© 2024 موقعي</footer>' }
-      ]
-    }
+    { title: "🏗️ الهيكل الأساسي", functions: [
+      { name: "<!DOCTYPE html>", desc: "إعلان نوع المستند HTML5", example: '<!DOCTYPE html>\n<html>\n<head></head>\n<body></body>\n</html>' },
+      { name: "<html lang='ar' dir='rtl'>", desc: "العنصر الجذري مع اللغة والاتجاه", example: '<html lang="ar" dir="rtl">' },
+      { name: "<head>", desc: "رأس الصفحة: عنوان، meta، ستايل", example: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان</title>\n</head>' },
+      { name: "<body>", desc: "محتوى الصفحة المرئي", example: '<body><h1>مرحبا</h1></body>' },
+      { name: "<meta charset='UTF-8'>", desc: "ترميز الأحرف (مهم للعربية)", example: '<meta charset="UTF-8">' },
+      { name: "<meta viewport>", desc: "ضبط العرض على الجوال", example: '<meta name="viewport" content="width=device-width, initial-scale=1">' },
+      { name: "<title>", desc: "عنوان الصفحة في التبويب", example: '<title>موقعي</title>' },
+      { name: "<link rel='stylesheet'>", desc: "ربط ملف CSS خارجي", example: '<link rel="stylesheet" href="style.css">' },
+      { name: "<script>", desc: "كود JavaScript", example: '<script>\n  console.log("مرحبا");\n</script>' }
+    ]},
+    { title: "📝 النصوص", functions: [
+      { name: "<h1>...<h6>", desc: "عناوين من الأكبر للأصغر", example: '<h1>عنوان رئيسي</h1>\n<h2>عنوان فرعي</h2>' },
+      { name: "<p>", desc: "فقرة نص", example: '<p>هذا نص في فقرة</p>' },
+      { name: "<strong>", desc: "نص عريض مهم", example: '<strong>مهم</strong>' },
+      { name: "<em>", desc: "نص مائل (تأكيد)", example: '<em>تأكيد</em>' },
+      { name: "<mark>", desc: "نص مُظلَّل", example: '<mark>مظلل</mark>' },
+      { name: "<small>", desc: "نص صغير", example: '<small>ملاحظة</small>' },
+      { name: "<del>", desc: "نص محذوف", example: '<del>قديم</del>' },
+      { name: "<ins>", desc: "نص مضاف", example: '<ins>جديد</ins>' },
+      { name: "<br>", desc: "سطر جديد", example: 'سطر أول<br>سطر ثاني' },
+      { name: "<hr>", desc: "خط أفقي", example: '<hr>' },
+      { name: "<blockquote>", desc: "اقتباس", example: '<blockquote>اقتباس مهم</blockquote>' },
+      { name: "<code>", desc: "كود داخل النص", example: '<code>console.log()</code>' },
+      { name: "<pre>", desc: "نص منسّق مسبقاً", example: '<pre>\n  سطر 1\n  سطر 2\n</pre>' },
+      { name: "<sub>", desc: "نص سفلي", example: 'H<sub>2</sub>O' },
+      { name: "<sup>", desc: "نص علوي", example: 'x<sup>2</sup>' }
+    ]},
+    { title: "🔗 الروابط والصور", functions: [
+      { name: "<a href='url'>", desc: "رابط", example: '<a href="https://google.com">جوجل</a>' },
+      { name: "<a target='_blank'>", desc: "فتح في تبويب جديد", example: '<a href="url" target="_blank">رابط</a>' },
+      { name: "<a href='#id'>", desc: "رابط داخلي", example: '<a href="#section1">اذهب للقسم</a>' },
+      { name: "<a href='mailto:'>", desc: "رابط بريد", example: '<a href="mailto:me@x.com">راسلني</a>' },
+      { name: "<a href='tel:'>", desc: "رابط هاتف", example: '<a href="tel:+963">اتصل</a>' },
+      { name: "<img src alt>", desc: "صورة مع وصف", example: '<img src="a.jpg" alt="وصف">' },
+      { name: "<img width height>", desc: "صورة بأبعاد", example: '<img src="a.jpg" width="200">' },
+      { name: "<figure>", desc: "صورة مع وصف", example: '<figure>\n  <img src="a.jpg">\n  <figcaption>وصف</figcaption>\n</figure>' }
+    ]},
+    { title: "📋 القوائم", functions: [
+      { name: "<ul><li>", desc: "قائمة نقطية", example: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
+      { name: "<ol><li>", desc: "قائمة مرقمة", example: '<ol>\n  <li>أولاً</li>\n  <li>ثانياً</li>\n</ol>' },
+      { name: "<ol type='A'>", desc: "قائمة بأحرف", example: '<ol type="A">\n  <li>أ</li>\n  <li>ب</li>\n</ol>' },
+      { name: "<dl><dt><dd>", desc: "قائمة تعريفات", example: '<dl>\n  <dt>HTML</dt>\n  <dd>لغة توصيف</dd>\n</dl>' },
+      { name: "<li value='5'>", desc: "قيمة مخصصة", example: '<ol>\n  <li value="5">يبدأ من 5</li>\n</ol>' }
+    ]},
+    { title: "📊 الجداول", functions: [
+      { name: "<table>", desc: "جدول", example: '<table>\n  <tr><th>اسم</th></tr>\n  <tr><td>أحمد</td></tr>\n</table>' },
+      { name: "<thead>", desc: "رأس الجدول", example: '<thead><tr><th>عنوان</th></tr></thead>' },
+      { name: "<tbody>", desc: "جسم الجدول", example: '<tbody><tr><td>بيانات</td></tr></tbody>' },
+      { name: "<tr>", desc: "صف", example: '<tr><td>خلية</td></tr>' },
+      { name: "<th>", desc: "خلية رأس", example: '<th>عنوان</th>' },
+      { name: "<td>", desc: "خلية عادية", example: '<td>قيمة</td>' },
+      { name: "colspan", desc: "دمج أعمدة", example: '<td colspan="2">مدمج</td>' },
+      { name: "rowspan", desc: "دمج صفوف", example: '<td rowspan="2">ممتد</td>' }
+    ]},
+    { title: "📝 النماذج", functions: [
+      { name: "<form>", desc: "نموذج", example: '<form action="/s" method="POST">\n  <input name="x">\n  <button>إرسال</button>\n</form>' },
+      { name: "input type='text'", desc: "نص", example: '<input type="text" placeholder="اسمك">' },
+      { name: "input type='email'", desc: "بريد", example: '<input type="email" required>' },
+      { name: "input type='password'", desc: "كلمة مرور", example: '<input type="password">' },
+      { name: "input type='number'", desc: "رقم", example: '<input type="number" min="1" max="100">' },
+      { name: "input type='date'", desc: "تاريخ", example: '<input type="date">' },
+      { name: "input type='time'", desc: "وقت", example: '<input type="time">' },
+      { name: "input type='color'", desc: "لون", example: '<input type="color" value="#ff0000">' },
+      { name: "input type='range'", desc: "شريط تمرير", example: '<input type="range" min="0" max="100">' },
+      { name: "input type='file'", desc: "رفع ملف", example: '<input type="file" accept="image/*">' },
+      { name: "input type='checkbox'", desc: "مربع اختيار", example: '<input type="checkbox" id="x">\n<label for="x">أوافق</label>' },
+      { name: "input type='radio'", desc: "زر راديو", example: '<input type="radio" name="g" value="m">ذكر' },
+      { name: "<textarea>", desc: "نص متعدد", example: '<textarea rows="5" cols="30"></textarea>' },
+      { name: "<select>", desc: "قائمة منسدلة", example: '<select>\n  <option value="py">Python</option>\n  <option value="js">JS</option>\n</select>' },
+      { name: "<button>", desc: "زر", example: '<button type="submit">إرسال</button>' },
+      { name: "<label>", desc: "تسمية حقل", example: '<label for="name">الاسم:</label>' }
+    ]},
+    { title: "🖼️ العناصر الدلالية HTML5", functions: [
+      { name: "<header>", desc: "ترويسة", example: '<header><h1>موقعي</h1></header>' },
+      { name: "<nav>", desc: "قائمة تنقل", example: '<nav><a href="/">رئيسية</a></nav>' },
+      { name: "<main>", desc: "المحتوى الرئيسي", example: '<main>...</main>' },
+      { name: "<section>", desc: "قسم", example: '<section><h2>عنوان</h2></section>' },
+      { name: "<article>", desc: "مقال مستقل", example: '<article><h2>مقال</h2></article>' },
+      { name: "<aside>", desc: "محتوى جانبي", example: '<aside>ملاحظات</aside>' },
+      { name: "<footer>", desc: "تذييل", example: '<footer>© 2024</footer>' },
+      { name: "<details>", desc: "قابل للطي", example: '<details>\n  <summary>اضغط</summary>\n  <p>محتوى مخفي</p>\n</details>' },
+      { name: "<dialog>", desc: "نافذة حوارية", example: '<dialog open>مرحبا</dialog>' }
+    ]},
+    { title: "⚙️ الخصائص العامة", functions: [
+      { name: "id='x'", desc: "معرّف فريد", example: '<div id="main">...</div>' },
+      { name: "class='x'", desc: "فئة CSS", example: '<div class="box large">...</div>' },
+      { name: "style=''", desc: "ستايل مباشر", example: '<p style="color:red">نص</p>' },
+      { name: "title='x'", desc: "تلميح عند المرور", example: '<span title="تلميح">نص</span>' },
+      { name: "hidden", desc: "إخفاء", example: '<div hidden>مخفي</div>' },
+      { name: "contenteditable", desc: "قابل للتحرير", example: '<div contenteditable="true">عدّلني</div>' },
+      { name: "data-*", desc: "بيانات مخصصة", example: '<div data-id="5" data-name="x">...</div>' }
+    ]}
   ]},
-  
+
   css: { sections: [
-    {
-      title: "🎨 الألوان والخطوط",
-      functions: [
-        { name: "color", desc: "لون النص", example: 'p { color: red; }\n.a { color: #ff0000; }\n.b { color: rgb(255,0,0); }' },
-        { name: "background", desc: "الخلفية (لون/صورة/تدرج)", example: 'body { background: #f0f0f0; }\n.grad { background: linear-gradient(90deg, red, blue); }' },
-        { name: "background-color", desc: "لون الخلفية فقط", example: '.box { background-color: #333; }' },
-        { name: "font-family", desc: "نوع الخط", example: 'body { font-family: Arial, sans-serif; }' },
-        { name: "font-size", desc: "حجم الخط", example: 'h1 { font-size: 32px; }\np { font-size: 1.2em; }' },
-        { name: "font-weight", desc: "سماكة الخط", example: 'strong { font-weight: bold; }\n.light { font-weight: 300; }' },
-        { name: "font-style", desc: "نمط الخط", example: 'em { font-style: italic; }' },
-        { name: "text-align", desc: "محاذاة النص", example: 'h1 { text-align: center; }\np { text-align: justify; }' },
-        { name: "text-decoration", desc: "تزيين النص", example: 'a { text-decoration: none; }\n.u { text-decoration: underline; }' },
-        { name: "line-height", desc: "ارتفاع السطر", example: 'p { line-height: 1.6; }' }
-      ]
-    },
-    {
-      title: "📏 الأبعاد والمسافات",
-      functions: [
-        { name: "width / height", desc: "العرض والارتفاع", example: '.box { width: 300px; height: 200px; }' },
-        { name: "max-width", desc: "أقصى عرض", example: '.container { max-width: 1200px; margin: 0 auto; }' },
-        { name: "min-height", desc: "أدنى ارتفاع", example: '.page { min-height: 100vh; }' },
-        { name: "padding", desc: "حشو داخلي", example: '.box { padding: 20px; }\n.box2 { padding: 10px 20px; }' },
-        { name: "margin", desc: "هامش خارجي", example: '.box { margin: 20px; }\n.auto { margin: 0 auto; }' },
-        { name: "gap", desc: "مسافة بين العناصر (flex/grid)", example: '.flex { display: flex; gap: 16px; }' }
-      ]
-    },
-    {
-      title: "🖼️ الحدود والظلال",
-      functions: [
-        { name: "border", desc: "إطار", example: '.box { border: 2px solid #333; }' },
-        { name: "border-radius", desc: "زوايا دائرية", example: '.btn { border-radius: 25px; }' },
-        { name: "border-top/right/bottom/left", desc: "إطار جانب واحد", example: '.box { border-bottom: 3px solid red; }' },
-        { name: "box-shadow", desc: "ظل خارجي", example: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' },
-        { name: "text-shadow", desc: "ظل النص", example: 'h1 { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }' },
-        { name: "outline", desc: "خط خارجي", example: 'input:focus { outline: 2px solid blue; }' }
-      ]
-    },
-    {
-      title: "📐 التخطيط (Layout)",
-      functions: [
-        { name: "display: flex", desc: "تخطيط مرن أحادي البعد", example: '.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 20px;\n}' },
-        { name: "justify-content", desc: "محاذاة أفقية (flex)", example: '.row { justify-content: space-between; }' },
-        { name: "align-items", desc: "محاذاة رأسية (flex)", example: '.row { align-items: center; }' },
-        { name: "flex-direction", desc: "اتجاه المرن", example: '.col { flex-direction: column; }' },
-        { name: "display: grid", desc: "تخطيط شبكي ثنائي البعد", example: '.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 20px;\n}' },
-        { name: "grid-template-columns", desc: "أعمدة الشبكة", example: '.grid { grid-template-columns: 200px 1fr; }' },
-        { name: "position", desc: "تحديد الموضع", example: '.fixed { position: fixed; top: 0; right: 0; }\n.rel { position: relative; }\n.abs { position: absolute; top: 10px; left: 10px; }' },
-        { name: "z-index", desc: "الترتيب فوق/تحت", example: '.modal { z-index: 999; }' }
-      ]
-    },
-    {
-      title: "✨ التأثيرات والحركات",
-      functions: [
-        { name: "transition", desc: "انتقال سلس", example: '.btn {\n  transition: all 0.3s ease;\n}\n.btn:hover {\n  transform: scale(1.1);\n}' },
-        { name: "transform", desc: "تحويل الشكل", example: '.rotated { transform: rotate(45deg); }\n.moved { transform: translateX(50px); }\n.big { transform: scale(1.5); }' },
-        { name: "animation", desc: "حركة مخصصة", example: '@keyframes fade {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n.box { animation: fade 1s ease-in; }' },
-        { name: "opacity", desc: "الشفافية", example: '.ghost { opacity: 0.5; }' },
-        { name: "cursor", desc: "شكل المؤشر", example: '.clickable { cursor: pointer; }' }
-      ]
-    },
-    {
-      title: "📱 الاستجابة للشاشات",
-      functions: [
-        { name: "@media", desc: "استعلام وسائط", example: '@media (max-width: 768px) {\n  .sidebar { display: none; }\n}' },
-        { name: "حجم نسبي", desc: "استخدم وحدات نسبية", example: '.box { width: 50%; }\n.text { font-size: 1.5rem; }' },
-        { name: "flex-wrap", desc: "التفاف العناصر", example: '.row { flex-wrap: wrap; }' }
-      ]
-    }
+    { title: "🎨 الألوان", functions: [
+      { name: "color", desc: "لون النص", example: 'p { color: red; }\n.a { color: #ff0000; }\n.b { color: rgb(255,0,0); }' },
+      { name: "background", desc: "خلفية شاملة", example: 'body {\n  background: linear-gradient(90deg, red, blue);\n}' },
+      { name: "background-color", desc: "لون الخلفية", example: '.box { background-color: #333; }' },
+      { name: "background-image", desc: "صورة خلفية", example: 'body { background-image: url("bg.jpg"); }' },
+      { name: "background-size: cover", desc: "تغطية كاملة", example: 'body { background-size: cover; }' },
+      { name: "opacity", desc: "شفافية", example: '.ghost { opacity: 0.5; }' },
+      { name: "linear-gradient", desc: "تدرج خطي", example: 'background: linear-gradient(45deg, #f00, #00f);' },
+      { name: "radial-gradient", desc: "تدرج دائري", example: 'background: radial-gradient(circle, red, blue);' }
+    ]},
+    { title: "🔤 الخطوط والنصوص", functions: [
+      { name: "font-family", desc: "نوع الخط", example: 'body { font-family: Arial, sans-serif; }' },
+      { name: "font-size", desc: "حجم الخط", example: 'h1 { font-size: 32px; }\np { font-size: 1.2rem; }' },
+      { name: "font-weight", desc: "سماكة", example: 'strong { font-weight: 700; }' },
+      { name: "font-style", desc: "نمط", example: 'em { font-style: italic; }' },
+      { name: "text-align", desc: "محاذاة", example: 'h1 { text-align: center; }' },
+      { name: "text-decoration", desc: "تزيين", example: 'a { text-decoration: none; }' },
+      { name: "text-transform", desc: "تحويل حالة", example: 'h1 { text-transform: uppercase; }' },
+      { name: "line-height", desc: "ارتفاع السطر", example: 'p { line-height: 1.6; }' },
+      { name: "letter-spacing", desc: "تباعد الأحرف", example: 'h1 { letter-spacing: 2px; }' },
+      { name: "word-spacing", desc: "تباعد الكلمات", example: 'p { word-spacing: 5px; }' }
+    ]},
+    { title: "📏 الأبعاد", functions: [
+      { name: "width / height", desc: "العرض والارتفاع", example: '.box { width: 300px; height: 200px; }' },
+      { name: "max-width", desc: "أقصى عرض", example: '.c { max-width: 1200px; margin: 0 auto; }' },
+      { name: "min-height", desc: "أدنى ارتفاع", example: '.page { min-height: 100vh; }' },
+      { name: "padding", desc: "حشو داخلي", example: '.box { padding: 20px 10px; }' },
+      { name: "margin", desc: "هامش خارجي", example: '.box { margin: 0 auto; }' },
+      { name: "gap", desc: "مسافة في flex/grid", example: '.flex { display: flex; gap: 16px; }' }
+    ]},
+    { title: "🖼️ الحدود والظلال", functions: [
+      { name: "border", desc: "إطار", example: '.box { border: 2px solid #333; }' },
+      { name: "border-radius", desc: "زوايا دائرية", example: '.btn { border-radius: 25px; }' },
+      { name: "border-top/right/bottom/left", desc: "إطار جزئي", example: '.box { border-bottom: 3px solid red; }' },
+      { name: "box-shadow", desc: "ظل خارجي", example: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' },
+      { name: "text-shadow", desc: "ظل النص", example: 'h1 { text-shadow: 2px 2px 4px #000; }' },
+      { name: "outline", desc: "خط خارجي", example: 'input:focus { outline: 2px solid blue; }' }
+    ]},
+    { title: "📐 التخطيط", functions: [
+      { name: "display: flex", desc: "تخطيط مرن", example: '.c { display: flex; gap: 10px; }' },
+      { name: "justify-content", desc: "محاذاة أفقية", example: '.c { justify-content: space-between; }' },
+      { name: "align-items", desc: "محاذاة رأسية", example: '.c { align-items: center; }' },
+      { name: "flex-direction", desc: "اتجاه", example: '.col { flex-direction: column; }' },
+      { name: "flex-wrap", desc: "التفاف", example: '.c { flex-wrap: wrap; }' },
+      { name: "display: grid", desc: "شبكة", example: '.g {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 20px;\n}' },
+      { name: "grid-template-columns", desc: "أعمدة الشبكة", example: '.g { grid-template-columns: 200px 1fr; }' },
+      { name: "grid-area", desc: "منطقة في الشبكة", example: '.item { grid-area: 1 / 2 / 3 / 4; }' },
+      { name: "position", desc: "تحديد الموضع", example: '.fixed { position: fixed; top: 0; right: 0; }' },
+      { name: "z-index", desc: "ترتيب الطبقات", example: '.modal { z-index: 999; }' }
+    ]},
+    { title: "✨ التأثيرات والحركات", functions: [
+      { name: "transition", desc: "انتقال سلس", example: '.btn { transition: all 0.3s ease; }' },
+      { name: "transform", desc: "تحويل", example: '.big { transform: scale(1.2); }' },
+      { name: "translate", desc: "إزاحة", example: '.m { transform: translateX(50px); }' },
+      { name: "rotate", desc: "تدوير", example: '.r { transform: rotate(45deg); }' },
+      { name: "animation", desc: "حركة", example: '.x { animation: fade 1s infinite; }\n@keyframes fade {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}' },
+      { name: "hover / active / focus", desc: "حالات تفاعلية", example: '.btn:hover { background: red; }' }
+    ]},
+    { title: "📱 الاستجابة", functions: [
+      { name: "@media", desc: "استعلام وسائط", example: '@media (max-width: 768px) {\n  .sidebar { display: none; }\n}' },
+      { name: "وحدات نسبية", desc: "% em rem vh vw", example: '.box { width: 50%; }\n.text { font-size: 1.5rem; }' },
+      { name: "clamp()", desc: "قيمة مرنة", example: 'font-size: clamp(1rem, 4vw, 2rem);' }
+    ]}
   ]},
-  
+
   javascript: { sections: [
-    {
-      title: "🖨️ الإخراج والتشخيص",
-      functions: [
-        { name: "console.log(x)", desc: "طباعة في الكونسول", example: 'console.log("مرحبا");\nconsole.log(42, true, [1,2,3]);' },
-        { name: "console.error(x)", desc: "طباعة خطأ (أحمر)", example: 'console.error("حدث خطأ!");' },
-        { name: "console.warn(x)", desc: "طباعة تحذير", example: 'console.warn("تحذير");' },
-        { name: "console.table(arr)", desc: "عرض مصفوفة كجدول", example: 'console.table([{name:"أحمد", age:25}]);' },
-        { name: "typeof x", desc: "نوع المتغير", example: 'typeof 5       // "number"\ntypeof "hi"    // "string"\ntypeof true    // "boolean"\ntypeof []      // "object"' }
-      ]
-    },
-    {
-      title: "📦 المتغيرات",
-      functions: [
-        { name: "let", desc: "متغير قابل للتغيير (الأفضل)", example: 'let age = 20;\nage = 21;' },
-        { name: "const", desc: "ثابت لا يتغير", example: 'const PI = 3.14;\n// PI = 3;  // خطأ!' },
-        { name: "var", desc: "متغير قديم (تجنبه)", example: 'var name = "أحمد";' },
-        { name: "Template Literal", desc: "نص ديناميكي بـ ` `", example: 'const name = "أحمد";\nconsole.log(`مرحبا ${name}!`);' }
-      ]
-    },
-    {
-      title: "🔢 الأرقام والعمليات",
-      functions: [
-        { name: "parseInt(str)", desc: "نص إلى عدد صحيح", example: 'parseInt("42")      // 42\nparseInt("3.14")    // 3' },
-        { name: "parseFloat(str)", desc: "نص إلى عشري", example: 'parseFloat("3.14")  // 3.14' },
-        { name: "Number(x)", desc: "تحويل إلى رقم", example: 'Number("5")         // 5\nNumber("abc")       // NaN' },
-        { name: "(num).toFixed(n)", desc: "تنسيق بعدد أرقام", example: '(3.14159).toFixed(2)  // "3.14"' },
-        { name: "Math.floor(x)", desc: "تقريب لأسفل", example: 'Math.floor(3.7)     // 3' },
-        { name: "Math.ceil(x)", desc: "تقريب لأعلى", example: 'Math.ceil(3.2)      // 4' },
-        { name: "Math.round(x)", desc: "تقريب عادي", example: 'Math.round(3.5)     // 4' },
-        { name: "Math.random()", desc: "رقم عشوائي 0-1", example: 'Math.random()\n// بين 1 و 10:\nMath.floor(Math.random() * 10) + 1' },
-        { name: "Math.max(a, b)", desc: "الأكبر", example: 'Math.max(3, 7, 2)    // 7' },
-        { name: "Math.min(a, b)", desc: "الأصغر", example: 'Math.min(3, 7, 2)    // 2' },
-        { name: "Math.abs(x)", desc: "القيمة المطلقة", example: 'Math.abs(-5)         // 5' },
-        { name: "Math.pow(x, y)", desc: "القوة", example: 'Math.pow(2, 3)       // 8\n2 ** 3               // 8' },
-        { name: "Math.sqrt(x)", desc: "الجذر التربيعي", example: 'Math.sqrt(16)        // 4' }
-      ]
-    },
-    {
-      title: "🔤 النصوص",
-      functions: [
-        { name: "str.length", desc: "طول النص", example: '"hello".length          // 5' },
-        { name: "str.toUpperCase()", desc: "أحرف كبيرة", example: '"hello".toUpperCase()   // "HELLO"' },
-        { name: "str.toLowerCase()", desc: "أحرف صغيرة", example: '"HELLO".toLowerCase()   // "hello"' },
-        { name: "str.split(sep)", desc: "تقسيم إلى مصفوفة", example: '"a,b,c".split(",")      // ["a","b","c"]' },
-        { name: "str.replace(a, b)", desc: "استبدال (مرة واحدة)", example: '"hello".replace("l", "L")' },
-        { name: "str.replaceAll(a,b)", desc: "استبدال الكل", example: '"hello".replaceAll("l", "L")' },
-        { name: "str.includes(s)", desc: "هل يحتوي على نص", example: '"hello".includes("ell")  // true' },
-        { name: "str.indexOf(s)", desc: "موقع أول ظهور", example: '"hello".indexOf("l")     // 2' },
-        { name: "str.trim()", desc: "إزالة المسافات", example: '"  hi  ".trim()         // "hi"' },
-        { name: "str.charAt(i)", desc: "حرف في موقع", example: '"hello".charAt(1)        // "e"' },
-        { name: "str.slice(a, b)", desc: "قص جزء", example: '"hello".slice(1, 4)       // "ell"' },
-        { name: "str.substring(a,b)", desc: "قص (بدون سالب)", example: '"hello".substring(1, 4)   // "ell"' },
-        { name: "str.repeat(n)", desc: "تكرار النص", example: '"ab".repeat(3)           // "ababab"' }
-      ]
-    },
-    {
-      title: "📋 المصفوفات",
-      functions: [
-        { name: "arr.push(x)", desc: "إضافة في النهاية", example: 'let a = [1,2];\na.push(3);  // [1,2,3]' },
-        { name: "arr.pop()", desc: "حذف من النهاية", example: '[1,2,3].pop()          // 3' },
-        { name: "arr.unshift(x)", desc: "إضافة في البداية", example: '[2,3].unshift(1)       // [1,2,3]' },
-        { name: "arr.shift()", desc: "حذف من البداية", example: '[1,2,3].shift()        // 1' },
-        { name: "arr.map(fn)", desc: "تحويل كل عنصر", example: '[1,2,3].map(x => x*2)  // [2,4,6]' },
-        { name: "arr.filter(fn)", desc: "تصفية", example: '[1,2,3,4].filter(x => x>2)  // [3,4]' },
-        { name: "arr.reduce(fn, init)", desc: "اختصار إلى قيمة", example: '[1,2,3].reduce((a,b) => a+b, 0)  // 6' },
-        { name: "arr.forEach(fn)", desc: "المرور على العناصر", example: '[1,2].forEach(x => console.log(x))' },
-        { name: "arr.find(fn)", desc: "إيجاد أول عنصر مطابق", example: '[1,2,3,4].find(x => x>2)  // 3' },
-        { name: "arr.findIndex(fn)", desc: "فهرس أول مطابق", example: '[1,2,3].findIndex(x => x===2)  // 1' },
-        { name: "arr.includes(x)", desc: "هل يحتوي على عنصر", example: '[1,2,3].includes(2)    // true' },
-        { name: "arr.indexOf(x)", desc: "فهرس عنصر", example: '[1,2,3].indexOf(2)     // 1' },
-        { name: "arr.sort()", desc: "ترتيب", example: '[3,1,2].sort()         // [1,2,3]' },
-        { name: "arr.reverse()", desc: "عكس الترتيب", example: '[1,2,3].reverse()      // [3,2,1]' },
-        { name: "arr.join(sep)", desc: "دمج إلى نص", example: '[1,2,3].join("-")      // "1-2-3"' },
-        { name: "arr.length", desc: "الطول", example: '[1,2,3].length         // 3' },
-        { name: "arr.slice(a, b)", desc: "نسخ جزء", example: '[1,2,3,4].slice(1, 3)  // [2,3]' },
-        { name: "arr.splice(i, n)", desc: "حذف/إضافة في مكان", example: 'let a = [1,2,3];\na.splice(1, 1);  // [1,3]' },
-        { name: "arr.concat(arr2)", desc: "دمج مصفوفتين", example: '[1,2].concat([3,4])    // [1,2,3,4]' }
-      ]
-    },
-    {
-      title: "📦 الكائنات (Objects)",
-      functions: [
-        { name: "obj.key", desc: "الوصول لخاصية", example: 'let p = {name: "أحمد", age: 25};\np.name        // "أحمد"' },
-        { name: "obj['key']", desc: "الوصول بـ []", example: 'p["age"]       // 25' },
-        { name: "Object.keys(obj)", desc: "أسماء الخصائص", example: 'Object.keys({a:1, b:2})  // ["a","b"]' },
-        { name: "Object.values(obj)", desc: "قيم الخصائص", example: 'Object.values({a:1, b:2})  // [1,2]' },
-        { name: "Object.entries(obj)", desc: "أزواج key-value", example: 'Object.entries({a:1})   // [["a",1]]' },
-        { name: "JSON.stringify(obj)", desc: "كائن إلى نص", example: 'JSON.stringify({a:1})   // \'{"a":1}\'' },
-        { name: "JSON.parse(str)", desc: "نص إلى كائن", example: 'JSON.parse(\'{"a":1}\')  // {a:1}' }
-      ]
-    },
-    {
-      title: "🔀 الشروط",
-      functions: [
-        { name: "if / else if / else", desc: "الشروط الأساسية", example: 'let x = 5;\nif (x > 0) {\n  console.log("موجب");\n} else if (x < 0) {\n  console.log("سالب");\n} else {\n  console.log("صفر");\n}' },
-        { name: "ternary (?:)", desc: "شرط مختصر", example: 'let age = 20;\nlet status = age >= 18 ? "بالغ" : "قاصر";' },
-        { name: "switch", desc: "تعدد الحالات", example: 'switch (day) {\n  case 1: console.log("أحد"); break;\n  case 2: console.log("اثنين"); break;\n  default: console.log("آخر");\n}' },
-        { name: "&& (و)", desc: "منطقي AND", example: 'if (x > 0 && x < 10) {...}' },
-        { name: "|| (أو)", desc: "منطقي OR", example: 'if (x === 1 || x === 2) {...}' },
-        { name: "! (ليس)", desc: "نفي منطقي", example: 'if (!isActive) {...}' }
-      ]
-    },
-    {
-      title: "🔄 الحلقات",
-      functions: [
-        { name: "for (let i=0; i<n; i++)", desc: "حلقة for الكلاسيكية", example: 'for (let i = 0; i < 5; i++) {\n  console.log(i);\n}' },
-        { name: "for...of", desc: "المرور على مصفوفة", example: 'for (const n of [1,2,3]) {\n  console.log(n);\n}' },
-        { name: "for...in", desc: "المرور على كائن", example: 'for (const k in {a:1, b:2}) {\n  console.log(k);\n}' },
-        { name: "while (cond)", desc: "حلقة شرطية", example: 'let i = 0;\nwhile (i < 5) {\n  console.log(i);\n  i++;\n}' },
-        { name: "do...while", desc: "تنفيذ مرة على الأقل", example: 'let i = 0;\ndo {\n  console.log(i);\n  i++;\n} while (i < 5);' },
-        { name: "break", desc: "خروج من الحلقة", example: 'for (let i = 0; i < 10; i++) {\n  if (i === 5) break;\n  console.log(i);\n}' },
-        { name: "continue", desc: "تخطي التكرار", example: 'for (let i = 0; i < 5; i++) {\n  if (i % 2 === 0) continue;\n  console.log(i);\n}' }
-      ]
-    },
-    {
-      title: "📚 الدوال",
-      functions: [
-        { name: "function name()", desc: "دالة عادية", example: 'function greet(name) {\n  return "مرحبا " + name;\n}\nconsole.log(greet("أحمد"));' },
-        { name: "const f = () =>", desc: "دالة سهمية", example: 'const square = x => x * x;\nconsole.log(square(5));  // 25' },
-        { name: "دالة مجهولة", desc: "بدون اسم", example: 'setTimeout(function() {\n  console.log("بعد ثانية");\n}, 1000);' },
-        { name: "default params", desc: "قيم افتراضية", example: 'function greet(name = "زائر") {\n  return `مرحبا ${name}`;\n}' },
-        { name: "rest ...args", desc: "وسائط متعددة", example: 'function sum(...nums) {\n  return nums.reduce((a,b) => a+b, 0);\n}\nconsole.log(sum(1,2,3));' }
-      ]
-    },
-    {
-      title: "⚡ ES6+ الحديثة",
-      functions: [
-        { name: "Destructuring", desc: "تفكيك المصفوفات والكائنات", example: 'const [a, b] = [1, 2];\nconst {name, age} = {name: "أحمد", age: 25};' },
-        { name: "Spread ...", desc: "نشر العناصر", example: 'const arr = [1, 2, ...[3, 4]];\nconst obj = {...{a:1}, b:2};' },
-        { name: "Template Literals", desc: "نصوص بـ ` `", example: 'const n = "أحمد";\nconsole.log(`مرحبا ${n}!`);' },
-        { name: "Arrow Functions", desc: "دوال سهمية مختصرة", example: 'const add = (a, b) => a + b;' },
-        { name: "Map & Set", desc: "مجموعات حديثة", example: 'const m = new Map();\nm.set("key", "value");\nm.get("key");' }
-      ]
-    },
-    {
-      title: "⏰ التوقيت",
-      functions: [
-        { name: "setTimeout(fn, ms)", desc: "تنفيذ بعد وقت", example: 'setTimeout(() => {\n  console.log("بعد ثانية");\n}, 1000);' },
-        { name: "setInterval(fn, ms)", desc: "تنفيذ متكرر", example: 'let i = 0;\nconst id = setInterval(() => {\n  console.log(i++);\n  if (i >= 5) clearInterval(id);\n}, 1000);' },
-        { name: "Date.now()", desc: "الوقت الحالي (ms)", example: 'Date.now()' },
-        { name: "new Date()", desc: "كائن تاريخ", example: 'const d = new Date();\nd.getFullYear();\nd.getMonth() + 1;  // 1-12' }
-      ]
-    }
+    { title: "🖨️ الإخراج والتشخيص", functions: [
+      { name: "console.log(x)", desc: "طباعة", example: 'console.log("مرحبا");' },
+      { name: "console.error(x)", desc: "خطأ", example: 'console.error("خطأ!");' },
+      { name: "console.warn(x)", desc: "تحذير", example: 'console.warn("احترس");' },
+      { name: "console.table(arr)", desc: "جدول", example: 'console.table([{name:"أحمد"}]);' },
+      { name: "console.time/timeEnd", desc: "قياس الزمن", example: 'console.time("x");\n// كود\nconsole.timeEnd("x");' },
+      { name: "typeof x", desc: "نوع المتغير", example: 'typeof 5  // "number"' }
+    ]},
+    { title: "📦 المتغيرات", functions: [
+      { name: "let", desc: "متغير قابل للتغيير", example: 'let x = 5;\nx = 10;' },
+      { name: "const", desc: "ثابت", example: 'const PI = 3.14;' },
+      { name: "var", desc: "قديم - تجنبه", example: 'var x = 5;' },
+      { name: "Template Literal", desc: "نص بـ ` `", example: 'const n = "أحمد";\nconsole.log(`مرحبا ${n}`);' }
+    ]},
+    { title: "🔢 الأرقام", functions: [
+      { name: "parseInt()", desc: "نص إلى صحيح", example: 'parseInt("42")  // 42' },
+      { name: "parseFloat()", desc: "نص إلى عشري", example: 'parseFloat("3.14")' },
+      { name: "Number()", desc: "تحويل لرقم", example: 'Number("5")  // 5' },
+      { name: "toFixed(n)", desc: "أرقام عشرية", example: '(3.14159).toFixed(2)  // "3.14"' },
+      { name: "Math.floor()", desc: "تقريب لأسفل", example: 'Math.floor(3.7)  // 3' },
+      { name: "Math.ceil()", desc: "تقريب لأعلى", example: 'Math.ceil(3.2)  // 4' },
+      { name: "Math.round()", desc: "تقريب عادي", example: 'Math.round(3.5)  // 4' },
+      { name: "Math.random()", desc: "عشوائي 0-1", example: 'Math.random()' },
+      { name: "Math.max()", desc: "الأكبر", example: 'Math.max(1, 5, 3)  // 5' },
+      { name: "Math.min()", desc: "الأصغر", example: 'Math.min(1, 5, 3)  // 1' },
+      { name: "Math.abs()", desc: "مطلق", example: 'Math.abs(-5)  // 5' },
+      { name: "Math.pow()", desc: "قوة", example: 'Math.pow(2, 3)  // 8' },
+      { name: "Math.sqrt()", desc: "جذر", example: 'Math.sqrt(16)  // 4' }
+    ]},
+    { title: "🔤 النصوص", functions: [
+      { name: "str.length", desc: "الطول", example: '"hello".length  // 5' },
+      { name: "str.toUpperCase()", desc: "كبيرة", example: '"hi".toUpperCase()' },
+      { name: "str.toLowerCase()", desc: "صغيرة", example: '"HI".toLowerCase()' },
+      { name: "str.split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
+      { name: "str.replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
+      { name: "str.replaceAll(a,b)", desc: "استبدال الكل", example: '"aaa".replaceAll("a","b")' },
+      { name: "str.includes(s)", desc: "يحتوي", example: '"hello".includes("ell")  // true' },
+      { name: "str.indexOf(s)", desc: "موقع", example: '"hello".indexOf("l")  // 2' },
+      { name: "str.trim()", desc: "إزالة مسافات", example: '"  hi  ".trim()' },
+      { name: "str.charAt(i)", desc: "حرف في موقع", example: '"hi".charAt(1)  // "i"' },
+      { name: "str.slice(a,b)", desc: "قص", example: '"hello".slice(1,4)  // "ell"' },
+      { name: "str.substring(a,b)", desc: "قص بديل", example: '"hello".substring(1,4)' },
+      { name: "str.repeat(n)", desc: "تكرار", example: '"ab".repeat(3)  // "ababab"' },
+      { name: "str.padStart(n,c)", desc: "حشو بداية", example: '"5".padStart(3,"0")  // "005"' },
+      { name: "str.startsWith(s)", desc: "يبدأ بـ", example: '"hello".startsWith("he")  // true' },
+      { name: "str.endsWith(s)", desc: "ينتهي بـ", example: '"hello".endsWith("lo")  // true' }
+    ]},
+    { title: "📋 المصفوفات", functions: [
+      { name: "arr.push(x)", desc: "إضافة نهاية", example: 'let a=[1];\na.push(2);' },
+      { name: "arr.pop()", desc: "حذف نهاية", example: '[1,2].pop()  // 2' },
+      { name: "arr.unshift(x)", desc: "إضافة بداية", example: '[2].unshift(1)' },
+      { name: "arr.shift()", desc: "حذف بداية", example: '[1,2].shift()  // 1' },
+      { name: "arr.map(fn)", desc: "تحويل", example: '[1,2].map(x=>x*2)  // [2,4]' },
+      { name: "arr.filter(fn)", desc: "تصفية", example: '[1,2,3].filter(x=>x>1)  // [2,3]' },
+      { name: "arr.reduce(fn,i)", desc: "اختصار", example: '[1,2,3].reduce((a,b)=>a+b,0)  // 6' },
+      { name: "arr.forEach(fn)", desc: "مرور", example: '[1,2].forEach(x=>console.log(x))' },
+      { name: "arr.find(fn)", desc: "أول مطابق", example: '[1,2,3].find(x=>x>1)  // 2' },
+      { name: "arr.findIndex(fn)", desc: "فهرس أول", example: '[1,2,3].findIndex(x=>x===2)  // 1' },
+      { name: "arr.includes(x)", desc: "يحتوي", example: '[1,2].includes(2)  // true' },
+      { name: "arr.indexOf(x)", desc: "فهرس", example: '[1,2].indexOf(2)  // 1' },
+      { name: "arr.sort()", desc: "ترتيب", example: '[3,1,2].sort()  // [1,2,3]' },
+      { name: "arr.reverse()", desc: "عكس", example: '[1,2].reverse()  // [2,1]' },
+      { name: "arr.join(sep)", desc: "دمج", example: '[1,2].join("-")  // "1-2"' },
+      { name: "arr.slice(a,b)", desc: "نسخ جزء", example: '[1,2,3,4].slice(1,3)  // [2,3]' },
+      { name: "arr.splice(i,n)", desc: "حذف/إضافة", example: 'let a=[1,2,3];\na.splice(1,1);  // [1,3]' },
+      { name: "arr.concat(a2)", desc: "دمج", example: '[1].concat([2])  // [1,2]' },
+      { name: "arr.flat()", desc: "تسطيح", example: '[[1,2],[3]].flat()  // [1,2,3]' },
+      { name: "arr.flatMap(fn)", desc: "تسطيح + تحويل", example: '[1,2].flatMap(x=>[x,x])' },
+      { name: "arr.some(fn)", desc: "هل يوجد", example: '[1,2].some(x=>x>1)  // true' },
+      { name: "arr.every(fn)", desc: "هل الكل", example: '[1,2].every(x=>x>0)  // true' }
+    ]},
+    { title: "📦 الكائنات", functions: [
+      { name: "obj.key", desc: "وصول", example: 'let p={name:"أ"}; p.name' },
+      { name: "obj['key']", desc: "وصول ديناميكي", example: 'p["name"]' },
+      { name: "Object.keys()", desc: "المفاتيح", example: 'Object.keys({a:1,b:2})' },
+      { name: "Object.values()", desc: "القيم", example: 'Object.values({a:1,b:2})' },
+      { name: "Object.entries()", desc: "أزواج", example: 'Object.entries({a:1})' },
+      { name: "Object.assign()", desc: "دمج", example: 'Object.assign({}, {a:1})' },
+      { name: "JSON.stringify()", desc: "كائن→نص", example: 'JSON.stringify({a:1})' },
+      { name: "JSON.parse()", desc: "نص→كائن", example: 'JSON.parse(\'{"a":1}\')' }
+    ]},
+    { title: "🔀 الشروط", functions: [
+      { name: "if / else", desc: "شروط", example: 'if (x>0) {...} else {...}' },
+      { name: "else if", desc: "شروط متعددة", example: 'if (x>0) {...} else if (x<0) {...}' },
+      { name: "ternary ?:", desc: "شرط مختصر", example: 'let s = x>0 ? "موجب" : "سالب";' },
+      { name: "switch", desc: "حالات", example: 'switch(x) {\n  case 1: break;\n  default: break;\n}' },
+      { name: "&& / || / !", desc: "منطقية", example: 'if (x>0 && y<5) {...}' },
+      { name: "?? (Nullish)", desc: "بديل إذا null", example: 'let x = a ?? "default";' },
+      { name: "?. (Optional)", desc: "وصول آمن", example: 'obj?.user?.name' }
+    ]},
+    { title: "🔄 الحلقات", functions: [
+      { name: "for", desc: "حلقة كلاسيكية", example: 'for (let i=0;i<5;i++) {}' },
+      { name: "for...of", desc: "مصفوفات", example: 'for (const x of [1,2]) {}' },
+      { name: "for...in", desc: "كائنات", example: 'for (const k in obj) {}' },
+      { name: "while", desc: "شرطية", example: 'while (i<5) { i++; }' },
+      { name: "do...while", desc: "تنفيذ مرة", example: 'do { } while (x<5);' },
+      { name: "break / continue", desc: "خروج/تخطي", example: 'for (...) { if (x) break; }' }
+    ]},
+    { title: "📚 الدوال", functions: [
+      { name: "function", desc: "دالة عادية", example: 'function greet(n) { return `hi ${n}`; }' },
+      { name: "arrow", desc: "سهمية", example: 'const sq = x => x*x;' },
+      { name: "default params", desc: "قيم افتراضية", example: 'function f(x=5) {}' },
+      { name: "rest ...", desc: "وسائط متعددة", example: 'function sum(...n) { return n.reduce((a,b)=>a+b); }' },
+      { name: "IIFE", desc: "دالة فورية", example: '(function() { console.log("hi"); })();' }
+    ]},
+    { title: "⚡ ES6+", functions: [
+      { name: "Destructuring", desc: "تفكيك", example: 'const [a,b] = [1,2];\nconst {x,y} = {x:1,y:2};' },
+      { name: "Spread ...", desc: "نشر", example: 'const a = [...[1,2], 3];' },
+      { name: "Map", desc: "خريطة", example: 'const m = new Map();\nm.set("k","v");' },
+      { name: "Set", desc: "مجموعة فريدة", example: 'const s = new Set([1,2,2,3]);' },
+      { name: "Promise", desc: "وعد", example: 'new Promise((res,rej) => res("ok"))\n  .then(x => console.log(x));' },
+      { name: "async / await", desc: "غير متزامن", example: 'async function f() {\n  const r = await fetch(url);\n}' }
+    ]},
+    { title: "⏰ التوقيت", functions: [
+      { name: "setTimeout", desc: "تنفيذ مؤجل", example: 'setTimeout(() => {}, 1000);' },
+      { name: "setInterval", desc: "تنفيذ متكرر", example: 'const id = setInterval(() => {}, 1000);' },
+      { name: "clearInterval", desc: "إيقاف", example: 'clearInterval(id);' },
+      { name: "Date.now()", desc: "الوقت الحالي", example: 'Date.now()' },
+      { name: "new Date()", desc: "كائن تاريخ", example: 'const d = new Date();\nd.getFullYear();' }
+    ]}
   ]},
-  
+
   python: { sections: [
-    {
-      title: "🖨️ الإخراج والمدخلات",
-      functions: [
-        { name: "print(value)", desc: "طباعة على الشاشة", example: 'print("مرحبا")\nprint(42)\nprint("أ", "ب", sep="-")  # أ-ب' },
-        { name: "print(end='')", desc: "بدون سطر جديد", example: 'print("أ", end="")\nprint("ب")  # أب' },
-        { name: "f-string", desc: "نص ديناميكي (الأفضل)", example: 'name = "أحمد"\nage = 25\nprint(f"الاسم: {name}, العمر: {age}")' },
-        { name: "len(obj)", desc: "الطول", example: 'len("hello")   # 5\nlen([1,2,3])   # 3' },
-        { name: "type(obj)", desc: "نوع الكائن", example: 'type(5)         # <class \'int\'>\ntype("hi")      # <class \'str\'>' },
-        { name: "isinstance(x, t)", desc: "فحص النوع", example: 'isinstance(5, int)     # True\nisinstance("a", str)   # True' }
-      ]
-    },
-    {
-      title: "🔢 الأرقام",
-      functions: [
-        { name: "int(x)", desc: "تحويل إلى عدد صحيح", example: 'int("42")     # 42\nint(3.9)      # 3' },
-        { name: "float(x)", desc: "تحويل إلى عشري", example: 'float("3.14") # 3.14' },
-        { name: "str(x)", desc: "تحويل إلى نص", example: 'str(123)      # "123"' },
-        { name: "round(x, n)", desc: "تقريب", example: 'round(3.14159, 2)  # 3.14' },
-        { name: "abs(x)", desc: "القيمة المطلقة", example: 'abs(-5)       # 5' },
-        { name: "max(...)", desc: "الأكبر", example: 'max(3, 7, 2)   # 7\nmax([3, 1, 2])  # 3' },
-        { name: "min(...)", desc: "الأصغر", example: 'min(3, 7, 2)   # 2' },
-        { name: "sum(list)", desc: "المجموع", example: 'sum([1, 2, 3])  # 6' },
-        { name: "pow(x, y)", desc: "القوة", example: 'pow(2, 3)      # 8\n2 ** 3         # 8' },
-        { name: "divmod(a, b)", desc: "قسمة + باقي", example: 'divmod(7, 3)   # (2, 1)' }
-      ]
-    },
-    {
-      title: "🔤 النصوص",
-      functions: [
-        { name: "str.upper()", desc: "أحرف كبيرة", example: '"hello".upper()     # "HELLO"' },
-        { name: "str.lower()", desc: "أحرف صغيرة", example: '"HELLO".lower()     # "hello"' },
-        { name: "str.title()", desc: "أول حرف كبير", example: '"hello world".title()  # "Hello World"' },
-        { name: "str.split(sep)", desc: "تقسيم", example: '"a,b,c".split(",")  # ["a","b","c"]' },
-        { name: "str.replace(a, b)", desc: "استبدال", example: '"hello".replace("l", "L")  # "heLLo"' },
-        { name: "str.strip()", desc: "إزالة المسافات", example: '"  hi  ".strip()   # "hi"' },
-        { name: "str.startswith(s)", desc: "يبدأ بـ", example: '"hello".startswith("he")  # True' },
-        { name: "str.endswith(s)", desc: "ينتهي بـ", example: '"hello".endswith("lo")    # True' },
-        { name: "str.find(s)", desc: "موقع أول ظهور", example: '"hello".find("l")     # 2' },
-        { name: "str.count(s)", desc: "عدد التكرارات", example: '"hello".count("l")    # 2' },
-        { name: '"sep".join(list)', desc: "دمج قائمة", example: '"-".join(["a","b","c"])  # "a-b-c"' },
-        { name: "str slicing [a:b]", desc: "قص نص", example: 's = "hello"\ns[1:4]  # "ell"\ns[::-1]  # "olleh" (عكس)' }
-      ]
-    },
-    {
-      title: "📋 القوائم (Lists)",
-      functions: [
-        { name: "list.append(x)", desc: "إضافة عنصر", example: 'nums = [1, 2]\nnums.append(3)   # [1,2,3]' },
-        { name: "list.insert(i, x)", desc: "إضافة في موقع", example: 'nums.insert(0, 0) # [0,1,2,3]' },
-        { name: "list.pop(i)", desc: "حذف وإرجاع", example: 'nums.pop()       # آخر عنصر' },
-        { name: "list.remove(x)", desc: "حذف قيمة", example: 'nums.remove(2)' },
-        { name: "list.sort()", desc: "ترتيب", example: 'nums = [3, 1, 2]\nnums.sort()      # [1,2,3]' },
-        { name: "list.reverse()", desc: "عكس", example: '[1,2,3].reverse() # [3,2,1]' },
-        { name: "list.index(x)", desc: "موقع عنصر", example: '[1,2,3].index(2)  # 1' },
-        { name: "list.count(x)", desc: "عدد التكرارات", example: '[1,2,2,3].count(2) # 2' },
-        { name: "list.extend(list2)", desc: "دمج قوائم", example: '[1,2].extend([3,4])  # [1,2,3,4]' },
-        { name: "list comprehension", desc: "قائمة ذكية", example: '[x*2 for x in range(5)]        # [0,2,4,6,8]\n[x for x in range(10) if x%2==0]  # [0,2,4,6,8]' },
-        { name: "list slicing", desc: "قص قائمة", example: 'nums = [1,2,3,4,5]\nnums[1:3]   # [2,3]\nnums[::-1]  # [5,4,3,2,1]' }
-      ]
-    },
-    {
-      title: "📚 القواميس (Dicts)",
-      functions: [
-        { name: "{key: value}", desc: "إنشاء قاموس", example: 'd = {"name": "أحمد", "age": 25}' },
-        { name: "dict[key]", desc: "الوصول لقيمة", example: 'd["name"]  # "أحمد"' },
-        { name: "dict.get(k, default)", desc: "قيمة بأمان", example: 'd.get("email", "غير موجود")' },
-        { name: "dict.keys()", desc: "المفاتيح", example: 'd.keys()   # dict_keys(["name","age"])' },
-        { name: "dict.values()", desc: "القيم", example: 'd.values() # dict_values(["أحمد",25])' },
-        { name: "dict.items()", desc: "أزواج key-value", example: 'for k, v in d.items():\n    print(k, v)' },
-        { name: "dict.update(d2)", desc: "دمج", example: 'd.update({"email": "a@b.com"})' },
-        { name: "dict.pop(k)", desc: "حذف", example: 'd.pop("age")' },
-        { name: "in operator", desc: "فحص مفتاح", example: '"name" in d    # True' }
-      ]
-    },
-    {
-      title: "🎯 المجموعات (Sets)",
-      functions: [
-        { name: "set()", desc: "مجموعة (بدون تكرار)", example: 's = {1, 2, 3, 2}   # {1,2,3}' },
-        { name: "set.add(x)", desc: "إضافة", example: 's.add(4)' },
-        { name: "set.remove(x)", desc: "حذف", example: 's.remove(1)' },
-        { name: "set union/|", desc: "اتحاد", example: '{1,2} | {2,3}   # {1,2,3}' },
-        { name: "set intersection/&", desc: "تقاطع", example: '{1,2} & {2,3}   # {2}' }
-      ]
-    },
-    {
-      title: "🔀 الشروط",
-      functions: [
-        { name: "if / elif / else", desc: "الشروط", example: 'x = 5\nif x > 0:\n    print("موجب")\nelif x < 0:\n    print("سالب")\nelse:\n    print("صفر")' },
-        { name: "ternary", desc: "شرط مختصر", example: 'age = 20\nstatus = "بالغ" if age >= 18 else "قاصر"' },
-        { name: "in / not in", desc: "فحص الوجود", example: '"a" in "cat"       # True\n1 in [1,2,3]       # True' },
-        { name: "and / or / not", desc: "منطقية", example: 'if x > 0 and x < 10: ...\nif a or b: ...' }
-      ]
-    },
-    {
-      title: "🔄 الحلقات",
-      functions: [
-        { name: "for i in range(n)", desc: "تكرار رقمي", example: 'for i in range(5):\n    print(i)   # 0,1,2,3,4' },
-        { name: "range(start, stop, step)", desc: "نطاق مخصص", example: 'range(1, 10, 2)  # 1,3,5,7,9' },
-        { name: "for x in list", desc: "المرور على قائمة", example: 'for n in [1,2,3]:\n    print(n)' },
-        { name: "enumerate(list)", desc: "مع الفهرس", example: 'for i, v in enumerate(["a","b"]):\n    print(i, v)  # 0 a / 1 b' },
-        { name: "zip(list1, list2)", desc: "دمج قائمتين", example: 'for a, b in zip([1,2], ["أ","ب"]):\n    print(a, b)' },
-        { name: "while cond:", desc: "حلقة شرطية", example: 'i = 0\nwhile i < 5:\n    print(i)\n    i += 1' },
-        { name: "break / continue", desc: "خروج / تخطي", example: 'for i in range(10):\n    if i == 5:\n        break\n    if i % 2 == 0:\n        continue\n    print(i)' }
-      ]
-    },
-    {
-      title: "📚 الدوال",
-      functions: [
-        { name: "def name(params):", desc: "تعريف دالة", example: 'def greet(name):\n    return f"مرحبا {name}"\n\nprint(greet("أحمد"))' },
-        { name: "default params", desc: "قيم افتراضية", example: 'def greet(name="زائر"):\n    return f"مرحبا {name}"' },
-        { name: "lambda", desc: "دالة مختصرة", example: 'square = lambda x: x * x\nprint(square(5))  # 25' },
-        { name: "*args", desc: "وسائط متعددة", example: 'def sum_all(*nums):\n    return sum(nums)\n\nprint(sum_all(1, 2, 3))' },
-        { name: "**kwargs", desc: "وسائط مفتاحية", example: 'def show(**info):\n    for k, v in info.items():\n        print(k, v)\n\nshow(name="أحمد", age=25)' }
-      ]
-    },
-    {
-      title: "📦 الاستيراد",
-      functions: [
-        { name: "import module", desc: "استيراد مكتبة", example: 'import math\nprint(math.sqrt(16))  # 4' },
-        { name: "from x import y", desc: "استيراد دالة", example: 'from random import randint\nprint(randint(1, 10))' },
-        { name: "import x as y", desc: "اختصار", example: 'import math as m\nprint(m.pi)  # 3.14159...' },
-        { name: "datetime", desc: "التاريخ والوقت", example: 'import datetime\nnow = datetime.datetime.now()\nprint(now.year)' }
-      ]
-    }
+    { title: "🖨️ الإخراج", functions: [
+      { name: "print(x)", desc: "طباعة", example: 'print("مرحبا")\nprint(42)' },
+      { name: "print(sep='-')", desc: "فاصل", example: 'print("أ","ب",sep="-")' },
+      { name: "print(end='')", desc: "بدون سطر", example: 'print("أ",end="")' },
+      { name: "f-string", desc: "نص ديناميكي", example: 'n="أ"\nprint(f"مرحبا {n}")' },
+      { name: "format()", desc: "تنسيق", example: '"مرحبا {}".format("أ")' }
+    ]},
+    { title: "🔢 الأرقام", functions: [
+      { name: "int(x)", desc: "صحيح", example: 'int("42")  # 42' },
+      { name: "float(x)", desc: "عشري", example: 'float("3.14")' },
+      { name: "str(x)", desc: "نص", example: 'str(123)' },
+      { name: "round(x,n)", desc: "تقريب", example: 'round(3.14159,2)  # 3.14' },
+      { name: "abs(x)", desc: "مطلق", example: 'abs(-5)  # 5' },
+      { name: "max()", desc: "الأكبر", example: 'max(1,2,3)  # 3' },
+      { name: "min()", desc: "الأصغر", example: 'min([1,2,3])  # 1' },
+      { name: "sum()", desc: "المجموع", example: 'sum([1,2,3])  # 6' },
+      { name: "pow(x,y)", desc: "قوة", example: 'pow(2,3)  # 8' },
+      { name: "divmod(a,b)", desc: "قسمة + باقي", example: 'divmod(7,3)  # (2,1)' }
+    ]},
+    { title: "🔤 النصوص", functions: [
+      { name: "str.upper()", desc: "كبيرة", example: '"hi".upper()  # "HI"' },
+      { name: "str.lower()", desc: "صغيرة", example: '"HI".lower()  # "hi"' },
+      { name: "str.title()", desc: "أول كبير", example: '"hello world".title()' },
+      { name: "str.capitalize()", desc: "أول حرف كبير", example: '"hello".capitalize()' },
+      { name: "str.split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
+      { name: "str.replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
+      { name: "str.strip()", desc: "إزالة مسافات", example: '"  hi  ".strip()' },
+      { name: "str.startswith(s)", desc: "يبدأ بـ", example: '"hi".startswith("h")' },
+      { name: "str.endswith(s)", desc: "ينتهي بـ", example: '"hi".endswith("i")' },
+      { name: "str.find(s)", desc: "موقع", example: '"hi".find("i")  # 1' },
+      { name: "str.count(s)", desc: "عدد", example: '"hello".count("l")  # 2' },
+      { name: '"sep".join(lst)', desc: "دمج", example: '"-".join(["a","b"])' },
+      { name: "str[a:b]", desc: "قص", example: 's = "hello"\ns[1:4]  # "ell"' },
+      { name: "str[::-1]", desc: "عكس النص", example: '"hello"[::-1]  # "olleh"' }
+    ]},
+    { title: "📋 القوائم", functions: [
+      { name: "list.append(x)", desc: "إضافة", example: 'l=[1,2]\nl.append(3)' },
+      { name: "list.insert(i,x)", desc: "إضافة في موقع", example: 'l.insert(0,0)' },
+      { name: "list.pop(i)", desc: "حذف وإرجاع", example: 'l.pop()' },
+      { name: "list.remove(x)", desc: "حذف قيمة", example: 'l.remove(2)' },
+      { name: "list.sort()", desc: "ترتيب", example: 'l=[3,1,2]\nl.sort()' },
+      { name: "list.reverse()", desc: "عكس", example: 'l.reverse()' },
+      { name: "list.index(x)", desc: "موقع", example: 'l.index(2)' },
+      { name: "list.count(x)", desc: "عدد", example: 'l.count(2)' },
+      { name: "list.extend()", desc: "دمج", example: 'l.extend([4,5])' },
+      { name: "list comprehension", desc: "قائمة ذكية", example: '[x*2 for x in range(5)]' },
+      { name: "if comprehension", desc: "مع شرط", example: '[x for x in range(10) if x%2==0]' }
+    ]},
+    { title: "📚 القواميس", functions: [
+      { name: "{k: v}", desc: "إنشاء", example: 'd = {"name": "أ"}' },
+      { name: "d[key]", desc: "وصول", example: 'd["name"]' },
+      { name: "d.get(k,def)", desc: "وصول آمن", example: 'd.get("x", 0)' },
+      { name: "d.keys()", desc: "المفاتيح", example: 'd.keys()' },
+      { name: "d.values()", desc: "القيم", example: 'd.values()' },
+      { name: "d.items()", desc: "أزواج", example: 'd.items()' },
+      { name: "d.update(d2)", desc: "دمج", example: 'd.update({"age":25})' },
+      { name: "d.pop(k)", desc: "حذف", example: 'd.pop("age")' }
+    ]},
+    { title: "🔀 الشروط", functions: [
+      { name: "if/elif/else", desc: "شروط", example: 'if x>0:\n    print("+")\nelif x<0:\n    print("-")\nelse:\n    print("0")' },
+      { name: "ternary", desc: "مختصر", example: 's = "بالغ" if age>=18 else "قاصر"' },
+      { name: "in / not in", desc: "وجود", example: '"a" in "cat"  # True' },
+      { name: "and / or / not", desc: "منطقية", example: 'if x>0 and y<10: ...' }
+    ]},
+    { title: "🔄 الحلقات", functions: [
+      { name: "for i in range()", desc: "تكرار", example: 'for i in range(5):\n    print(i)' },
+      { name: "range(a,b,c)", desc: "نطاق", example: 'range(1,10,2)  # 1,3,5,7,9' },
+      { name: "for x in list", desc: "مرور", example: 'for n in [1,2]:\n    print(n)' },
+      { name: "enumerate()", desc: "مع فهرس", example: 'for i,v in enumerate(["a","b"]):\n    print(i,v)' },
+      { name: "zip()", desc: "دمج", example: 'for a,b in zip([1,2],["أ","ب"]):\n    print(a,b)' },
+      { name: "while", desc: "شرطية", example: 'i=0\nwhile i<5:\n    i+=1' },
+      { name: "break/continue", desc: "خروج/تخطي", example: 'for i in range(10):\n    if i==5: break' }
+    ]},
+    { title: "📚 الدوال", functions: [
+      { name: "def", desc: "تعريف", example: 'def greet(n):\n    return f"hi {n}"' },
+      { name: "default params", desc: "افتراضية", example: 'def greet(n="زائر"): ...' },
+      { name: "lambda", desc: "مختصرة", example: 'sq = lambda x: x*x' },
+      { name: "*args", desc: "وسائط متعددة", example: 'def f(*a): return sum(a)' },
+      { name: "**kwargs", desc: "مفتاحية", example: 'def f(**k): print(k)' }
+    ]},
+    { title: "📦 الاستيراد", functions: [
+      { name: "import module", desc: "استيراد", example: 'import math' },
+      { name: "from x import y", desc: "استيراد محدد", example: 'from random import randint' },
+      { name: "import as", desc: "اختصار", example: 'import math as m' },
+      { name: "math", desc: "رياضيات", example: 'import math\nmath.sqrt(16)' },
+      { name: "random", desc: "عشوائي", example: 'import random\nrandom.randint(1,10)' },
+      { name: "datetime", desc: "تاريخ", example: 'import datetime\ndatetime.datetime.now()' }
+    ]}
   ]},
-  
+
   sql: { sections: [
-    {
-      title: "📋 الجداول",
-      functions: [
-        { name: "CREATE TABLE", desc: "إنشاء جدول", example: 'CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  age INTEGER,\n  email TEXT\n);' },
-        { name: "DROP TABLE", desc: "حذف جدول", example: 'DROP TABLE users;' },
-        { name: "ALTER TABLE ADD", desc: "إضافة عمود", example: 'ALTER TABLE users ADD COLUMN phone TEXT;' },
-        { name: "ALTER TABLE DROP", desc: "حذف عمود", example: 'ALTER TABLE users DROP COLUMN phone;' }
-      ]
-    },
-    {
-      title: "📝 البيانات (CRUD)",
-      functions: [
-        { name: "INSERT INTO", desc: "إضافة صفوف", example: "INSERT INTO users (name, age) VALUES\n  ('أحمد', 25),\n  ('علي', 30);" },
-        { name: "SELECT", desc: "اختيار بيانات", example: 'SELECT * FROM users;\nSELECT name, age FROM users;' },
-        { name: "UPDATE", desc: "تحديث", example: "UPDATE users\nSET age = 26\nWHERE name = 'أحمد';" },
-        { name: "DELETE", desc: "حذف صفوف", example: "DELETE FROM users WHERE age < 18;" }
-      ]
-    },
-    {
-      title: "🔍 الفلترة والترتيب",
-      functions: [
-        { name: "WHERE", desc: "شرط", example: 'SELECT * FROM users WHERE age > 25;' },
-        { name: "AND / OR", desc: "شروط متعددة", example: "SELECT * FROM users\nWHERE age > 20 AND name = 'أحمد';" },
-        { name: "ORDER BY", desc: "ترتيب", example: 'SELECT * FROM users ORDER BY age DESC;' },
-        { name: "LIMIT", desc: "تحديد عدد", example: 'SELECT * FROM users LIMIT 10;' },
-        { name: "OFFSET", desc: "تخطي", example: 'SELECT * FROM users LIMIT 10 OFFSET 20;' },
-        { name: "LIKE", desc: "بحث نصي", example: "SELECT * FROM users WHERE name LIKE 'أ%';" },
-        { name: "IN", desc: "ضمن قائمة", example: "SELECT * FROM users WHERE age IN (20, 25, 30);" },
-        { name: "BETWEEN", desc: "بين قيمتين", example: 'SELECT * FROM users WHERE age BETWEEN 20 AND 30;' },
-        { name: "DISTINCT", desc: "قيم فريدة", example: 'SELECT DISTINCT age FROM users;' }
-      ]
-    },
-    {
-      title: "🔢 الدوال التجميعية",
-      functions: [
-        { name: "COUNT()", desc: "عدد الصفوف", example: 'SELECT COUNT(*) FROM users;' },
-        { name: "SUM()", desc: "المجموع", example: 'SELECT SUM(age) FROM users;' },
-        { name: "AVG()", desc: "المتوسط", example: 'SELECT AVG(age) FROM users;' },
-        { name: "MAX()", desc: "الأكبر", example: 'SELECT MAX(age) FROM users;' },
-        { name: "MIN()", desc: "الأصغر", example: 'SELECT MIN(age) FROM users;' },
-        { name: "GROUP BY", desc: "تجميع", example: 'SELECT age, COUNT(*)\nFROM users\nGROUP BY age;' },
-        { name: "HAVING", desc: "شرط على التجميع", example: 'SELECT age, COUNT(*)\nFROM users\nGROUP BY age\nHAVING COUNT(*) > 1;' }
-      ]
-    },
-    {
-      title: "🔗 الربط (Joins)",
-      functions: [
-        { name: "INNER JOIN", desc: "ربط داخلي", example: 'SELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON u.id = o.user_id;' },
-        { name: "LEFT JOIN", desc: "ربط يسار", example: 'SELECT u.name, o.total\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id;' },
-        { name: "RIGHT JOIN", desc: "ربط يمين", example: 'SELECT * FROM users u\nRIGHT JOIN orders o ON u.id = o.user_id;' }
-      ]
-    }
+    { title: "📋 الجداول", functions: [
+      { name: "CREATE TABLE", desc: "إنشاء", example: 'CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT\n);' },
+      { name: "DROP TABLE", desc: "حذف", example: 'DROP TABLE users;' },
+      { name: "ALTER TABLE ADD", desc: "إضافة عمود", example: 'ALTER TABLE users ADD COLUMN age INTEGER;' },
+      { name: "ALTER TABLE DROP", desc: "حذف عمود", example: 'ALTER TABLE users DROP COLUMN age;' }
+    ]},
+    { title: "📝 البيانات", functions: [
+      { name: "INSERT", desc: "إضافة", example: "INSERT INTO users (name) VALUES ('أحمد');" },
+      { name: "INSERT متعدد", desc: "صفوف متعددة", example: "INSERT INTO users (name) VALUES\n  ('أحمد'),\n  ('علي');" },
+      { name: "SELECT", desc: "اختيار", example: 'SELECT * FROM users;' },
+      { name: "SELECT أعمدة", desc: "أعمدة محددة", example: 'SELECT name, age FROM users;' },
+      { name: "UPDATE", desc: "تحديث", example: "UPDATE users SET age=26 WHERE name='أحمد';" },
+      { name: "DELETE", desc: "حذف", example: "DELETE FROM users WHERE age<18;" }
+    ]},
+    { title: "🔍 الفلترة", functions: [
+      { name: "WHERE", desc: "شرط", example: 'SELECT * FROM users WHERE age>25;' },
+      { name: "AND / OR", desc: "شروط", example: "WHERE age>20 AND name='أحمد'" },
+      { name: "ORDER BY", desc: "ترتيب", example: 'ORDER BY age DESC' },
+      { name: "LIMIT", desc: "عدد", example: 'LIMIT 10' },
+      { name: "OFFSET", desc: "تخطي", example: 'LIMIT 10 OFFSET 20' },
+      { name: "LIKE", desc: "بحث", example: "WHERE name LIKE 'أ%'" },
+      { name: "IN", desc: "قائمة", example: 'WHERE age IN (20,25,30)' },
+      { name: "BETWEEN", desc: "بين", example: 'WHERE age BETWEEN 20 AND 30' },
+      { name: "IS NULL", desc: "فارغ", example: 'WHERE email IS NULL' },
+      { name: "DISTINCT", desc: "فريد", example: 'SELECT DISTINCT age FROM users;' }
+    ]},
+    { title: "🔢 التجميع", functions: [
+      { name: "COUNT()", desc: "عدد", example: 'SELECT COUNT(*) FROM users;' },
+      { name: "SUM()", desc: "مجموع", example: 'SELECT SUM(age) FROM users;' },
+      { name: "AVG()", desc: "متوسط", example: 'SELECT AVG(age) FROM users;' },
+      { name: "MAX()", desc: "أكبر", example: 'SELECT MAX(age) FROM users;' },
+      { name: "MIN()", desc: "أصغر", example: 'SELECT MIN(age) FROM users;' },
+      { name: "GROUP BY", desc: "تجميع", example: 'SELECT age, COUNT(*) FROM users GROUP BY age;' },
+      { name: "HAVING", desc: "شرط على تجميع", example: 'GROUP BY age HAVING COUNT(*)>1' }
+    ]},
+    { title: "🔗 الربط", functions: [
+      { name: "INNER JOIN", desc: "داخلي", example: 'SELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON u.id=o.user_id;' },
+      { name: "LEFT JOIN", desc: "يسار", example: 'LEFT JOIN orders o ON u.id=o.user_id' },
+      { name: "RIGHT JOIN", desc: "يمين", example: 'RIGHT JOIN orders o ON u.id=o.user_id' }
+    ]}
   ]},
-  
+
   markdown: { sections: [
-    {
-      title: "📝 النصوص",
-      functions: [
-        { name: "# عنوان 1", desc: "عناوين من 1-6", example: '# عنوان 1\n## عنوان 2\n### عنوان 3' },
-        { name: "**نص**", desc: "نص عريض", example: 'هذا **نص عريض**' },
-        { name: "*نص*", desc: "نص مائل", example: 'هذا *نص مائل*' },
-        { name: "~~نص~~", desc: "نص مشطوب", example: 'هذا ~~نص محذوف~~' },
-        { name: "> اقتباس", desc: "اقتباس", example: '> هذا اقتباس مهم' },
-        { name: "---", desc: "خط فاصل", example: 'فقرة أولى\n\n---\n\nفقرة ثانية' }
-      ]
-    },
-    {
-      title: "📋 القوائم",
-      functions: [
-        { name: "- عنصر", desc: "قائمة نقطية", example: '- عنصر 1\n- عنصر 2\n- عنصر 3' },
-        { name: "1. عنصر", desc: "قائمة مرقمة", example: '1. أولاً\n2. ثانياً\n3. ثالثاً' },
-        { name: "- [ ]", desc: "قائمة مهام", example: '- [x] مهمة منجزة\n- [ ] مهمة جارية' },
-        { name: "- [x] فرعية", desc: "قوائم متداخلة", example: '- رئيسي\n  - فرعي 1\n  - فرعي 2' }
-      ]
-    },
-    {
-      title: "🔗 الروابط والصور",
-      functions: [
-        { name: "[نص](رابط)", desc: "رابط", example: '[جوجل](https://google.com)' },
-        { name: "![وصف](صورة)", desc: "صورة", example: '![شعار](logo.png)' },
-        { name: "[رابط][ref]", desc: "رابط مرجعي", example: '[جوجل][g]\n\n[g]: https://google.com' }
-      ]
-    },
-    {
-      title: "💻 الكود",
-      functions: [
-        { name: "`كود`", desc: "كود سطري", example: 'استخدم `console.log()` للطباعة' },
-        { name: "```lang", desc: "كتلة كود", example: '```javascript\nconst x = 5;\nconsole.log(x);\n```' }
-      ]
-    },
-    {
-      title: "📊 الجداول",
-      functions: [
-        { name: "جداول Markdown", desc: "إنشاء جدول", example: '| الاسم | العمر |\n|------|------|\n| أحمد | 25 |\n| علي  | 30 |' }
-      ]
-    }
+    { title: "📝 النصوص", functions: [
+      { name: "# عنوان", desc: "عناوين 1-6", example: '# عنوان 1\n## عنوان 2\n### عنوان 3' },
+      { name: "**نص**", desc: "عريض", example: 'هذا **مهم**' },
+      { name: "*نص*", desc: "مائل", example: 'هذا *مائل*' },
+      { name: "~~نص~~", desc: "مشطوب", example: 'هذا ~~قديم~~' },
+      { name: "> اقتباس", desc: "اقتباس", example: '> اقتباس مهم' },
+      { name: "---", desc: "خط فاصل", example: 'فقرة\n\n---\n\nفقرة' }
+    ]},
+    { title: "📋 القوائم", functions: [
+      { name: "- عنصر", desc: "نقاط", example: '- عنصر 1\n- عنصر 2' },
+      { name: "1. عنصر", desc: "مرقمة", example: '1. أولاً\n2. ثانياً' },
+      { name: "- [x] مهمة", desc: "مهام", example: '- [x] منجزة\n- [ ] جارية' },
+      { name: "قائمة متداخلة", desc: "متداخلة", example: '- رئيسي\n  - فرعي' }
+    ]},
+    { title: "🔗 الروابط والصور", functions: [
+      { name: "[نص](رابط)", desc: "رابط", example: '[جوجل](https://google.com)' },
+      { name: "![alt](img)", desc: "صورة", example: '![شعار](logo.png)' }
+    ]},
+    { title: "💻 الكود", functions: [
+      { name: "`كود`", desc: "سطري", example: 'استخدم `print()`' },
+      { name: "```lang", desc: "كتلة كود", example: '```js\nconst x = 5;\n```' }
+    ]},
+    { title: "📊 الجداول", functions: [
+      { name: "جداول", desc: "Markdown tables", example: '| اسم | عمر |\n|-----|-----|\n| أحمد | 25 |' }
+    ]}
   ]},
-  
+
   json: { sections: [
-    {
-      title: "📦 البنية الأساسية",
-      functions: [
-        { name: "{...}", desc: "كائن (Object)", example: '{"name": "أحمد", "age": 25}' },
-        { name: "[...]", desc: "مصفوفة (Array)", example: '[1, 2, 3]\n["a", "b", "c"]' },
-        { name: "نص", desc: "String (بين علامات)", example: '"هذا نص"' },
-        { name: "رقم", desc: "Number", example: '42\n3.14\n-10' },
-        { name: "منطقي", desc: "Boolean", example: 'true\nfalse' },
-        { name: "null", desc: "لا قيمة", example: '"value": null' },
-        { name: "كائن متداخل", desc: "Nested Objects", example: '{\n  "user": {\n    "name": "أحمد",\n    "skills": ["HTML", "CSS"]\n  }\n}' }
-      ]
-    },
-    {
-      title: "⚠️ القواعد المهمة",
-      functions: [
-        { name: "لا تعليقات", desc: "JSON لا يدعم التعليقات", example: '// هذا خطأ!\n{"a": 1}' },
-        { name: "علامات مزدوجة", desc: "استخدم \" وليس '", example: '{"name": "أحمد"}  ✅\n{\'name\': \'أحمد\'}  ❌' },
-        { name: "بدون فاصلة أخيرة", desc: "لا فاصلة بعد آخر عنصر", example: '{"a": 1, "b": 2}  ✅\n{"a": 1, "b": 2,}  ❌' }
-      ]
-    }
+    { title: "📦 البنية", functions: [
+      { name: "{...}", desc: "كائن", example: '{"name": "أحمد", "age": 25}' },
+      { name: "[...]", desc: "مصفوفة", example: '[1, 2, 3]' },
+      { name: "نص", desc: "String", example: '"هذا نص"' },
+      { name: "رقم", desc: "Number", example: '42\n3.14' },
+      { name: "منطقي", desc: "Boolean", example: 'true\nfalse' },
+      { name: "null", desc: "لا شيء", example: '"key": null' },
+      { name: "متداخل", desc: "Nested", example: '{"user": {"name": "أ"}}' }
+    ]},
+    { title: "⚠️ القواعد", functions: [
+      { name: "بدون تعليقات", desc: "لا // ولا /* */" },
+      { name: "علامات مزدوجة", desc: "استخدم \" وليس '" },
+      { name: "بدون فاصلة أخيرة", desc: "لا فاصلة بعد آخر عنصر" }
+    ]}
   ]},
-  
+
   yaml: { sections: [
-    {
-      title: "📄 البنية",
-      functions: [
-        { name: "key: value", desc: "زوج مفتاح-قيمة", example: 'name: أحمد\nage: 25' },
-        { name: "- عنصر", desc: "قائمة", example: 'skills:\n  - HTML\n  - CSS\n  - JavaScript' },
-        { name: "متداخل", desc: "كائن متداخل", example: 'user:\n  name: أحمد\n  age: 25' },
-        { name: "نص متعدد", desc: "نص بعدة أسطر", example: 'description: |\n  سطر أول\n  سطر ثاني' },
-        { name: "تعليق", desc: "تعليق بـ #", example: '# هذا تعليق\nname: أحمد' }
-      ]
-    }
+    { title: "📄 البنية", functions: [
+      { name: "key: value", desc: "زوج", example: 'name: أحمد' },
+      { name: "قائمة", desc: "قائمة", example: 'items:\n  - HTML\n  - CSS' },
+      { name: "متداخل", desc: "Nested", example: 'user:\n  name: أ' },
+      { name: "نص متعدد", desc: "Multi-line", example: 'desc: |\n  سطر 1\n  سطر 2' },
+      { name: "تعليق", desc: "#", example: '# تعليق' }
+    ]}
   ]},
-  
+
   xml: { sections: [
-    {
-      title: "📄 البنية الأساسية",
-      functions: [
-        { name: "<?xml ?>", desc: "إعلان XML", example: '<?xml version="1.0" encoding="UTF-8"?>' },
-        { name: "<tag>value</tag>", desc: "عنصر بسيط", example: '<name>أحمد</name>' },
-        { name: "<tag attr='v'>", desc: "عنصر مع خاصية", example: '<user id="1">أحمد</user>' },
-        { name: "عناصر متداخلة", desc: "nested", example: '<user>\n  <name>أحمد</name>\n  <age>25</age>\n</user>' },
-        { name: "قوائم", desc: "عناصر متكررة", example: '<skills>\n  <skill>HTML</skill>\n  <skill>CSS</skill>\n</skills>' },
-        { name: "تعليق", desc: "تعليق", example: '<!-- تعليق -->' }
-      ]
-    }
+    { title: "📄 البنية", functions: [
+      { name: "<?xml?>", desc: "إعلان", example: '<?xml version="1.0" encoding="UTF-8"?>' },
+      { name: "<tag>x</tag>", desc: "عنصر", example: '<name>أحمد</name>' },
+      { name: "<tag attr='v'>", desc: "مع خاصية", example: '<user id="1">أحمد</user>' },
+      { name: "متداخل", desc: "Nested", example: '<user>\n  <name>أ</name>\n</user>' },
+      { name: "تعليق", desc: "تعليق", example: '<!-- تعليق -->' }
+    ]}
   ]}
 };
 
 /* ============================================================
-   الحالة العامة
+   State
    ============================================================ */
 const codeEditor = document.getElementById('codeEditor');
 const lineNumbers = document.getElementById('lineNumbers');
@@ -1490,14 +1299,15 @@ let errorLines = [];
 let warningLines = [];
 let autoRun = true;
 let autoRunTimer = null;
+let lintTimer = null;
 let pyodideReady = false;
 let pyodide = null;
 let sqlReady = false;
 let SQL = null;
-let lastRunTime = 0;
+let consoleMessages = [];
 
 /* ============================================================
-   أدوات
+   Helpers
    ============================================================ */
 function setStatus(text, busy, error) {
   document.getElementById('statusText').textContent = text;
@@ -1514,21 +1324,17 @@ function updateCursorInfo() {
   const text = codeEditor.value.substring(0, pos);
   const line = text.split('\n').length;
   const col = pos - text.lastIndexOf('\n');
-  document.getElementById('cursorInfo').textContent = `السطر ${line}:${col}`;
+  document.getElementById('cursorInfo').textContent = line + ':' + col;
 }
 
-function updateLastRun() {
-  const now = Date.now();
-  lastRunTime = now;
-  const t = new Date(now);
-  document.getElementById('lastRunInfo').textContent = 'آخر تشغيل: ' + 
-    t.getHours().toString().padStart(2,'0') + ':' +
-    t.getMinutes().toString().padStart(2,'0') + ':' +
-    t.getSeconds().toString().padStart(2,'0');
+function escapeHtml(text) {
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
 }
 
 /* ============================================================
-   أرقام الأسطر
+   Line Numbers
    ============================================================ */
 function updateLineNumbers() {
   const lines = codeEditor.value.split('\n');
@@ -1539,7 +1345,7 @@ function updateLineNumbers() {
     let cls = '';
     if (isErr) cls = 'err-num';
     else if (isWarn) cls = 'warn-num';
-    html += `<div class="${cls}">${i}</div>`;
+    html += '<div class="' + cls + '">' + i + '</div>';
   }
   lineNumbers.innerHTML = html;
   lineNumbers.scrollTop = codeEditor.scrollTop;
@@ -1552,6 +1358,7 @@ codeEditor.addEventListener('scroll', () => {
 
 codeEditor.addEventListener('input', () => {
   updateLineNumbers();
+  scheduleLint();
   scheduleAutoRun();
 });
 
@@ -1562,31 +1369,405 @@ codeEditor.addEventListener('keydown', (e) => {
   if (e.key === 'Tab') {
     e.preventDefault();
     const s = codeEditor.selectionStart;
-    codeEditor.value = codeEditor.value.substring(0, s) + '    ' + codeEditor.value.substring(codeEditor.selectionEnd);
-    codeEditor.selectionStart = codeEditor.selectionEnd = s + 4;
+    codeEditor.value = codeEditor.value.substring(0, s) + '  ' + codeEditor.value.substring(codeEditor.selectionEnd);
+    codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
     updateLineNumbers();
   }
 });
 
 /* ============================================================
-   التشغيل التلقائي
+   نظام الأخطاء الذكي - Linter
+   ============================================================ */
+function scheduleLint() {
+  clearTimeout(lintTimer);
+  lintTimer = setTimeout(runLinter, 400);
+}
+
+function runLinter() {
+  const code = codeEditor.value;
+  const issues = [];
+  
+  try {
+    if (currentLang === 'javascript') lintJS(code, issues);
+    else if (currentLang === 'python') lintPython(code, issues);
+    else if (currentLang === 'html') lintHTML(code, issues);
+    else if (currentLang === 'css') lintCSS(code, issues);
+    else if (currentLang === 'json') lintJSON(code, issues);
+    else if (currentLang === 'sql') lintSQL(code, issues);
+  } catch (e) {}
+  
+  // تحديث الأسطر
+  errorLines = issues.filter(i => i.severity === 'error').map(i => i.line);
+  warningLines = issues.filter(i => i.severity === 'warning').map(i => i.line);
+  updateLineNumbers();
+  updateErrorBadge(issues);
+  renderIssues(issues);
+}
+
+function updateErrorBadge(issues) {
+  const badge = document.getElementById('errorBadge');
+  const errors = issues.filter(i => i.severity === 'error').length;
+  const warnings = issues.filter(i => i.severity === 'warning').length;
+  
+  if (errors + warnings === 0) {
+    badge.classList.add('hidden');
+  } else {
+    badge.textContent = errors + warnings;
+    badge.className = 'tab-badge' + (errors === 0 ? ' warning' : '');
+  }
+}
+
+function renderIssues(issues) {
+  const div = document.getElementById('tab-errors');
+  
+  if (issues.length === 0) {
+    div.innerHTML = '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء! كودك نظيف</div>';
+    return;
+  }
+  
+  let html = '';
+  issues.forEach(issue => {
+    const icon = issue.severity === 'error' ? '❌' : '⚠️';
+    const cls = issue.severity === 'error' ? '' : ' warning';
+    html += `
+      <div class="error-item${cls}">
+        <div class="header">
+          <span class="icon">${icon}</span>
+          <span class="line">السطر ${issue.line}${issue.col ? ':' + issue.col : ''}</span>
+        </div>
+        <div class="message">${escapeHtml(issue.message)}</div>
+        ${issue.suggestion ? '<div class="suggestion">' + escapeHtml(issue.suggestion) + '</div>' : ''}
+      </div>
+    `;
+  });
+  div.innerHTML = html;
+}
+
+/* ============================================================
+   Linters متخصصة
+   ============================================================ */
+function lintJS(code, issues) {
+  const lines = code.split('\n');
+  const stack = [];
+  
+  lines.forEach((line, idx) => {
+    const ln = idx + 1;
+    const trimmed = line.trim();
+    
+    // تجاهل التعليقات والنصوص
+    if (trimmed.startsWith('//')) return;
+    
+    // فحص var
+    const varMatch = line.match(/\bvar\s+(\w+)/);
+    if (varMatch) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'استخدام var القديم',
+        suggestion: 'استخدم "let" أو "const" بدلاً من "var"'
+      });
+    }
+    
+    // فحص == بدلاً من ===
+    if (/[^=!<>]==[^=]/.test(line) && !line.includes('===')) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'استخدام == بدلاً من ===',
+        suggestion: 'استخدم === للمقارنة الصارمة (يمنع تحويل الأنواع)'
+      });
+    }
+    
+    // فحص !== بدلاً من !=
+    if (/[^!]!=[^=]/.test(line) && !line.includes('!==')) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'استخدام != بدلاً من !==',
+        suggestion: 'استخدم !== للمقارنة الصارمة'
+      });
+    }
+    
+    // فحص الأقواس غير المتوازنة
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '{' || c === '(' || c === '[') stack.push({ c, ln });
+      else if (c === '}' || c === ')' || c === ']') {
+        const open = c === '}' ? '{' : c === ')' ? '(' : '[';
+        if (stack.length === 0 || stack[stack.length - 1].c !== open) {
+          issues.push({
+            line: ln, severity: 'error',
+            message: 'قوس إغلاق "' + c + '" بدون فتح مطابق',
+            suggestion: 'تحقق من توازن الأقواس'
+          });
+        } else {
+          stack.pop();
+        }
+      }
+    }
+    
+    // فحص السطر بدون فاصلة منقوطة (إذا كان تعريف متغير)
+    if (/^(let|const|var)\s+\w+\s*=/.test(trimmed) && 
+        !trimmed.endsWith(';') && !trimmed.endsWith(',') &&
+        !trimmed.endsWith(')') && !trimmed.endsWith('{') &&
+        !trimmed.endsWith('`')) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'فاصلة منقوطة ; مفقودة',
+        suggestion: 'أضف ";" في نهاية السطر (اختياري في JS الحديث)'
+      });
+    }
+    
+    // فحص console.log في الإنتاج (نصيحة)
+    // تم تجاهله لتجنب الإزعاج
+  });
+  
+  // أقواس لم تُغلق
+  stack.forEach(s => {
+    issues.push({
+      line: s.ln, severity: 'error',
+      message: 'قوس "' + s.c + '" لم يُغلق',
+      suggestion: 'أضف "' + (s.c === '{' ? '}' : s.c === '(' ? ')' : ']') + '" في نهاية الكتلة'
+    });
+  });
+  
+  // فحص الأنماط المشبوهة
+  if (/\bif\s*\([^)]*=[^=]/.test(code)) {
+    issues.push({
+      line: 1, severity: 'warning',
+      message: 'استخدام = بدل == في if',
+      suggestion: 'استخدم == أو === للمقارنة'
+    });
+  }
+}
+
+function lintPython(code, issues) {
+  const lines = code.split('\n');
+  const indentStack = [];
+  
+  lines.forEach((line, idx) => {
+    const ln = idx + 1;
+    const trimmed = line.trim();
+    
+    if (trimmed.startsWith('#')) return;
+    if (!trimmed) return;
+    
+    // فحص النقطتين
+    if (/^(if|elif|else|for|while|def|class|try|except|finally|with|async)\b/.test(trimmed)) {
+      if (!trimmed.endsWith(':') && !trimmed.includes('#')) {
+        issues.push({
+          line: ln, severity: 'error',
+          message: 'النقطتين ":" مفقودة بعد ' + trimmed.split(/\s/)[0],
+          suggestion: 'أضف ":" في نهاية السطر'
+        });
+      }
+    }
+    
+    // فحص print بدون أقواس (Python 2 style)
+    if (/^print\s+["']/.test(trimmed) && !trimmed.includes('(')) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'print بدون أقواس',
+        suggestion: 'في Python 3: print("نص") بدلاً من print "نص"'
+      });
+    }
+    
+    // فحص = في if
+    if (/^if\s+[^=]*=[^=]/.test(trimmed)) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'استخدام = بدل == في الشرط',
+        suggestion: 'استخدم == للمقارنة'
+      });
+    }
+    
+    // فحص الأقواس
+    const open = (line.match(/\(/g) || []).length;
+    const close = (line.match(/\)/g) || []).length;
+    if (open !== close) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'عدد الأقواس غير متوازن: ' + open + ' ( vs ' + close + ' )',
+        suggestion: 'تحقق من الأقواس'
+      });
+    }
+    
+    // فحص def بدون ()
+    if (/^def\s+\w+\s*[^\(:]/.test(trimmed) && !trimmed.startsWith('def ')) {
+      // تجاهل
+    }
+  });
+  
+  // فحص جمل شائعة
+  if (code.match(/\binput\s*\(/)) {
+    issues.push({
+      line: 1, severity: 'warning',
+      message: 'استخدام input()',
+      suggestion: 'input() لا يعمل في Pyodide (لا يوجد stdin تفاعلي)'
+    });
+  }
+  
+  if (/\bfile\s*\(/.test(code) || /\bopen\s*\(/.test(code)) {
+    issues.push({
+      line: 1, severity: 'warning',
+      message: 'عمليات الملفات محدودة',
+      suggestion: 'قد لا تعمل عمليات الملفات في المتصفح'
+    });
+  }
+}
+
+function lintHTML(code, issues) {
+  const lines = code.split('\n');
+  const stack = [];
+  const voidTags = new Set(['br','hr','img','input','meta','link','area','base','col','embed','source','track','wbr']);
+  
+  lines.forEach((line, idx) => {
+    const ln = idx + 1;
+    
+    // تجاهل التعليقات
+    const cleaned = line.replace(/<!--[\s\S]*?-->/g, '');
+    
+    // إيجاد الوسوم
+    const tagRegex = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
+    let match;
+    while ((match = tagRegex.exec(cleaned)) !== null) {
+      const fullTag = match[0];
+      const tagName = match[1].toLowerCase();
+      const selfClose = match[2] === '/';
+      
+      if (fullTag.startsWith('</')) {
+        if (stack.length === 0) {
+          issues.push({
+            line: ln, severity: 'error',
+            message: 'وسم إغلاق </' + tagName + '> بدون فتح',
+            suggestion: 'تحقق من توازن الوسوم'
+          });
+        } else {
+          const last = stack.pop();
+          if (last.tag !== tagName) {
+            issues.push({
+              line: ln, severity: 'error',
+              message: 'وسم الإغلاق </' + tagName + '> لا يطابق <' + last.tag + '> (المفتوح في السطر ' + last.ln + ')',
+              suggestion: 'أغلق <' + last.tag + '> أولاً'
+            });
+          }
+        }
+      } else if (!selfClose && !voidTags.has(tagName)) {
+        stack.push({ tag: tagName, ln });
+      }
+    }
+  });
+  
+  stack.forEach(s => {
+    issues.push({
+      line: s.ln, severity: 'warning',
+      message: 'وسم <' + s.tag + '> لم يُغلق',
+      suggestion: 'أضف </' + s.tag + '>'
+    });
+  });
+  
+  // فحص وجود DOCTYPE
+  if (code.trim() && !code.includes('<!DOCTYPE') && !code.includes('<!doctype')) {
+    issues.push({
+      line: 1, severity: 'warning',
+      message: 'DOCTYPE مفقود',
+      suggestion: 'أضف <!DOCTYPE html> في أول سطر'
+    });
+  }
+  
+  // فحص charset
+  if (code.includes('<head>') && !code.includes('charset')) {
+    issues.push({
+      line: 1, severity: 'warning',
+      message: 'charset غير محدد',
+      suggestion: 'أضف <meta charset="UTF-8"> لدعم العربية'
+    });
+  }
+}
+
+function lintCSS(code, issues) {
+  const lines = code.split('\n');
+  let braceCount = 0;
+  
+  lines.forEach((line, idx) => {
+    const ln = idx + 1;
+    const cleaned = line.replace(/\/\*[\s\S]*?\*\//g, '');
+    
+    const open = (cleaned.match(/{/g) || []).length;
+    const close = (cleaned.match(/}/g) || []).length;
+    braceCount += open - close;
+    
+    if (braceCount < 0) {
+      issues.push({
+        line: ln, severity: 'error',
+        message: 'قوس إغلاق } بدون فتح',
+        suggestion: 'تحقق من توازن الأقواس'
+      });
+      braceCount = 0;
+    }
+    
+    // فحص فاصلة منقوطة ناقصة
+    if (/[a-z-]+\s*:\s*[^;{}]+$/.test(cleaned) && 
+        !cleaned.includes('{') && !cleaned.includes('}') &&
+        !cleaned.trim().endsWith(',') &&
+        !cleaned.trim().endsWith(';')) {
+      issues.push({
+        line: ln, severity: 'warning',
+        message: 'فاصلة منقوطة ; مفقودة',
+        suggestion: 'أضف ";" في نهاية الخاصية'
+      });
+    }
+  });
+  
+  if (braceCount > 0) {
+    issues.push({
+      line: lines.length, severity: 'warning',
+      message: braceCount + ' قوس { لم يُغلق',
+      suggestion: 'أضف "}" لإغلاق الكتلة'
+    });
+  }
+}
+
+function lintJSON(code, issues) {
+  if (!code.trim()) return;
+  try {
+    JSON.parse(code);
+  } catch (e) {
+    const posMatch = e.message.match(/position (\d+)/);
+    let ln = 1;
+    if (posMatch) {
+      const pos = parseInt(posMatch[1]);
+      ln = code.substring(0, pos).split('\n').length;
+    }
+    issues.push({
+      line: ln, severity: 'error',
+      message: e.message,
+      suggestion: 'تحقق من الفواصل والعلامات المزدوجة " والأقواس'
+    });
+  }
+}
+
+function lintSQL(code, issues) {
+  const lines = code.split('\n');
+  lines.forEach((line, idx) => {
+    const ln = idx + 1;
+    const trimmed = line.trim();
+    if (trimmed.startsWith('--')) return;
+    
+    // فحص SELECT بدون FROM (تنبيه فقط، قد يكون صحيحاً)
+    // لا نضيف تنبيهات مزعجة
+  });
+}
+
+/* ============================================================
+   Auto-Run
    ============================================================ */
 function toggleAutoRun() {
   autoRun = !autoRun;
   const toggle = document.getElementById('autoRunToggle');
-  const indicator = document.getElementById('autoIndicator');
-  const autoText = document.getElementById('autoText');
-  
   if (autoRun) {
     toggle.classList.add('on');
-    indicator.classList.add('active');
-    autoText.textContent = 'تلقائي';
     showToast('⚡ التشغيل التلقائي مُفعّل');
     scheduleAutoRun();
   } else {
     toggle.classList.remove('on');
-    indicator.classList.remove('active');
-    autoText.textContent = 'يدوي';
     showToast('⏸ التشغيل التلقائي متوقف', 'info');
   }
 }
@@ -1594,49 +1775,43 @@ function toggleAutoRun() {
 function scheduleAutoRun() {
   if (!autoRun) return;
   clearTimeout(autoRunTimer);
-  document.getElementById('autoText').textContent = 'ينتظر...';
-  autoRunTimer = setTimeout(() => {
-    runCode(false);
-  }, 1200);
+  autoRunTimer = setTimeout(() => runCode(false), 1500);
 }
 
 /* ============================================================
-   قوائم اللغات
+   Languages
    ============================================================ */
 function populateLangLists() {
-  const langSelect = document.getElementById('langSelect');
-  const tipsLangSelect = document.getElementById('tipsLangSelect');
-  
+  const ls = document.getElementById('langSelect');
+  const ts = document.getElementById('tipsLangSelect');
   Object.keys(LANGUAGES).forEach(key => {
     const lang = LANGUAGES[key];
     const o1 = document.createElement('option');
     o1.value = key;
     o1.textContent = lang.icon + ' ' + lang.name;
-    langSelect.appendChild(o1);
-    
+    ls.appendChild(o1);
     const o2 = document.createElement('option');
     o2.value = key;
     o2.textContent = lang.icon + ' ' + lang.name;
-    tipsLangSelect.appendChild(o2);
+    ts.appendChild(o2);
   });
-  
-  langSelect.value = 'html';
-  tipsLangSelect.value = 'html';
+  ls.value = 'html';
+  ts.value = 'html';
 }
 
 function changeLang() {
   currentLang = document.getElementById('langSelect').value;
   codeEditor.value = STARTER_CODE[currentLang] || '';
   updateLineNumbers();
-  clearErrorLines();
-  setEngine(LANGUAGES[currentLang].name + ' محلي');
-  const icon = LANGUAGES[currentLang].icon || '';
-  showToast(`${icon} ${LANGUAGES[currentLang].name}`, 'info');
+  errorLines = []; warningLines = [];
+  setEngine(LANGUAGES[currentLang].name);
+  showToast(LANGUAGES[currentLang].icon + ' ' + LANGUAGES[currentLang].name, 'info');
+  scheduleLint();
   scheduleAutoRun();
 }
 
 /* ============================================================
-   التنقل
+   Navigation
    ============================================================ */
 function initNavigation() {
   document.querySelectorAll('.nav-item').forEach(item => {
@@ -1664,20 +1839,22 @@ function initNavigation() {
 }
 
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === name);
+  });
   document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-  const target = document.getElementById('tab-' + name);
-  if (target) target.classList.remove('hidden');
+  const t = document.getElementById('tab-' + name);
+  if (t) t.classList.remove('hidden');
 }
 
 /* ============================================================
-   الثيم
+   Theme
    ============================================================ */
 function toggleTheme() {
   isDark = !isDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-  document.getElementById('themeText').textContent = isDark ? 'الوضع الليلي' : 'الوضع النهاري';
+  document.getElementById('themeText').textContent = isDark ? 'ليلي' : 'نهاري';
   localStorage.setItem('iqcode-theme', isDark ? 'dark' : 'light');
 }
 
@@ -1686,12 +1863,12 @@ function restoreTheme() {
     isDark = false;
     document.documentElement.setAttribute('data-theme', 'light');
     document.getElementById('themeIcon').textContent = '☀️';
-    document.getElementById('themeText').textContent = 'الوضع النهاري';
+    document.getElementById('themeText').textContent = 'نهاري';
   }
 }
 
 /* ============================================================
-   التشغيل الرئيسي
+   Run
    ============================================================ */
 async function runCode(manual = false) {
   const lang = LANGUAGES[currentLang];
@@ -1710,8 +1887,6 @@ async function runCode(manual = false) {
     runBtn.innerHTML = '<span class="loading"></span>';
   }
   
-  document.getElementById('autoText').textContent = 'ينفذ...';
-  
   try {
     if (lang.engine === 'web') runWeb(code, currentLang);
     else if (lang.engine === 'pyodide') await runPython(code);
@@ -1721,12 +1896,14 @@ async function runCode(manual = false) {
     else if (lang.engine === 'yaml') runYAML(code);
     else if (lang.engine === 'xml') runXML(code);
     
-    updateLastRun();
-    if (autoRun) document.getElementById('autoText').textContent = 'تلقائي';
+    const now = new Date();
+    document.getElementById('lastRunInfo').textContent = 
+      now.getHours().toString().padStart(2,'0') + ':' +
+      now.getMinutes().toString().padStart(2,'0') + ':' +
+      now.getSeconds().toString().padStart(2,'0');
   } catch (err) {
     showOutput('❌ خطأ:\n' + err.message);
     setStatus('خطأ', false, true);
-    if (autoRun) document.getElementById('autoText').textContent = 'خطأ';
   } finally {
     if (manual) {
       runBtn.disabled = false;
@@ -1736,155 +1913,113 @@ async function runCode(manual = false) {
 }
 
 /* ============================================================
-   محرك الويب (HTML/CSS/JS)
+   Web Engine
    ============================================================ */
-let consoleMessages = [];
-
 function runWeb(code, langKey) {
   consoleMessages = [];
   
-  let previewFrame = document.getElementById('previewFrame');
-  if (!previewFrame) {
-    const output = document.getElementById('tab-output');
-    output.innerHTML = '';
-    previewFrame = document.createElement('iframe');
-    previewFrame.id = 'previewFrame';
-    previewFrame.sandbox = 'allow-scripts allow-modals allow-forms allow-popups';
-    output.appendChild(previewFrame);
+  let frame = document.getElementById('previewFrame');
+  if (!frame) {
+    const out = document.getElementById('tab-output');
+    out.innerHTML = '';
+    frame = document.createElement('iframe');
+    frame.id = 'previewFrame';
+    frame.sandbox = 'allow-scripts allow-modals allow-forms allow-popups';
+    out.appendChild(frame);
   }
   
   let html = code;
-  
   if (langKey === 'css' && !code.toLowerCase().includes('<html')) {
-    html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${code}</style></head>
-<body><h1>تجربة CSS</h1><p>هذا نص تجريبي</p>
-<div class="card box">صندوق</div><button>زر</button></body></html>`;
+    html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + code + '</style></head><body><h1>تجربة</h1><p>نص</p><div class="card box">صندوق</div><button>زر</button></body></html>';
   }
   
-  // التقاط console
-  const consoleScript = `<script>
-    (function(){
-      const send = (type, args) => {
-        try {
-          window.parent.postMessage({
-            type: 'console', 
-            level: type,
-            args: Array.from(args).map(a => {
-              if (typeof a === 'object') { try { return JSON.stringify(a); } catch(e) { return String(a); } }
-              return String(a);
-            }).join(' ')
-          }, '*');
-        } catch(e){}
-      };
-      const _log = console.log;
-      const _err = console.error;
-      const _warn = console.warn;
-      console.log = function(){ send('log', arguments); _log.apply(console, arguments); };
-      console.error = function(){ send('error', arguments); _err.apply(console, arguments); };
-      console.warn = function(){ send('warn', arguments); _warn.apply(console, arguments); };
-      
-      window.addEventListener('error', function(e) {
-        send('error', ['❌ ' + e.message + ' (سطر ' + e.lineno + ')']);
-      });
-    })();
-  <\/script>`;
+  const consoleScript = '<script>(function(){var send=function(t,a){try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){if(typeof x==="object"){try{return JSON.stringify(x);}catch(e){return String(x);}}return String(x);}).join(" ")},"*");}catch(e){}};var _l=console.log,_e=console.error,_w=console.warn;console.log=function(){send("log",arguments);_l.apply(console,arguments);};console.error=function(){send("error",arguments);_e.apply(console,arguments);};console.warn=function(){send("warn",arguments);_w.apply(console,arguments);};window.addEventListener("error",function(e){send("error",["❌ "+e.message+" (سطر "+e.lineno+")"]);});})();<\/script>';
   
-  if (html.includes('</head>')) {
+  if (html.indexOf('</head>') !== -1) {
     html = html.replace('</head>', consoleScript + '</head>');
-  } else if (html.includes('<body')) {
+  } else if (html.indexOf('<body') !== -1) {
     html = html.replace('<body', consoleScript + '<body');
   } else {
     html = consoleScript + html;
   }
   
-  // إزالة listener قديم
   window.onmessage = (e) => {
     if (e.data && e.data.type === 'console') {
-      consoleMessages.push({
-        level: e.data.level,
-        text: e.data.args
-      });
+      consoleMessages.push({ level: e.data.level, text: e.data.args });
       updateConsoleErrors();
     }
   };
   
-  previewFrame.srcdoc = html;
+  frame.srcdoc = html;
   switchTab('output');
   setStatus('تم التشغيل', false);
-  setEngine(LANGUAGES[langKey].name + ' محلي');
+  setEngine(LANGUAGES[langKey].name);
   
   setTimeout(() => {
     if (consoleMessages.length === 0) {
-      clearErrorLines();
       document.getElementById('errorBadge').classList.add('hidden');
-      document.getElementById('tab-errors').innerHTML = 
-        '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء في الكونسول</div>';
     }
-  }, 300);
+  }, 500);
 }
 
 function updateConsoleErrors() {
   const errors = consoleMessages.filter(m => m.level === 'error');
   const warns = consoleMessages.filter(m => m.level === 'warn');
   
-  const badge = document.getElementById('errorBadge');
-  if (errors.length > 0) {
-    badge.textContent = errors.length;
-    badge.className = 'tab-badge';
-    badge.classList.remove('hidden');
-  } else if (warns.length > 0) {
-    badge.textContent = warns.length;
-    badge.className = 'tab-badge warning';
-    badge.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-  }
-  
-  if (errors.length === 0 && warns.length === 0 && consoleMessages.length === 0) return;
+  if (errors.length === 0 && warns.length === 0) return;
   
   const div = document.getElementById('tab-errors');
   let html = '';
   
-  if (errors.length === 0 && warns.length === 0) {
-    html = '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء</div>';
-  } else {
-    errors.forEach(err => {
-      html += `
-        <div class="error-item">
-          <div class="header">
-            <span class="icon">❌</span>
-            <span class="line">خطأ JavaScript</span>
-          </div>
-          <div class="message">${escapeHtml(err.text)}</div>
-        </div>`;
-    });
-    
-    warns.forEach(warn => {
-      html += `
-        <div class="error-item warning">
-          <div class="header">
-            <span class="icon">⚠️</span>
-            <span class="line">تحذير</span>
-          </div>
-          <div class="message">${escapeHtml(warn.text)}</div>
-        </div>`;
-    });
-  }
+  errors.forEach(err => {
+    html += `<div class="error-item">
+      <div class="header"><span class="icon">❌</span><span class="line">خطأ تشغيل</span></div>
+      <div class="message">${escapeHtml(err.text)}</div>
+    </div>`;
+  });
+  
+  warns.forEach(w => {
+    html += `<div class="error-item warning">
+      <div class="header"><span class="icon">⚠️</span><span class="line">تحذير</span></div>
+      <div class="message">${escapeHtml(w.text)}</div>
+    </div>`;
+  });
+  
+  // دمج مع الأخطاء النحوية الحالية
+  const lintIssues = [];
+  if (currentLang === 'html') lintHTML(codeEditor.value, lintIssues);
+  else if (currentLang === 'css') lintCSS(codeEditor.value, lintIssues);
+  else if (currentLang === 'javascript') lintJS(codeEditor.value, lintIssues);
+  
+  lintIssues.forEach(issue => {
+    const icon = issue.severity === 'error' ? '❌' : '⚠️';
+    const cls = issue.severity === 'error' ? '' : ' warning';
+    html += `<div class="error-item${cls}">
+      <div class="header"><span class="icon">${icon}</span><span class="line">السطر ${issue.line}</span></div>
+      <div class="message">${escapeHtml(issue.message)}</div>
+      ${issue.suggestion ? '<div class="suggestion">' + escapeHtml(issue.suggestion) + '</div>' : ''}
+    </div>`;
+  });
   
   div.innerHTML = html;
+  
+  const badge = document.getElementById('errorBadge');
+  badge.textContent = errors.length + warns.length + lintIssues.length;
+  badge.className = 'tab-badge' + (errors.length === 0 ? ' warning' : '');
+  badge.classList.remove('hidden');
 }
 
 /* ============================================================
-   محرك Python (Pyodide)
+   Python Engine
    ============================================================ */
 async function loadPyodide() {
   if (pyodideReady) return pyodide;
   
-  showOutput('⏳ تحميل محرك Python...\n(يحصل مرة واحدة، ~10 ميجا)');
+  showOutput('⏳ تحميل محرك Python...\n(مرة واحدة فقط، ~10 ميجا)');
   setStatus('تحميل Python...', true);
   
   return new Promise((resolve, reject) => {
-    if (window.loadPyodide) {
+    const load = () => {
       window.loadPyodide({
         indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
       }).then(py => {
@@ -1892,20 +2027,13 @@ async function loadPyodide() {
         pyodideReady = true;
         resolve(py);
       }).catch(reject);
-      return;
-    }
+    };
+    
+    if (window.loadPyodide) return load();
     
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-    script.onload = async () => {
-      try {
-        pyodide = await window.loadPyodide({
-          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
-        });
-        pyodideReady = true;
-        resolve(pyodide);
-      } catch (e) { reject(e); }
-    };
+    script.onload = load;
     script.onerror = () => reject(new Error('فشل تحميل Pyodide'));
     document.head.appendChild(script);
   });
@@ -1914,65 +2042,45 @@ async function loadPyodide() {
 async function runPython(code) {
   try {
     const py = await loadPyodide();
+    py.runPython('import sys, io\n_buf = io.StringIO()\nsys.stdout = _buf\nsys.stderr = _buf');
     
-    py.runPython(`
-import sys
-import io
-_buf = io.StringIO()
-sys.stdout = _buf
-sys.stderr = _buf
-`);
-    
-    let output = '';
-    let errorText = '';
-    
+    let output = '', errText = '';
     try {
       py.runPython(code);
       output = py.runPython('_buf.getvalue()');
     } catch (e) {
-      errorText = e.message || String(e);
+      errText = e.message || String(e);
       try { output = py.runPython('_buf.getvalue()'); } catch(_){}
     } finally {
-      py.runPython(`
-sys.stdout = sys.__stdout__
-sys.stderr = sys.__stderr__
-`);
+      py.runPython('sys.stdout = sys.__stdout__\nsys.stderr = sys.__stderr__');
     }
     
-    if (errorText) {
-      // عرض المخرجات قبل الخطأ
+    if (errText) {
       if (output) {
         const outDiv = document.getElementById('tab-output');
         outDiv.innerHTML = '';
-        const pre = document.createElement('pre');
-        pre.style.cssText = 'color:var(--text); margin:0; white-space:pre-wrap;';
+        const pre = document.createElement('div');
+        pre.style.whiteSpace = 'pre-wrap';
         pre.textContent = output;
         outDiv.appendChild(pre);
       } else {
         showOutput('');
       }
       
-      // عرض الخطأ
-      const errDiv = document.getElementById('tab-errors');
-      const lineMatch = errorText.match(/line (\d+)/);
+      const lineMatch = errText.match(/line (\d+)/);
       const lineNum = lineMatch ? lineMatch[1] : null;
       
-      let html = `
-        <div class="error-item">
-          <div class="header">
-            <span class="icon">🐛</span>
-            ${lineNum ? `<span class="line">السطر ${lineNum}</span>` : '<span class="line">خطأ Python</span>'}
-          </div>
-          <div class="message">${escapeHtml(errorText)}</div>
-          ${generatePythonSuggestion(errorText) ? 
-            `<div class="suggestion">${escapeHtml(generatePythonSuggestion(errorText))}</div>` : ''}
-        </div>`;
-      errDiv.innerHTML = html;
+      const errDiv = document.getElementById('tab-errors');
+      errDiv.innerHTML = `<div class="error-item">
+        <div class="header">
+          <span class="icon">🐛</span>
+          ${lineNum ? '<span class="line">السطر ' + lineNum + '</span>' : '<span class="line">خطأ Python</span>'}
+        </div>
+        <div class="message">${escapeHtml(errText)}</div>
+        ${generatePythonSuggestion(errText) ? '<div class="suggestion">' + escapeHtml(generatePythonSuggestion(errText)) + '</div>' : ''}
+      </div>`;
       
-      if (lineNum) {
-        errorLines = [parseInt(lineNum)];
-        updateLineNumbers();
-      }
+      if (lineNum) { errorLines = [parseInt(lineNum)]; updateLineNumbers(); }
       
       const badge = document.getElementById('errorBadge');
       badge.textContent = '1';
@@ -1982,71 +2090,62 @@ sys.stderr = sys.__stderr__
       setStatus('خطأ', false, true);
     } else {
       showOutput(output || '✅ تم التنفيذ بدون مخرجات');
-      clearErrorLines();
+      errorLines = [];
+      updateLineNumbers();
       document.getElementById('errorBadge').classList.add('hidden');
-      document.getElementById('tab-errors').innerHTML = 
-        '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء</div>';
-      setStatus('تم بنجاح ✅', false);
+      setStatus('نجح ✅', false);
     }
     
-    setEngine('Python (Pyodide)');
-    
+    setEngine('Python');
   } catch (err) {
-    showOutput('❌ فشل تحميل Python:\n' + err.message);
+    showOutput('❌ فشل: ' + err.message);
     setStatus('فشل', false, true);
   }
 }
 
-function generatePythonSuggestion(errorText) {
-  const msg = errorText.toLowerCase();
-  if (msg.includes('indentationerror')) return 'تحقق من المسافات البادئة (4 مسافات ثابتة)';
-  if (msg.includes('syntaxerror')) return 'خطأ في الصياغة — تحقق من الأقواس والنقطتين ":"';
-  if (msg.includes('nameerror')) {
-    const m = errorText.match(/name '(\w+)'/);
-    return m ? `"${m[1]}" غير معرّف. تأكد من كتابته بشكل صحيح.` : 'اسم غير معرّف';
+function generatePythonSuggestion(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('indentation')) return 'تحقق من المسافات البادئة (4 مسافات ثابتة)';
+  if (m.includes('syntax')) return 'خطأ في الصياغة — تحقق من الأقواس والنقطتين ":"';
+  if (m.includes('nameerror')) {
+    const x = msg.match(/name '(\w+)'/);
+    return x ? `"${x[1]}" غير معرّف` : 'اسم غير معرّف';
   }
-  if (msg.includes('typeerror')) return 'خطأ في نوع البيانات — تحقق من العمليات';
-  if (msg.includes('zerodivision')) return 'لا يمكن القسمة على صفر';
-  if (msg.includes('indexerror')) return 'الفهرس خارج نطاق القائمة';
-  if (msg.includes('keyerror')) return 'المفتاح غير موجود في القاموس';
-  if (msg.includes('attributeerror')) return 'الخاصية غير موجودة في هذا الكائن';
-  if (msg.includes('valueerror')) return 'القيمة غير صحيحة';
-  if (msg.includes('importerror') || msg.includes('modulenotfounderror')) return 'المكتبة غير مثبتة في Pyodide';
+  if (m.includes('typeerror')) return 'خطأ في نوع البيانات';
+  if (m.includes('zerodivision')) return 'القسمة على صفر';
+  if (m.includes('indexerror')) return 'الفهرس خارج النطاق';
+  if (m.includes('keyerror')) return 'المفتاح غير موجود';
+  if (m.includes('attributeerror')) return 'الخاصية غير موجودة';
+  if (m.includes('valueerror')) return 'قيمة غير صحيحة';
+  if (m.includes('importerror') || m.includes('modulenotfound')) return 'المكتبة غير مثبتة';
   return null;
 }
 
 /* ============================================================
-   محرك SQL (sql.js)
+   SQL Engine
    ============================================================ */
 async function loadSQL() {
   if (sqlReady) return SQL;
   
-  showOutput('⏳ تحميل محرك SQLite...');
+  showOutput('⏳ تحميل SQLite...');
   setStatus('تحميل SQL...', true);
   
   return new Promise((resolve, reject) => {
-    if (window.initSqlJs) {
+    const init = () => {
       window.initSqlJs({
-        locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}`
+        locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/' + f
       }).then(SQLModule => {
         SQL = SQLModule;
         sqlReady = true;
         resolve(SQLModule);
       }).catch(reject);
-      return;
-    }
+    };
+    
+    if (window.initSqlJs) return init();
     
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js';
-    script.onload = async () => {
-      try {
-        SQL = await window.initSqlJs({
-          locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${f}`
-        });
-        sqlReady = true;
-        resolve(SQL);
-      } catch (e) { reject(e); }
-    };
+    script.onload = init;
     script.onerror = () => reject(new Error('فشل تحميل SQLite'));
     document.head.appendChild(script);
   });
@@ -2056,63 +2155,51 @@ async function runSQL(code) {
   try {
     const SQLModule = await loadSQL();
     const db = new SQLModule.Database();
-    
     const statements = code.split(';').map(s => s.trim()).filter(s => s);
     let output = '';
-    let errors = [];
+    const errors = [];
     
     for (const stmt of statements) {
       try {
         const result = db.exec(stmt);
         if (result.length > 0) {
           for (const r of result) {
-            output += '📋 النتيجة:\n';
-            output += '┌' + '─'.repeat(40) + '\n';
-            output += '│ ' + r.columns.join('  │  ') + '\n';
-            output += '├' + '─'.repeat(40) + '\n';
+            output += '📋 ' + r.columns.join(' | ') + '\n';
+            output += '─'.repeat(50) + '\n';
             for (const row of r.values) {
-              output += '│ ' + row.map(v => String(v ?? 'NULL')).join('  │  ') + '\n';
+              output += row.map(v => String(v ?? 'NULL')).join(' | ') + '\n';
             }
-            output += '└' + '─'.repeat(40) + '\n';
-            output += `📊 عدد الصفوف: ${r.values.length}\n\n`;
+            output += '\n📊 عدد الصفوف: ' + r.values.length + '\n\n';
           }
         } else {
           output += '✅ تم: ' + stmt.substring(0, 60).replace(/\s+/g, ' ') + '\n\n';
         }
       } catch (e) {
-        errors.push({ stmt: stmt.substring(0, 40), msg: e.message });
-        output += '❌ خطأ: ' + e.message + '\n\n';
+        errors.push({ msg: e.message });
+        output += '❌ ' + e.message + '\n\n';
       }
     }
     
-    showOutput(output || '✅ تم التنفيذ');
+    showOutput(output || '✅ تم');
     
     if (errors.length > 0) {
       const errDiv = document.getElementById('tab-errors');
-      errDiv.innerHTML = errors.map(err => `
-        <div class="error-item">
-          <div class="header">
-            <span class="icon">❌</span>
-            <span class="line">خطأ SQL</span>
-          </div>
-          <div class="message">${escapeHtml(err.msg)}</div>
-        </div>
-      `).join('');
+      errDiv.innerHTML = errors.map(e => `<div class="error-item">
+        <div class="header"><span class="icon">❌</span><span class="line">خطأ SQL</span></div>
+        <div class="message">${escapeHtml(e.msg)}</div>
+      </div>`).join('');
       const badge = document.getElementById('errorBadge');
       badge.textContent = errors.length;
       badge.className = 'tab-badge';
       badge.classList.remove('hidden');
       setStatus('خطأ', false, true);
     } else {
-      document.getElementById('tab-errors').innerHTML = 
-        '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء</div>';
       document.getElementById('errorBadge').classList.add('hidden');
-      setStatus('تم بنجاح ✅', false);
+      setStatus('نجح ✅', false);
     }
-    
-    setEngine('SQLite (محلي)');
+    setEngine('SQLite');
   } catch (err) {
-    showOutput('❌ فشل SQL: ' + err.message);
+    showOutput('❌ ' + err.message);
     setStatus('فشل', false, true);
   }
 }
@@ -2122,6 +2209,7 @@ async function runSQL(code) {
    ============================================================ */
 function runMarkdown(code) {
   let html = code
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px;overflow-x:auto"><code>$2</code></pre>')
     .replace(/^### (.*)$/gm, '<h3>$1</h3>')
     .replace(/^## (.*)$/gm, '<h2>$1</h2>')
     .replace(/^# (.*)$/gm, '<h1>$1</h1>')
@@ -2129,7 +2217,6 @@ function runMarkdown(code) {
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/~~(.+?)~~/g, '<del>$1</del>')
     .replace(/`([^`]+)`/g, '<code style="background:#1c2330;color:#f85149;padding:2px 6px;border-radius:4px;font-family:monospace">$1</code>')
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px;overflow-x:auto"><code>$2</code></pre>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" style="color:#58a6ff">$1</a>')
     .replace(/^- \[x\] (.+)$/gm, '<li style="list-style:none">✅ $1</li>')
     .replace(/^- \[ \] (.+)$/gm, '<li style="list-style:none">⬜ $1</li>')
@@ -2141,33 +2228,20 @@ function runMarkdown(code) {
   
   html = html.replace(/(<li>.*<\/li>)/s, '<ul style="padding-right:20px">$1</ul>');
   
-  const full = `<!DOCTYPE html><html><head><meta charset="UTF-8">
-<style>
-body{font-family:Arial,sans-serif;padding:24px;line-height:1.7;background:white;color:#222;max-width:800px;margin:0 auto}
-h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}
-h2{color:#8250df;margin-top:24px}
-h3{color:#bf3989}
-a{color:#0969da}
-table{border-collapse:collapse;width:100%;margin:16px 0}
-th,td{border:1px solid #ddd;padding:8px;text-align:right}
-th{background:#f6f8fa}
-</style>
-</head><body>${html}</body></html>`;
+  const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;line-height:1.7;background:white;color:#222;max-width:800px;margin:0 auto}h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}h2{color:#8250df;margin-top:24px}h3{color:#bf3989}a{color:#0969da}</style></head><body>' + html + '</body></html>';
   
-  let previewFrame = document.getElementById('previewFrame');
-  if (!previewFrame) {
-    const output = document.getElementById('tab-output');
-    output.innerHTML = '';
-    previewFrame = document.createElement('iframe');
-    previewFrame.id = 'previewFrame';
-    output.appendChild(previewFrame);
+  let frame = document.getElementById('previewFrame');
+  if (!frame) {
+    const out = document.getElementById('tab-output');
+    out.innerHTML = '';
+    frame = document.createElement('iframe');
+    frame.id = 'previewFrame';
+    out.appendChild(frame);
   }
-  previewFrame.srcdoc = full;
+  frame.srcdoc = full;
   switchTab('output');
-  setEngine('Markdown محلي');
-  setStatus('تم ✅', false);
-  document.getElementById('tab-errors').innerHTML = 
-    '<div class="empty-state success"><span class="big-icon">✅</span>Markdown لا يحتوي أخطاء</div>';
+  setEngine('Markdown');
+  setStatus('نجح ✅', false);
   document.getElementById('errorBadge').classList.add('hidden');
 }
 
@@ -2177,227 +2251,136 @@ th{background:#f6f8fa}
 function runJSON(code) {
   try {
     const obj = JSON.parse(code);
-    
-    let stats = '✅ JSON صالح!\n\n';
-    stats += '📊 إحصائيات:\n';
+    let stats = '✅ JSON صالح!\n\n📊 إحصائيات:\n';
     stats += '• الأحرف: ' + code.length + '\n';
     stats += '• الأسطر: ' + code.split('\n').length + '\n';
-    stats += '• الحجم: ' + (new Blob([code]).size) + ' bytes\n';
     
     if (Array.isArray(obj)) {
-      stats += '• النوع: مصفوفة\n';
-      stats += '• عدد العناصر: ' + obj.length + '\n';
+      stats += '• النوع: مصفوفة (' + obj.length + ' عنصر)\n';
     } else if (typeof obj === 'object' && obj !== null) {
-      stats += '• النوع: كائن\n';
-      stats += '• عدد الخصائص: ' + Object.keys(obj).length + '\n';
-      stats += '\n📋 الخصائص:\n';
-      Object.keys(obj).forEach(k => {
-        const v = obj[k];
-        const type = Array.isArray(v) ? 'array[' + v.length + ']' : typeof v;
-        stats += '  • ' + k + ': ' + type + '\n';
-      });
+      stats += '• النوع: كائن (' + Object.keys(obj).length + ' خصائص)\n';
     }
     
     stats += '\n📄 النسخة المنسّقة:\n' + JSON.stringify(obj, null, 2);
-    
     showOutput(stats);
-    setEngine('JSON محلي');
-    setStatus('JSON صالح ✅', false);
-    document.getElementById('tab-errors').innerHTML = 
-      '<div class="empty-state success"><span class="big-icon">✅</span>JSON صالح</div>';
+    setEngine('JSON');
+    setStatus('صالح ✅', false);
+    errorLines = [];
+    updateLineNumbers();
     document.getElementById('errorBadge').classList.add('hidden');
-    clearErrorLines();
   } catch (e) {
     showOutput('❌ JSON غير صالح:\n\n' + e.message);
-    
-    const lineMatch = e.message.match(/position (\d+)/);
-    let errLine = null;
-    if (lineMatch) {
-      const pos = parseInt(lineMatch[1]);
-      errLine = code.substring(0, pos).split('\n').length;
-      errorLines = [errLine];
+    const posMatch = e.message.match(/position (\d+)/);
+    if (posMatch) {
+      errorLines = [code.substring(0, parseInt(posMatch[1])).split('\n').length];
       updateLineNumbers();
     }
-    
-    const errDiv = document.getElementById('tab-errors');
-    errDiv.innerHTML = `
-      <div class="error-item">
-        <div class="header">
-          <span class="icon">❌</span>
-          ${errLine ? `<span class="line">السطر ${errLine}</span>` : '<span class="line">خطأ JSON</span>'}
-        </div>
-        <div class="message">${escapeHtml(e.message)}</div>
-        <div class="suggestion">تحقق من الفواصل والعلامات المزدوجة " والأقواس</div>
-      </div>`;
-    
-    const badge = document.getElementById('errorBadge');
-    badge.textContent = '1';
-    badge.className = 'tab-badge';
-    badge.classList.remove('hidden');
-    
-    setStatus('خطأ JSON', false, true);
-  }
-}
-
-/* ============================================================
-   YAML
-   ============================================================ */
-function runYAML(code) {
-  const lines = code.split('\n');
-  const errors = [];
-  
-  lines.forEach((line, idx) => {
-    if (line.trim().startsWith('#') || !line.trim()) return;
-    // فحص أساسي
-    if (!line.startsWith(' ') && !line.startsWith('-') && !line.includes(':') && line.match(/[a-zA-Z\u0600-\u06FF]/)) {
-      errors.push({ line: idx + 1, msg: 'يفتقد ":" بعد المفتاح' });
-    }
-  });
-  
-  let output = '📄 YAML\n\n';
-  output += '📊 الأسطر: ' + lines.length + '\n';
-  output += '📊 الأحرف: ' + code.length + '\n\n';
-  
-  if (errors.length > 0) {
-    output += '⚠️ تحذيرات:\n';
-    errors.forEach(e => output += `  • السطر ${e.line}: ${e.msg}\n`);
-  } else {
-    output += '✅ البنية تبدو سليمة\n';
-  }
-  
-  output += '\n📋 المحتوى:\n' + code;
-  
-  showOutput(output);
-  setEngine('YAML محلي');
-  setStatus(errors.length > 0 ? 'تحذيرات' : '✅ صالح', false);
-  
-  if (errors.length > 0) {
-    warningLines = errors.map(e => e.line);
-    updateLineNumbers();
-  }
-}
-
-/* ============================================================
-   XML
-   ============================================================ */
-function runXML(code) {
-  try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(code, 'text/xml');
-    const error = doc.querySelector('parsererror');
-    
-    if (error) {
-      showOutput('❌ XML غير صالح:\n\n' + error.textContent);
-      
-      const lineMatch = error.textContent.match(/line (\d+)/);
-      const lineNum = lineMatch ? lineMatch[1] : null;
-      
-      const errDiv = document.getElementById('tab-errors');
-      errDiv.innerHTML = `
-        <div class="error-item">
-          <div class="header">
-            <span class="icon">❌</span>
-            ${lineNum ? `<span class="line">السطر ${lineNum}</span>` : '<span class="line">خطأ XML</span>'}
-          </div>
-          <div class="message">${escapeHtml(error.textContent)}</div>
-          <div class="suggestion">تأكد من إغلاق جميع الوسوم بشكل صحيح</div>
-        </div>`;
-      
-      const badge = document.getElementById('errorBadge');
-      badge.textContent = '1';
-      badge.className = 'tab-badge';
-      badge.classList.remove('hidden');
-      
-      if (lineNum) {
-        errorLines = [parseInt(lineNum)];
-        updateLineNumbers();
-      }
-      
-      setStatus('خطأ XML', false, true);
-      return;
-    }
-    
-    let output = '✅ XML صالح!\n\n';
-    output += '📊 العنصر الجذر: ' + doc.documentElement.nodeName + '\n';
-    output += '📊 عدد العناصر: ' + doc.getElementsByTagName('*').length + '\n';
-    output += '📊 عدد الأسطر: ' + code.split('\n').length + '\n\n';
-    output += '📄 المحتوى:\n' + code;
-    
-    showOutput(output);
-    setEngine('XML محلي');
-    setStatus('XML صالح ✅', false);
-    document.getElementById('tab-errors').innerHTML = 
-      '<div class="empty-state success"><span class="big-icon">✅</span>XML صالح</div>';
-    document.getElementById('errorBadge').classList.add('hidden');
-    clearErrorLines();
-  } catch (e) {
-    showOutput('❌ خطأ: ' + e.message);
     setStatus('خطأ', false, true);
   }
 }
 
 /* ============================================================
-   أدوات مساعدة
+   YAML/XML
    ============================================================ */
-function showOutput(text) {
-  const output = document.getElementById('tab-output');
-  output.innerHTML = '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  div.style.whiteSpace = 'pre-wrap';
-  output.appendChild(div);
+function runYAML(code) {
+  const lines = code.split('\n');
+  const errors = [];
+  lines.forEach((line, idx) => {
+    if (line.trim().startsWith('#') || !line.trim()) return;
+    if (!line.startsWith(' ') && !line.startsWith('-') && !line.includes(':') && /[a-zA-Z\u0600-\u06FF]/.test(line)) {
+      errors.push({ line: idx + 1, msg: 'يفتقد ":" بعد المفتاح' });
+    }
+  });
+  
+  let out = '📄 YAML\n\nالأسطر: ' + lines.length + '\n\n';
+  if (errors.length > 0) {
+    out += '⚠️ تحذيرات:\n';
+    errors.forEach(e => out += '  • السطر ' + e.line + ': ' + e.msg + '\n');
+    warningLines = errors.map(e => e.line);
+    updateLineNumbers();
+  } else {
+    out += '✅ البنية سليمة';
+    warningLines = [];
+    updateLineNumbers();
+  }
+  showOutput(out);
+  setEngine('YAML');
+  setStatus(errors.length ? 'تحذيرات' : 'صالح ✅', false);
 }
 
-function clearErrorLines() {
-  errorLines = [];
-  warningLines = [];
-  updateLineNumbers();
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+function runXML(code) {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(code, 'text/xml');
+    const err = doc.querySelector('parsererror');
+    
+    if (err) {
+      showOutput('❌ XML غير صالح:\n\n' + err.textContent);
+      const m = err.textContent.match(/line (\d+)/);
+      if (m) { errorLines = [parseInt(m[1])]; updateLineNumbers(); }
+      setStatus('خطأ', false, true);
+      return;
+    }
+    
+    let out = '✅ XML صالح!\n\n';
+    out += 'الجذر: ' + doc.documentElement.nodeName + '\n';
+    out += 'العناصر: ' + doc.getElementsByTagName('*').length + '\n';
+    showOutput(out);
+    setEngine('XML');
+    setStatus('صالح ✅', false);
+    errorLines = [];
+    updateLineNumbers();
+  } catch (e) {
+    showOutput('❌ ' + e.message);
+    setStatus('خطأ', false, true);
+  }
 }
 
 /* ============================================================
-   النصائح
+   Output
+   ============================================================ */
+function showOutput(text) {
+  const out = document.getElementById('tab-output');
+  out.innerHTML = '';
+  const div = document.createElement('div');
+  div.style.whiteSpace = 'pre-wrap';
+  div.textContent = text;
+  out.appendChild(div);
+}
+
+/* ============================================================
+   Tips
    ============================================================ */
 function loadTips() {
-  const langKey = document.getElementById('tipsLangSelect').value;
-  const tips = TIPS[langKey];
-  const langName = LANGUAGES[langKey] ? LANGUAGES[langKey].name : langKey;
-  const icon = LANGUAGES[langKey] ? LANGUAGES[langKey].icon : '';
+  const key = document.getElementById('tipsLangSelect').value;
+  const tips = TIPS[key];
+  const langName = LANGUAGES[key] ? LANGUAGES[key].name : key;
+  const icon = LANGUAGES[key] ? LANGUAGES[key].icon : '';
   const container = document.getElementById('tipsContent');
   
   if (!tips) {
-    container.innerHTML = `<h2>${icon} ${langName}</h2>
-      <div class="tips-section"><p>لا توجد نصائح لهذه اللغة.</p></div>`;
+    container.innerHTML = '<h2>' + icon + ' ' + langName + '</h2><div class="tips-section"><p>لا توجد نصائح</p></div>';
     return;
   }
   
-  let totalFuncs = 0;
-  tips.sections.forEach(s => totalFuncs += s.functions.length);
+  let total = 0;
+  tips.sections.forEach(s => total += s.functions.length);
   
-  let html = `<h2>${icon} نصائح ${langName} <span style="font-size:14px;color:var(--text-dim);font-weight:normal">(${totalFuncs} دالة/ميزة)</span></h2>`;
+  let html = '<h2>' + icon + ' نصائح ' + langName + ' <span class="tips-count">(' + total + ' دالة)</span></h2>';
   
   tips.sections.forEach(section => {
-    html += `<div class="tips-section">
-      <h3>${section.title}</h3>`;
-    
-    section.functions.forEach((fn, idx) => {
-      const sid = `snip_${langKey}_${idx}`;
+    html += '<div class="tips-section"><h3>' + section.title + '</h3>';
+    section.functions.forEach((fn, i) => {
+      const sid = 'snip_' + key + '_' + i;
       window[sid] = fn.example;
-      html += `
-        <div class="func-item">
-          <span class="fname">${escapeHtml(fn.name)}</span>
-          <div class="fdesc">${escapeHtml(fn.desc)}</div>
-          ${fn.example ? `<div class="fexample">${escapeHtml(fn.example)}</div>
-          <button class="insert-btn" onclick="insertSnippetById('${sid}')">➕ إدراج في المحرر</button>` : ''}
-        </div>`;
+      html += '<div class="func-item">' +
+        '<span class="fname">' + escapeHtml(fn.name) + '</span>' +
+        '<div class="fdesc">' + escapeHtml(fn.desc) + '</div>' +
+        (fn.example ? '<div class="fexample">' + escapeHtml(fn.example) + '</div>' +
+          '<button class="insert-btn" onclick="insertSnippetById(\'' + sid + '\')">➕ إدراج</button>' : '') +
+        '</div>';
     });
-    
-    html += `</div>`;
+    html += '</div>';
   });
   
   container.innerHTML = html;
@@ -2406,64 +2389,52 @@ function loadTips() {
 function insertSnippetById(id) {
   const code = window[id];
   if (!code) return;
-  
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   document.querySelector('[data-page="editor"]').classList.add('active');
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-editor').classList.add('active');
-  
   codeEditor.value = codeEditor.value + '\n' + code + '\n';
   updateLineNumbers();
-  showToast('✅ تم الإدراج في المحرر');
+  showToast('✅ تم الإدراج');
   closeSidebar();
+  scheduleLint();
   scheduleAutoRun();
 }
 
 /* ============================================================
-   المشاريع
+   Projects
    ============================================================ */
 function saveProject() {
   const name = document.getElementById('projectName').value.trim() || 'مشروع';
   const code = codeEditor.value;
   if (!code.trim()) { showToast('⚠️ لا يوجد كود', 'error'); return; }
-  
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   const idx = projects.findIndex(p => p.name === name);
-  const project = {
-    name, code, lang: currentLang,
-    date: new Date().toISOString(),
-    id: idx >= 0 ? projects[idx].id : Date.now()
-  };
-  
+  const project = { name, code, lang: currentLang, date: new Date().toISOString(), id: idx >= 0 ? projects[idx].id : Date.now() };
   if (idx >= 0) { projects[idx] = project; showToast('💾 تم التحديث'); }
   else { projects.push(project); showToast('💾 تم الحفظ'); }
-  
   localStorage.setItem('iqcode-projects', JSON.stringify(projects));
 }
 
 function loadProjects() {
   const grid = document.getElementById('projectsGrid');
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-  
   if (projects.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="big-icon">📭</span>لا توجد مشاريع محفوظة</div>';
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="big-icon">📭</span>لا توجد مشاريع</div>';
     return;
   }
-  
   grid.innerHTML = '';
   projects.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(p => {
     const card = document.createElement('div');
     card.className = 'project-card';
     const lang = LANGUAGES[p.lang];
-    card.innerHTML = `
-      <span class="lang-badge">${lang?.icon || ''} ${lang?.name || p.lang}</span>
-      <h3>${escapeHtml(p.name)}</h3>
-      <div class="meta">📅 ${new Date(p.date).toLocaleString('ar-EG')}</div>
-      <div class="actions">
-        <button onclick="openProject(${p.id})" style="background:var(--primary-2);color:white;border:none;">📂 فتح</button>
-        <button class="danger" onclick="deleteProject(${p.id})">🗑 حذف</button>
-      </div>
-    `;
+    card.innerHTML = '<span class="lang-badge">' + (lang?.icon || '') + ' ' + (lang?.name || p.lang) + '</span>' +
+      '<h3>' + escapeHtml(p.name) + '</h3>' +
+      '<div class="meta">📅 ' + new Date(p.date).toLocaleString('ar-EG') + '</div>' +
+      '<div class="actions">' +
+      '<button onclick="openProject(' + p.id + ')" style="background:var(--primary-2);color:white;border:none;">📂 فتح</button>' +
+      '<button class="danger" onclick="deleteProject(' + p.id + ')">🗑</button>' +
+      '</div>';
     grid.appendChild(card);
   });
 }
@@ -2477,92 +2448,84 @@ function openProject(id) {
   document.getElementById('projectName').value = p.name;
   codeEditor.value = p.code;
   updateLineNumbers();
-  clearErrorLines();
+  errorLines = []; warningLines = [];
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   document.querySelector('[data-page="editor"]').classList.add('active');
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
   document.getElementById('page-editor').classList.add('active');
   showToast('📂 تم الفتح');
+  scheduleLint();
   scheduleAutoRun();
 }
 
 function deleteProject(id) {
-  if (!confirm('حذف المشروع؟')) return;
+  if (!confirm('حذف؟')) return;
   let projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   projects = projects.filter(p => p.id !== id);
   localStorage.setItem('iqcode-projects', JSON.stringify(projects));
   loadProjects();
-  showToast('🗑 تم الحذف');
+  showToast('🗑');
 }
 
 function clearAllProjects() {
-  if (!confirm('حذف جميع المشاريع؟')) return;
+  if (!confirm('حذف الكل؟')) return;
   localStorage.removeItem('iqcode-projects');
   loadProjects();
-  showToast('🗑 تم المسح');
+  showToast('🗑');
 }
 
 function exportProjects() {
   const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
   if (projects.length === 0) { showToast('⚠️ لا توجد مشاريع', 'error'); return; }
-  const blob = new Blob([JSON.stringify({
-    app: 'İQCODE', version: '7.0',
-    exportedAt: new Date().toISOString(),
-    projects
-  }, null, 2)], { type: 'application/json;charset=utf-8' });
+  const blob = new Blob([JSON.stringify({ app: 'İQCODE', version: '8.0', exportedAt: new Date().toISOString(), projects }, null, 2)], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `iqcode_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.download = 'iqcode_backup_' + new Date().toISOString().slice(0,10) + '.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast(`📤 تم تصدير ${projects.length} مشروع`);
+  showToast('📤 ' + projects.length + ' مشروع');
 }
 
-function importProjects(event) {
-  const file = event.target.files[0];
+function importProjects(e) {
+  const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = (ev) => {
     try {
-      const data = JSON.parse(e.target.result);
-      let imported = Array.isArray(data) ? data : (data.projects || []);
+      const data = JSON.parse(ev.target.result);
+      const imported = Array.isArray(data) ? data : (data.projects || []);
       const existing = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
       let added = 0, updated = 0;
       imported.forEach(p => {
         if (!p.name || !p.code || !p.lang) return;
         const idx = existing.findIndex(x => x.name === p.name);
-        const project = {
-          name: p.name, code: p.code, lang: p.lang,
-          date: p.date || new Date().toISOString(),
-          id: idx >= 0 ? existing[idx].id : Date.now() + Math.random()
-        };
+        const project = { name: p.name, code: p.code, lang: p.lang, date: p.date || new Date().toISOString(), id: idx >= 0 ? existing[idx].id : Date.now() + Math.random() };
         if (idx >= 0) { existing[idx] = project; updated++; }
         else { existing.push(project); added++; }
       });
       localStorage.setItem('iqcode-projects', JSON.stringify(existing));
       loadProjects();
-      showToast(`📥 ${added} جديد، ${updated} محدّث`);
+      showToast('📥 ' + added + ' جديد، ' + updated + ' محدّث');
     } catch (err) {
       showToast('❌ ملف غير صالح', 'error');
     }
   };
   reader.readAsText(file);
-  event.target.value = '';
+  e.target.value = '';
 }
 
 /* ============================================================
-   التنزيل
+   Download
    ============================================================ */
 function downloadCode() {
   const lang = LANGUAGES[currentLang];
   if (!lang) return;
   const code = codeEditor.value;
-  const name = (document.getElementById('projectName').value.trim() || 'project')
-    .replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
-  const filename = `${name}.${lang.fileExt}`;
+  const name = (document.getElementById('projectName').value.trim() || 'project').replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
+  const filename = name + '.' + lang.fileExt;
   const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2572,22 +2535,22 @@ function downloadCode() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast(`⬇ تم تنزيل ${filename}`);
+  showToast('⬇ ' + filename);
 }
 
 /* ============================================================
-   الإشعارات
+   Toast
    ============================================================ */
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show' + (type === 'error' ? ' error' : type === 'info' ? ' info' : '');
   clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => t.className = 'toast', 2600);
+  t._timeout = setTimeout(() => t.className = 'toast', 2000);
 }
 
 /* ============================================================
-   القائمة الجانبية
+   Sidebar
    ============================================================ */
 function openSidebar() {
   document.getElementById('sidebar').classList.add('open');
@@ -2599,23 +2562,25 @@ function closeSidebar() {
 }
 
 /* ============================================================
-   شريط التقسيم
+   Divider
    ============================================================ */
 function initDivider() {
   const divider = document.getElementById('divider');
-  const outputSection = document.getElementById('outputSection');
-  let isDragging = false;
-  function start(e) { isDragging = true; e.preventDefault(); }
-  function end() { isDragging = false; }
-  function move(y) {
-    if (!isDragging) return;
+  const outSec = document.getElementById('outputSection');
+  let dragging = false;
+  
+  const start = (e) => { dragging = true; e.preventDefault(); };
+  const end = () => { dragging = false; };
+  const move = (y) => {
+    if (!dragging) return;
     const wrapper = document.querySelector('.editor-wrapper');
     const rect = wrapper.getBoundingClientRect();
-    const newHeight = rect.bottom - y - 25;
-    if (newHeight > 100 && newHeight < rect.height - 100) {
-      outputSection.style.height = newHeight + 'px';
+    const h = rect.bottom - y - 25;
+    if (h > 80 && h < rect.height - 80) {
+      outSec.style.height = h + 'px';
     }
-  }
+  };
+  
   divider.addEventListener('mousedown', start);
   document.addEventListener('mouseup', end);
   document.addEventListener('mousemove', e => move(e.clientY));
@@ -2625,7 +2590,7 @@ function initDivider() {
 }
 
 /* ============================================================
-   اختصارات
+   Shortcuts
    ============================================================ */
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -2639,34 +2604,32 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ============================================================
-   البدء
+   Init
    ============================================================ */
 (function init() {
-  console.log('İQCODE v7.0 starting...');
   try {
     restoreTheme();
     populateLangLists();
     initNavigation();
     initDivider();
     
-    // تحميل HTML افتراضياً
     currentLang = 'html';
     codeEditor.value = STARTER_CODE.html;
     updateLineNumbers();
     loadTips();
     
     setStatus('جاهز', false);
-    setEngine('HTML محلي');
+    setEngine('HTML');
     
-    // تفعيل التشغيل التلقائي
+    // Auto-run مفعّل
     document.getElementById('autoRunToggle').classList.add('on');
-    document.getElementById('autoIndicator').classList.add('active');
-    document.getElementById('autoText').textContent = 'تلقائي';
     
-    // تشغيل أولي
-    setTimeout(() => runCode(false), 500);
+    // تشغيل أولي + lint
+    setTimeout(() => {
+      runLinter();
+      runCode(false);
+    }, 500);
     
-    console.log('İQCODE ready ✅');
   } catch (e) {
     console.error('Init error:', e);
   }
