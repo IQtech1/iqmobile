@@ -1,1491 +1,1075 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0e14">
-<title>İQCODE - محرر البرمجة الذكي</title>
+<title>İQCODE</title>
 <style>
-:root[data-theme="dark"] {
-  --bg: #0a0e14; --bg-2: #131820; --bg-3: #1c2330; --bg-4: #252d3d;
-  --border: #2d3748; --border-2: #3d4a5c;
-  --text: #e6edf3; --text-dim: #8b949e;
-  --primary: #58a6ff; --primary-2: #1f6feb;
-  --success: #3fb950; --danger: #f85149; --warning: #d29922;
-  --accent: #a855f7;
-  --gradient: linear-gradient(135deg, #58a6ff, #a855f7, #ec4899);
-  --gradient-success: linear-gradient(135deg, #3fb950, #2ea043);
-}
-:root[data-theme="light"] {
-  --bg: #ffffff; --bg-2: #f6f8fa; --bg-3: #eaeef2; --bg-4: #dfe3e8;
-  --border: #d0d7de; --border-2: #b8c0c8;
-  --text: #1f2328; --text-dim: #656d76;
-  --primary: #0969da; --primary-2: #0550ae;
-  --success: #1a7f37; --danger: #cf222e; --warning: #9a6700;
-  --accent: #8250df;
-  --gradient: linear-gradient(135deg, #0969da, #8250df, #bf3989);
-  --gradient-success: linear-gradient(135deg, #1a7f37, #166534);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, Tahoma, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased; }
-
-html, body { height: 100%; overflow: hidden; }
-body { background: var(--bg); color: var(--text); overscroll-behavior: none; }
-.app { display: flex; height: 100vh; height: 100dvh; }
-
-/* Sidebar */
-.sidebar {
-  width: 270px; background: var(--bg-2);
-  border-left: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  transition: transform 0.25s ease-out;
-  z-index: 100; will-change: transform;
-}
-.sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); }
-.logo {
-  font-size: 24px; font-weight: 900;
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  letter-spacing: 2px; line-height: 1;
-}
-.tagline { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-.sidebar-nav { flex: 1; padding: 10px; overflow-y: auto; }
-.nav-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 15px; border-radius: 10px; cursor: pointer;
-  color: var(--text); font-size: 14px; font-weight: 600;
-  margin-bottom: 4px; user-select: none;
-}
-.nav-item:hover { background: var(--bg-3); }
-.nav-item.active {
-  background: var(--gradient); color: white;
-}
-.nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
-.nav-badge {
-  margin-right: auto; background: var(--bg-4); color: var(--text-dim);
-  font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: bold;
-}
-.nav-item.active .nav-badge { background: rgba(255,255,255,0.25); color: white; }
-.sidebar-footer { padding: 12px; border-top: 1px solid var(--border); }
-.theme-toggle, .auto-run-toggle {
-  width: 100%; padding: 12px; background: var(--bg-3);
-  border: 1px solid var(--border); color: var(--text);
-  border-radius: 10px; cursor: pointer; font-size: 13px;
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px; font-weight: 600; margin-bottom: 8px;
-  min-height: 44px;
-}
-.auto-run-toggle { justify-content: space-between; }
-.auto-run-toggle.on {
-  background: var(--gradient-success); color: white; border-color: transparent;
-}
-.switch {
-  width: 34px; height: 18px; background: var(--bg-4);
-  border-radius: 10px; position: relative;
-}
-.auto-run-toggle.on .switch { background: rgba(255,255,255,0.4); }
-.switch::after {
-  content: ''; position: absolute; width: 14px; height: 14px;
-  background: white; border-radius: 50%; top: 2px; right: 2px;
-  transition: transform 0.2s;
-}
-.auto-run-toggle.on .switch::after { transform: translateX(-16px); }
-
-/* Content */
-.content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-
-.topbar {
-  background: var(--bg-2); border-bottom: 1px solid var(--border);
-  padding: 10px; display: flex; align-items: center;
-  gap: 6px; flex-wrap: wrap; flex-shrink: 0;
-}
-.menu-btn {
-  display: none; background: var(--bg-3); border: 1px solid var(--border);
-  color: var(--text); padding: 10px 14px; border-radius: 9px;
-  cursor: pointer; font-size: 18px; line-height: 1;
-  min-width: 44px; min-height: 44px;
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-select, button, input {
-  background: var(--bg-3); color: var(--text);
-  border: 1px solid var(--border); padding: 10px 14px;
-  border-radius: 9px; font-size: 13px; cursor: pointer;
-  outline: none; font-family: inherit; font-weight: 600;
-  min-height: 44px;
-}
-input { cursor: text; min-width: 120px; }
-select:focus, input:focus { border-color: var(--primary); }
-button { transition: transform 0.1s, background 0.15s; }
-button:active { transform: scale(0.96); }
-button.primary {
-  background: var(--gradient-success); border: none;
-  color: white; font-weight: bold; padding: 10px 20px;
-}
-button.danger { background: var(--danger); border: none; color: white; }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
-.lang-select { min-width: 150px; font-weight: 600; }
-.lang-select option { background: var(--bg-2); color: var(--text); }
-
-/* Pages */
-.page { flex: 1; display: none; overflow: hidden; flex-direction: column; }
-.page.active { display: flex; }
-
-/* Editor */
-.editor-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
-.editor-area {
-  flex: 1; position: relative; overflow: hidden; min-height: 100px;
-  display: flex; background: var(--bg);
-}
-.line-numbers {
-  background: var(--bg-2); color: var(--text-dim);
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 13.5px; line-height: 1.6;
-  padding: 12px 8px; text-align: right; user-select: none;
-  overflow: hidden; min-width: 46px;
-  border-left: 1px solid var(--border);
-  direction: ltr; font-weight: 600;
-}
-.line-numbers .err-num {
-  color: var(--danger); background: rgba(248,81,73,0.2);
-  font-weight: bold;
-}
-.line-numbers .err-num::before {
-  content: '● '; color: var(--danger); font-size: 10px;
-}
-.line-numbers .warn-num {
-  color: var(--warning); background: rgba(210,153,34,0.15);
-}
-#codeEditor {
-  flex: 1; width: 100%; height: 100%;
-  background: var(--bg); color: var(--text);
-  border: none; padding: 12px;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 14px; line-height: 1.6;
-  resize: none; outline: none; direction: ltr;
-  text-align: left; tab-size: 2; white-space: pre;
-  overflow: auto; caret-color: var(--primary);
-  -webkit-appearance: none; border-radius: 0;
-}
-
-.divider {
-  height: 8px; background: var(--bg-2); cursor: row-resize;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  touch-action: none; user-select: none;
-}
-.divider::before {
-  content: ''; width: 44px; height: 3px;
-  background: var(--border-2); border-radius: 2px;
-}
-
-/* Output */
-.output-section {
-  background: var(--bg-2); display: flex; flex-direction: column;
-  height: 42%; overflow: hidden; flex-shrink: 0;
-}
-.tabs {
-  display: flex; background: var(--bg);
-  border-bottom: 1px solid var(--border); overflow-x: auto;
-  scrollbar-width: none;
-}
-.tabs::-webkit-scrollbar { display: none; }
-.tab {
-  padding: 12px 16px; cursor: pointer;
-  border-bottom: 2px solid transparent; font-size: 12.5px;
-  white-space: nowrap; user-select: none; font-weight: 600;
-  color: var(--text-dim); display: flex; align-items: center; gap: 6px;
-  min-height: 44px;
-}
-.tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--bg-2); }
-.tab-badge {
-  background: var(--danger); color: white;
-  padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: bold;
-}
-.tab-badge.warning { background: var(--warning); }
-.tab-badge.hidden { display: none; }
-.tab-content {
-  flex: 1; padding: 12px; overflow-y: auto;
-  font-family: 'Consolas', monospace; font-size: 13px;
-  line-height: 1.6; direction: ltr; text-align: left;
-  white-space: pre-wrap; word-break: break-word;
-}
-.tab-content.hidden { display: none; }
-#stdin {
-  width: 100%; height: 100%; background: var(--bg);
-  color: var(--text); border: none; padding: 12px;
-  font-family: monospace; font-size: 13px;
-  resize: none; outline: none;
-}
-#previewFrame { width: 100%; height: 100%; border: none; background: white; }
-
-/* Errors */
-.error-item {
-  background: linear-gradient(90deg, rgba(248,81,73,0.12), rgba(248,81,73,0.03));
-  border-right: 4px solid var(--danger);
-  padding: 12px 14px; margin-bottom: 8px;
-  border-radius: 10px; direction: rtl; text-align: right;
-}
-.error-item.warning {
-  border-right-color: var(--warning);
-  background: linear-gradient(90deg, rgba(210,153,34,0.12), rgba(210,153,34,0.03));
-}
-.error-item .header {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
-}
-.error-item .icon { font-size: 16px; }
-.error-item .line {
-  color: var(--danger); font-weight: bold; font-size: 12.5px;
-  background: rgba(248,81,73,0.2); padding: 2px 9px; border-radius: 5px;
-}
-.error-item.warning .line { color: var(--warning); background: rgba(210,153,34,0.2); }
-.error-item .message {
-  color: var(--text); margin-top: 5px;
-  font-family: 'Consolas', monospace; font-size: 12.5px;
-  direction: ltr; text-align: left;
-  background: var(--bg); padding: 8px 10px; border-radius: 6px;
-  border: 1px solid var(--border); word-break: break-word;
-}
-.error-item .suggestion {
-  color: var(--success); margin-top: 8px;
-  padding: 9px 12px; background: rgba(63,185,80,0.1);
-  border-radius: 7px; font-size: 12.5px;
-  border-right: 3px solid var(--success); font-weight: 500;
-}
-.error-item .suggestion::before { content: '💡 '; font-weight: bold; }
-.empty-state {
-  text-align: center; color: var(--text-dim); padding: 35px 20px;
-  direction: rtl; font-size: 13.5px;
-}
-.empty-state .big-icon {
-  font-size: 50px; display: block; margin-bottom: 12px; opacity: 0.5;
-}
-.empty-state.success { color: var(--success); }
-
-/* Status Bar */
-.status-bar {
-  background: var(--bg-3); border-top: 1px solid var(--border);
-  padding: 5px 12px; font-size: 11px; color: var(--text-dim);
-  display: flex; justify-content: space-between; align-items: center;
-  font-weight: 500; flex-shrink: 0;
-}
-.status-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.status-dot {
-  display: inline-block; width: 8px; height: 8px;
-  border-radius: 50%; background: var(--success);
-  margin-left: 5px;
-}
-.status-dot.busy { background: var(--warning); animation: pulse 1s infinite; }
-.status-dot.error { background: var(--danger); }
-@keyframes pulse { 50% { opacity: 0.4; } }
-.status-info {
-  background: var(--bg-4); padding: 2px 7px; border-radius: 5px;
-  font-family: 'Consolas', monospace;
-}
-
-/* Tips */
-.tips-container { flex: 1; overflow-y: auto; padding: 18px; }
-.tips-lang-picker {
-  background: var(--bg-2); padding: 16px; border-radius: 14px;
-  margin-bottom: 18px; display: flex; gap: 10px;
-  align-items: center; flex-wrap: wrap;
-  border: 1px solid var(--border);
-}
-.tips-lang-picker label { font-weight: bold; font-size: 13px; }
-.tips-lang-picker select { flex: 1; min-width: 200px; font-weight: 600; }
-.tips-content h2 {
-  color: var(--text); margin-bottom: 16px; font-size: 20px;
-  display: flex; align-items: center; gap: 10px;
-  padding-bottom: 12px; border-bottom: 2px solid var(--border);
+/* ========= الشريط العلوي ========= */
+#topbar {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  padding: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
   flex-wrap: wrap;
 }
-.tips-count { font-size: 12px; color: var(--text-dim); font-weight: normal; }
-.tips-section {
-  background: var(--bg-2); border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px; margin-bottom: 14px;
+
+button {
+  background: #21262d;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 42px;
+  min-width: 42px;
+  font-weight: bold;
 }
-.tips-section h3 {
-  color: var(--accent); margin-bottom: 14px; font-size: 16px;
-  display: flex; align-items: center; gap: 8px;
-  padding-bottom: 8px; border-bottom: 1px dashed var(--border);
+
+button:hover {
+  background: #30363d;
 }
-.func-item {
-  background: var(--bg-3); padding: 13px; border-radius: 10px;
-  margin-bottom: 10px; border-right: 3px solid var(--primary);
+
+button:active {
+  transform: scale(0.95);
 }
-.func-item .fname {
-  color: var(--warning); font-family: 'Consolas', monospace;
-  font-weight: bold; font-size: 13.5px;
-  direction: ltr; text-align: left;
-  background: rgba(210,153,34,0.1);
-  padding: 3px 9px; border-radius: 5px;
-  display: inline-block; margin-bottom: 7px;
+
+button.green {
+  background: #238636;
+  border-color: #2ea043;
+  color: white;
 }
-.func-item .fdesc {
-  color: var(--text); font-size: 13px; margin-bottom: 9px;
+
+button.blue {
+  background: #1f6feb;
+  border-color: #388bfd;
+  color: white;
+}
+
+button.purple {
+  background: #8957e5;
+  border-color: #a371f7;
+  color: white;
+}
+
+button.red {
+  background: #da3633;
+  border-color: #f85149;
+  color: white;
+}
+
+select, input {
+  background: #21262d;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  min-height: 42px;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: #58a6ff;
+}
+
+#langSelect {
+  flex: 1;
+  min-width: 120px;
+}
+
+#projectName {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* ========= القائمة الجانبية ========= */
+#sidebar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: #161b22;
+  border-left: 1px solid #30363d;
+  z-index: 1000;
+  transition: right 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar.open {
+  right: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #30363d;
+  font-size: 24px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #58a6ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.menu-item {
+  padding: 16px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #21262d;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-item:hover {
+  background: #21262d;
+}
+
+.menu-item.active {
+  background: #1f6feb;
+  color: white;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+#overlay.show {
+  display: block;
+}
+
+/* ========= المحتوى الرئيسي ========= */
+#main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.page.active {
+  display: flex;
+}
+
+/* ========= المحرر ========= */
+#editorBox {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background: #0d1117;
+  min-height: 150px;
+}
+
+#lineNumbers {
+  background: #161b22;
+  color: #6e7681;
+  padding: 10px 6px;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: right;
+  min-width: 44px;
+  overflow: hidden;
+  border-left: 1px solid #30363d;
+  user-select: none;
+}
+
+#codeEditor {
+  flex: 1;
+  background: #0d1117;
+  color: #e6edf3;
+  border: none;
+  padding: 10px;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  overflow: auto;
+}
+
+/* ========= قسم المخرجات ========= */
+#outputBox {
+  height: 40%;
+  background: #161b22;
+  border-top: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
+}
+
+#tabs {
+  display: flex;
+  background: #0d1117;
+  border-bottom: 1px solid #30363d;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  color: #8b949e;
+}
+
+.tab.active {
+  color: #58a6ff;
+  border-bottom-color: #58a6ff;
+  background: #161b22;
+}
+
+.tab-badge {
+  background: #da3633;
+  color: white;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+
+.tab-content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+  direction: ltr;
+  text-align: left;
   line-height: 1.5;
 }
-.func-item .fexample {
-  background: var(--bg); padding: 10px 12px; border-radius: 7px;
-  font-family: 'Consolas', monospace; font-size: 12px;
-  color: var(--success); direction: ltr; text-align: left;
-  overflow-x: auto; white-space: pre; margin-bottom: 9px;
-  border: 1px solid var(--border); line-height: 1.5;
-}
-.insert-btn {
-  background: var(--primary-2); border: none; color: white;
-  padding: 8px 14px; border-radius: 7px;
-  font-size: 12px; cursor: pointer; font-weight: 600;
-  min-height: 36px;
+
+.tab-content.hidden {
+  display: none;
 }
 
-/* Projects */
-.projects-container { flex: 1; overflow-y: auto; padding: 18px; }
-.projects-header {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 18px;
-  flex-wrap: wrap; gap: 10px;
-  padding-bottom: 12px; border-bottom: 2px solid var(--border);
+#previewFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
 }
-.projects-header h2 { color: var(--text); font-size: 19px; }
-.projects-header .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.projects-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
+
+#stdin {
+  width: 100%;
+  height: 100%;
+  background: #0d1117;
+  color: #e6edf3;
+  border: none;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 13px;
+  resize: none;
+  outline: none;
 }
+
+/* ========= الأخطاء ========= */
+.error-item {
+  background: rgba(248,81,73,0.1);
+  border-right: 3px solid #f85149;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  direction: rtl;
+  text-align: right;
+}
+
+.error-item.warning {
+  border-right-color: #d29922;
+  background: rgba(210,153,34,0.1);
+}
+
+.error-item .err-header {
+  font-weight: bold;
+  color: #f85149;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.error-item.warning .err-header {
+  color: #d29922;
+}
+
+.error-item .err-msg {
+  font-family: monospace;
+  font-size: 12px;
+  background: #0d1117;
+  padding: 8px;
+  border-radius: 4px;
+  direction: ltr;
+  text-align: left;
+  word-break: break-word;
+}
+
+.error-item .err-fix {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(63,185,80,0.15);
+  border-right: 3px solid #3fb950;
+  border-radius: 4px;
+  color: #7ee787;
+  font-size: 12px;
+}
+
+/* ========= النصائح ========= */
+#tipsContainer {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tip-section {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.tip-section h3 {
+  color: #a855f7;
+  margin-bottom: 12px;
+  font-size: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #30363d;
+}
+
+.tip-func {
+  background: #21262d;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-right: 3px solid #58a6ff;
+}
+
+.tip-name {
+  color: #d29922;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  background: rgba(210,153,34,0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  direction: ltr;
+}
+
+.tip-desc {
+  color: #e6edf3;
+  font-size: 13px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.tip-example {
+  background: #0d1117;
+  padding: 10px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #7ee787;
+  white-space: pre;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  direction: ltr;
+  text-align: left;
+  border: 1px solid #30363d;
+}
+
+.tip-insert {
+  background: #1f6feb;
+  border: none;
+  color: white;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  min-height: 32px;
+}
+
+/* ========= المشاريع ========= */
+#projectsContainer {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
 .project-card {
-  background: var(--bg-2); border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px;
-  position: relative; overflow: hidden;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
 }
-.project-card::before {
-  content: ''; position: absolute; top: 0; right: 0;
-  width: 100%; height: 3px; background: var(--gradient);
-}
+
 .project-card h3 {
-  color: var(--text); margin-bottom: 8px; font-size: 15px;
-  word-break: break-word; font-weight: 700;
-}
-.project-card .meta {
-  color: var(--text-dim); font-size: 11.5px; margin-bottom: 12px;
-}
-.project-card .lang-badge {
-  background: var(--gradient); color: white;
-  padding: 3px 10px; border-radius: 10px;
-  font-size: 10.5px; display: inline-block; margin-bottom: 10px;
-  font-weight: 700;
-}
-.project-card .actions { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
-.project-card .actions button {
-  flex: 1; font-size: 12px; padding: 9px 10px;
-  min-width: 70px; font-weight: 600; min-height: 40px;
+  color: #e6edf3;
+  margin-bottom: 6px;
+  font-size: 15px;
+  word-break: break-word;
 }
 
-/* Toast */
-.toast {
-  position: fixed; bottom: 20px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--gradient-success); color: white;
-  padding: 12px 22px; border-radius: 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-  opacity: 0; transition: all 0.25s ease-out;
-  z-index: 9999; font-size: 13.5px; font-weight: 600;
-  max-width: calc(100% - 40px); text-align: center;
+.project-card .proj-meta {
+  color: #8b949e;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.project-card .proj-lang {
+  display: inline-block;
+  background: #8957e5;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.project-card .proj-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.project-card .proj-actions button {
+  flex: 1;
+  min-height: 38px;
+  font-size: 13px;
+}
+
+/* ========= شريط الحالة ========= */
+#statusBar {
+  background: #161b22;
+  border-top: 1px solid #30363d;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: #8b949e;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ========= Toast ========= */
+#toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #238636;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 2000;
+  transition: transform 0.3s;
+  opacity: 0;
   pointer-events: none;
+  max-width: 90%;
+  text-align: center;
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: linear-gradient(135deg, #f85149, #da3633); }
-.toast.info { background: linear-gradient(135deg, #58a6ff, #1f6feb); }
 
-.overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  z-index: 99; display: none;
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
-.overlay.show { display: block; }
 
-/* Loading spinner */
-.loading {
-  display: inline-block; width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  vertical-align: middle;
+#toast.error {
+  background: #da3633;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed; top: 0; right: 0; height: 100dvh;
-    transform: translateX(100%);
-    box-shadow: -6px 0 25px rgba(0,0,0,0.5);
-    width: 260px;
+#toast.info {
+  background: #1f6feb;
+}
+
+/* ========= الجوال ========= */
+@media (max-width: 600px) {
+  #topbar {
+    padding: 6px;
+    gap: 4px;
   }
-  .sidebar.open { transform: translateX(0); }
-  .menu-btn { display: flex; align-items: center; justify-content: center; }
-  .topbar { padding: 8px; gap: 5px; }
-  select, button, input { font-size: 12.5px; padding: 9px 10px; min-height: 42px; }
-  input { min-width: 70px; flex: 1; }
-  .lang-select { min-width: 110px; font-size: 12px; }
-  .logo { font-size: 22px; }
-  .tab { padding: 10px 12px; font-size: 12px; min-height: 42px; }
-  .tab-content { font-size: 12.5px; padding: 10px; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .tips-container, .projects-container { padding: 12px; }
-  .status-bar { font-size: 10px; padding: 4px 8px; }
-  .status-info { padding: 1px 5px; font-size: 9.5px; }
-  #codeEditor { font-size: 13.5px; padding: 10px; }
-  .line-numbers { font-size: 13px; padding: 10px 6px; min-width: 40px; }
-  .output-section { height: 40%; }
-  .func-item .fexample { font-size: 11.5px; }
-  .topbar button:not(.primary):not(.menu-btn) {
-    padding: 9px 10px; font-size: 14px;
+  
+  button {
+    padding: 8px 10px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+  
+  select, input {
+    font-size: 13px;
+    padding: 8px;
+    min-height: 40px;
+  }
+  
+  #projectName {
+    display: none;
+  }
+  
+  #langSelect {
+    flex: 2;
   }
 }
-@media (max-width: 400px) {
-  .topbar { padding: 6px; gap: 4px; }
-  select, button, input { font-size: 11.5px; padding: 8px 8px; min-height: 40px; }
-  button.primary { padding: 8px 12px; }
-  .lang-select { min-width: 95px; }
-}
-
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
 </style>
 </head>
 <body>
 
-<div class="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">İQCODE</div>
-      <div class="tagline">محرر البرمجة الذكي • v9.0</div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-item active" data-page="editor">
-        <span class="icon">💻</span><span>المحرر</span>
-        <span class="nav-badge">9 لغات</span>
-      </div>
-      <div class="nav-item" data-page="tips">
-        <span class="icon">💡</span><span>النصائح والدوال</span>
-        <span class="nav-badge">350+</span>
-      </div>
-      <div class="nav-item" data-page="projects">
-        <span class="icon">📁</span><span>مشاريعي</span>
-      </div>
-    </nav>
-    <div class="sidebar-footer">
-      <button class="auto-run-toggle on" id="autoRunToggle" type="button">
-        <span>⚡ تشغيل تلقائي</span>
-        <div class="switch"></div>
-      </button>
-      <button class="theme-toggle" id="themeBtn" type="button">
-        <span id="themeIcon">🌙</span>
-        <span id="themeText">ليلي</span>
-      </button>
-    </div>
-  </aside>
-
-  <div class="overlay" id="overlay"></div>
-
-  <main class="content">
-    <div class="topbar">
-      <button class="menu-btn" id="menuBtn" type="button">☰</button>
-      <select id="langSelect" class="lang-select"></select>
-      <input type="text" id="projectName" placeholder="اسم المشروع..." value="my_project">
-      <button class="primary" id="runBtn" type="button">▶ تشغيل</button>
-      <button id="saveBtn" type="button" title="حفظ">💾</button>
-      <button id="downloadBtn" type="button" title="تنزيل">⬇</button>
-    </div>
-
-    <div class="page active" id="page-editor">
-      <div class="editor-wrapper">
-        <div class="editor-area">
-          <div class="line-numbers" id="lineNumbers">1</div>
-          <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
-        </div>
-        <div class="divider" id="divider"></div>
-        <div class="output-section" id="outputSection">
-          <div class="tabs">
-            <div class="tab active" data-tab="output">📤 المخرجات</div>
-            <div class="tab" data-tab="errors">
-              🐛 الأخطاء <span class="tab-badge hidden" id="errorBadge">0</span>
-            </div>
-            <div class="tab" data-tab="input">⌨️ الإدخال</div>
-          </div>
-          <div id="tab-output" class="tab-content">
-            <div class="empty-state">
-              <span class="big-icon">⚡</span>
-              اضغط "تشغيل"
-            </div>
-          </div>
-          <div id="tab-errors" class="tab-content hidden">
-            <div class="empty-state">
-              <span class="big-icon">✨</span>
-              لا توجد أخطاء
-            </div>
-          </div>
-          <div id="tab-input" class="tab-content hidden" style="padding:0;">
-            <textarea id="stdin" placeholder="اكتب الإدخال هنا..."></textarea>
-          </div>
-        </div>
-        <div class="status-bar">
-          <div class="status-left">
-            <span>
-              <span class="status-dot" id="statusDot"></span>
-              <span id="statusText">جاهز</span>
-            </span>
-            <span class="status-info" id="cursorInfo">1:1</span>
-            <span class="status-info" id="engineInfo">HTML</span>
-          </div>
-          <span id="lastRunInfo">—</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="page" id="page-tips">
-      <div class="tips-container">
-        <div class="tips-lang-picker">
-          <label>💡 اختر اللغة:</label>
-          <select id="tipsLangSelect"></select>
-        </div>
-        <div class="tips-content" id="tipsContent"></div>
-      </div>
-    </div>
-
-    <div class="page" id="page-projects">
-      <div class="projects-container">
-        <div class="projects-header">
-          <h2>📁 مشاريعي</h2>
-          <div class="actions">
-            <button id="exportBtn" type="button" style="background:var(--primary-2);color:white;border:none;">📤 تصدير</button>
-            <button id="importBtn" type="button" style="background:var(--accent);color:white;border:none;">📥 استيراد</button>
-            <button class="danger" id="clearBtn" type="button">🗑 مسح</button>
-          </div>
-          <input type="file" id="importFile" accept=".json" style="display:none;">
-        </div>
-        <div class="projects-grid" id="projectsGrid"></div>
-      </div>
-    </div>
-  </main>
+<!-- القائمة الجانبية -->
+<div id="sidebar">
+  <div class="sidebar-header">İQCODE</div>
+  <div class="menu-item active" data-page="editor">💻 المحرر</div>
+  <div class="menu-item" data-page="tips">💡 النصائح والدوال</div>
+  <div class="menu-item" data-page="projects">📁 مشاريعي</div>
+  <div style="padding: 16px; margin-top: auto;">
+    <button id="themeBtn" style="width:100%; margin-bottom:8px;">🌙 الوضع الليلي</button>
+    <button id="autoRunBtn" style="width:100%; background:#238636; color:white;">⚡ تشغيل تلقائي: مفعّل</button>
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- الخلفية المعتمة -->
+<div id="overlay"></div>
+
+<!-- الشريط العلوي -->
+<div id="topbar">
+  <button id="menuBtn" title="القائمة">☰</button>
+  <select id="langSelect"></select>
+  <input type="text" id="projectName" value="my_project" placeholder="اسم المشروع">
+  <button id="runBtn" class="green">▶ تشغيل</button>
+  <button id="saveBtn" class="blue" title="حفظ">💾</button>
+  <button id="downloadBtn" class="purple" title="تنزيل">⬇</button>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div id="main">
+
+  <!-- صفحة المحرر -->
+  <div class="page active" id="page-editor">
+    <div id="editorBox">
+      <div id="lineNumbers">1</div>
+      <textarea id="codeEditor" spellcheck="false"></textarea>
+    </div>
+    <div id="outputBox">
+      <div id="tabs">
+        <div class="tab active" data-tab="output">📤 المخرجات</div>
+        <div class="tab" data-tab="errors">🐛 الأخطاء <span class="tab-badge" id="errorBadge" style="display:none">0</span></div>
+        <div class="tab" data-tab="input">⌨️ الإدخال</div>
+      </div>
+      <div class="tab-content" id="tab-output">اضغط "تشغيل" لبدء التنفيذ...</div>
+      <div class="tab-content hidden" id="tab-errors">✅ لا توجد أخطاء</div>
+      <div class="tab-content hidden" id="tab-input" style="padding:0">
+        <textarea id="stdin" placeholder="اكتب الإدخال هنا..."></textarea>
+      </div>
+    </div>
+    <div id="statusBar">
+      <span id="statusText">جاهز</span>
+      <span id="engineInfo">HTML</span>
+    </div>
+  </div>
+
+  <!-- صفحة النصائح -->
+  <div class="page" id="page-tips">
+    <div style="padding: 12px; background: #161b22; border-bottom: 1px solid #30363d;">
+      <select id="tipsLangSelect" style="width:100%"></select>
+    </div>
+    <div id="tipsContainer"></div>
+  </div>
+
+  <!-- صفحة المشاريع -->
+  <div class="page" id="page-projects">
+    <div style="padding: 12px; background: #161b22; border-bottom: 1px solid #30363d; display:flex; gap:8px; flex-wrap:wrap;">
+      <button id="exportBtn" class="blue" style="flex:1">📤 تصدير</button>
+      <button id="importBtn" class="purple" style="flex:1">📥 استيراد</button>
+      <button id="clearBtn" class="red" style="flex:1">🗑 مسح الكل</button>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+    </div>
+    <div id="projectsContainer"></div>
+  </div>
+
+</div>
+
+<!-- إشعار -->
+<div id="toast"></div>
 
 <script>
-'use strict';
-
 /* ============================================================
-   İQCODE v9.0 - أزرار مضمونة + أداء سريع
+   İQCODE v10.0 - نسخة بسيطة مضمونة
    ============================================================ */
 
-// ============ State ============
-const State = {
-  currentLang: 'html',
-  isDark: true,
-  autoRun: true,
-  errorLines: [],
-  warningLines: [],
-  autoRunTimer: null,
-  lintTimer: null,
-  pyodideReady: false,
-  pyodide: null,
-  sqlReady: false,
-  SQL: null,
-  consoleMessages: []
+// المتغيرات
+var currentLang = 'html';
+var isDark = true;
+var autoRun = true;
+var autoRunTimer = null;
+var lintTimer = null;
+var errorLines = [];
+
+// اللغة الحالية
+var LANGUAGES = {
+  html:       { name: 'HTML',       file: 'html', icon: '🌐', engine: 'web' },
+  css:        { name: 'CSS',        file: 'css',  icon: '🎨', engine: 'web' },
+  javascript: { name: 'JavaScript', file: 'js',   icon: '⚡', engine: 'web' },
+  python:     { name: 'Python',     file: 'py',   icon: '🐍', engine: 'python' },
+  sql:        { name: 'SQL',        file: 'sql',  icon: '🗄️', engine: 'sql' },
+  markdown:   { name: 'Markdown',   file: 'md',   icon: '📝', engine: 'markdown' },
+  json:       { name: 'JSON',       file: 'json', icon: '📦', engine: 'json' },
+  yaml:       { name: 'YAML',       file: 'yaml', icon: '📄', engine: 'yaml' },
+  xml:        { name: 'XML',        file: 'xml',  icon: '📄', engine: 'xml' }
 };
 
-// ============ Refs ============
-const $ = (id) => document.getElementById(id);
-let codeEditor, lineNumbers;
-
-// ============ Languages ============
-const LANGUAGES = {
-  html:       { name: "HTML",       engine: "web",      fileExt: "html", icon: "🌐" },
-  css:        { name: "CSS",        engine: "web",      fileExt: "css",  icon: "🎨" },
-  javascript: { name: "JavaScript", engine: "web",      fileExt: "js",   icon: "⚡" },
-  python:     { name: "Python",     engine: "pyodide",  fileExt: "py",   icon: "🐍" },
-  sql:        { name: "SQL",        engine: "sqlite",   fileExt: "sql",  icon: "🗄️" },
-  markdown:   { name: "Markdown",   engine: "markdown", fileExt: "md",   icon: "📝" },
-  json:       { name: "JSON",       engine: "json",     fileExt: "json", icon: "📦" },
-  yaml:       { name: "YAML",       engine: "yaml",     fileExt: "yaml", icon: "📄" },
-  xml:        { name: "XML",        engine: "xml",      fileExt: "xml",  icon: "📄" }
-};
-
-const STARTER_CODE = {
-  html: '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      background: linear-gradient(135deg, #667eea, #764ba2);\n      color: white;\n      text-align: center;\n      padding: 60px 20px;\n      min-height: 100vh;\n      margin: 0;\n    }\n    h1 { font-size: 3em; }\n    button {\n      padding: 14px 32px;\n      font-size: 16px;\n      background: white;\n      color: #667eea;\n      border: none;\n      border-radius: 30px;\n      cursor: pointer;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <h1>👋 مرحباً!</h1>\n  <p>عدّل الكود وشاهد التغيير فوراً</p>\n  <button onclick="alert(\'مرحبا!\')">اضغطني</button>\n</body>\n</html>',
-  css: '<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body {\n    background: #0a0e14;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    margin: 0;\n    font-family: Arial;\n  }\n  .card {\n    background: linear-gradient(135deg, #f093fb, #f5576c);\n    padding: 50px 60px;\n    border-radius: 24px;\n    color: white;\n    text-align: center;\n    box-shadow: 0 25px 80px rgba(245,87,108,0.5);\n  }\n  h1 { font-size: 2.5em; }\n</style>\n</head>\n<body>\n  <div class="card">\n    <h1>CSS يعمل! ✨</h1>\n  </div>\n</body>\n</html>',
-  javascript: '// İQCODE - JavaScript\nconsole.log("Hello, World!");\nconsole.log("مرحباً!");\n\nconst a = 10;\nconst b = 5;\nconsole.log(`${a} + ${b} = ${a + b}`);\n\nfor (let i = 0; i < 5; i++) {\n  console.log("العدد: " + i);\n}\n',
-  python: '# İQCODE - Python\nprint("Hello, World!")\nprint("مرحباً!")\n\nname = "أحمد"\nage = 25\nprint(f"الاسم: {name}, العمر: {age}")\n\nfor i in range(5):\n    print(f"العدد: {i}")\n',
-  sql: "-- İQCODE - SQL\nCREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT,\n  age INTEGER\n);\n\nINSERT INTO users (name, age) VALUES\n  ('أحمد', 25),\n  ('علي', 30),\n  ('سارة', 22);\n\nSELECT * FROM users;\n",
-  markdown: '# İQCODE - Markdown\n\n## عنوان فرعي\n\nهذا **نص عريض** وهذا *نص مائل*.\n\n- عنصر 1\n- عنصر 2\n\n```javascript\nconst x = 5;\n```\n',
+// كود البداية
+var STARTER = {
+  html: '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n  <style>\n    body {\n      font-family: Arial;\n      background: linear-gradient(135deg, #667eea, #764ba2);\n      color: white;\n      text-align: center;\n      padding: 50px 20px;\n      min-height: 100vh;\n      margin: 0;\n    }\n    h1 { font-size: 3em; }\n    button {\n      padding: 15px 30px;\n      font-size: 16px;\n      background: white;\n      color: #667eea;\n      border: none;\n      border-radius: 30px;\n      cursor: pointer;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <h1>👋 مرحباً!</h1>\n  <p>عدّل الكود وشاهد التغيير</p>\n  <button onclick="alert(\'مرحبا!\')">اضغطني</button>\n</body>\n</html>',
+  css: '<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body {\n    background: #0d1117;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    margin: 0;\n    font-family: Arial;\n  }\n  .card {\n    background: linear-gradient(135deg, #f093fb, #f5576c);\n    padding: 50px;\n    border-radius: 24px;\n    color: white;\n    text-align: center;\n    box-shadow: 0 25px 80px rgba(245,87,108,0.5);\n  }\n</style>\n</head>\n<body>\n  <div class="card">\n    <h1>CSS يعمل! ✨</h1>\n  </div>\n</body>\n</html>',
+  javascript: '// JavaScript\nconsole.log("Hello, World!");\nconsole.log("مرحباً!");\n\nconst a = 10;\nconst b = 5;\nconsole.log(`${a} + ${b} = ${a + b}`);\n\nfor (let i = 0; i < 5; i++) {\n  console.log("العدد: " + i);\n}',
+  python: '# Python\nprint("Hello, World!")\nprint("مرحباً!")\n\nname = "أحمد"\nage = 25\nprint(f"الاسم: {name}, العمر: {age}")\n\nfor i in range(5):\n    print(f"العدد: {i}")',
+  sql: "-- SQL\nCREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT,\n  age INTEGER\n);\n\nINSERT INTO users (name, age) VALUES\n  ('أحمد', 25),\n  ('علي', 30);\n\nSELECT * FROM users;",
+  markdown: '# Markdown\n\n## عنوان فرعي\n\nهذا **نص عريض** وهذا *نص مائل*.\n\n- عنصر 1\n- عنصر 2\n\n```javascript\nconst x = 5;\n```',
   json: '{\n  "name": "أحمد",\n  "age": 25,\n  "skills": ["HTML", "CSS", "JS"],\n  "active": true\n}',
   yaml: 'name: أحمد\nage: 25\nskills:\n  - HTML\n  - CSS\nactive: true',
   xml: '<?xml version="1.0" encoding="UTF-8"?>\n<user>\n  <name>أحمد</name>\n  <age>25</age>\n</user>'
 };
 
-// ============ Tips ============
-const TIPS = {
-  html: { sections: [
-    { title: "🏗️ الهيكل الأساسي", functions: [
-      { name: "<!DOCTYPE html>", desc: "إعلان نوع المستند HTML5", example: '<!DOCTYPE html>\n<html>\n<head></head>\n<body></body>\n</html>' },
-      { name: "<html lang='ar' dir='rtl'>", desc: "العنصر الجذري بالعربية", example: '<html lang="ar" dir="rtl">' },
-      { name: "<head>", desc: "رأس الصفحة", example: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان</title>\n</head>' },
-      { name: "<body>", desc: "المحتوى المرئي", example: '<body><h1>مرحبا</h1></body>' },
-      { name: "<meta charset='UTF-8'>", desc: "ترميز الأحرف (مهم للعربية)", example: '<meta charset="UTF-8">' },
-      { name: "<meta viewport>", desc: "ضبط الجوال", example: '<meta name="viewport" content="width=device-width">' },
-      { name: "<title>", desc: "عنوان التبويب", example: '<title>موقعي</title>' },
-      { name: "<link rel='stylesheet'>", desc: "ربط CSS", example: '<link rel="stylesheet" href="style.css">' },
-      { name: "<script>", desc: "كود JS", example: '<script>\n  console.log("hi");\n</script>' }
+// النصائح المختصرة
+var TIPS = {
+  html: [
+    { title: '🏗️ الهيكل الأساسي', items: [
+      { name: '<!DOCTYPE html>', desc: 'إعلان HTML5', ex: '<!DOCTYPE html>' },
+      { name: '<html>', desc: 'العنصر الجذري', ex: '<html lang="ar" dir="rtl">' },
+      { name: '<head>', desc: 'رأس الصفحة', ex: '<head>\n  <meta charset="UTF-8">\n  <title>عنوان</title>\n</head>' },
+      { name: '<body>', desc: 'المحتوى المرئي', ex: '<body>\n  <h1>مرحبا</h1>\n</body>' }
     ]},
-    { title: "📝 النصوص", functions: [
-      { name: "<h1>...<h6>", desc: "عناوين 6 مستويات", example: '<h1>رئيسي</h1>\n<h2>فرعي</h2>' },
-      { name: "<p>", desc: "فقرة", example: '<p>نص</p>' },
-      { name: "<strong>", desc: "عريض مهم", example: '<strong>مهم</strong>' },
-      { name: "<em>", desc: "مائل تأكيد", example: '<em>تأكيد</em>' },
-      { name: "<mark>", desc: "مظلل", example: '<mark>مظلل</mark>' },
-      { name: "<br>", desc: "سطر جديد", example: 'سطر<br>سطر' },
-      { name: "<hr>", desc: "خط أفقي", example: '<hr>' },
-      { name: "<code>", desc: "كود", example: '<code>console.log()</code>' },
-      { name: "<pre>", desc: "نص منسق", example: '<pre>سطر 1\nسطر 2</pre>' }
+    { title: '📝 النصوص', items: [
+      { name: '<h1>...<h6>', desc: 'عناوين', ex: '<h1>رئيسي</h1>\n<h2>فرعي</h2>' },
+      { name: '<p>', desc: 'فقرة', ex: '<p>نص</p>' },
+      { name: '<strong>', desc: 'عريض', ex: '<strong>مهم</strong>' },
+      { name: '<em>', desc: 'مائل', ex: '<em>تأكيد</em>' },
+      { name: '<br>', desc: 'سطر جديد', ex: 'سطر<br>سطر' },
+      { name: '<hr>', desc: 'خط فاصل', ex: '<hr>' }
     ]},
-    { title: "🔗 روابط وصور", functions: [
-      { name: "<a href>", desc: "رابط", example: '<a href="https://google.com">جوجل</a>' },
-      { name: "target='_blank'", desc: "تبويب جديد", example: '<a href="url" target="_blank">رابط</a>' },
-      { name: "<img>", desc: "صورة", example: '<img src="a.jpg" alt="وصف">' },
-      { name: "<figure>", desc: "صورة مع وصف", example: '<figure>\n  <img src="a.jpg">\n  <figcaption>وصف</figcaption>\n</figure>' }
+    { title: '🔗 روابط وصور', items: [
+      { name: '<a href>', desc: 'رابط', ex: '<a href="https://google.com">جوجل</a>' },
+      { name: '<img>', desc: 'صورة', ex: '<img src="a.jpg" alt="وصف">' }
     ]},
-    { title: "📋 قوائم", functions: [
-      { name: "<ul><li>", desc: "نقاط", example: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
-      { name: "<ol><li>", desc: "مرقمة", example: '<ol>\n  <li>أولاً</li>\n</ol>' },
-      { name: "<dl>", desc: "تعريفات", example: '<dl>\n  <dt>HTML</dt>\n  <dd>لغة</dd>\n</dl>' }
+    { title: '📋 القوائم', items: [
+      { name: '<ul><li>', desc: 'قائمة نقاط', ex: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n</ul>' },
+      { name: '<ol><li>', desc: 'قائمة مرقمة', ex: '<ol>\n  <li>أولاً</li>\n</ol>' }
     ]},
-    { title: "📊 جداول", functions: [
-      { name: "<table>", desc: "جدول", example: '<table>\n  <tr><th>اسم</th></tr>\n  <tr><td>أحمد</td></tr>\n</table>' },
-      { name: "<thead>", desc: "رأس", example: '<thead><tr><th>عنوان</th></tr></thead>' },
-      { name: "<tbody>", desc: "جسم", example: '<tbody><tr><td>بيانات</td></tr></tbody>' },
-      { name: "colspan", desc: "دمج أعمدة", example: '<td colspan="2">مدمج</td>' }
+    { title: '📝 النماذج', items: [
+      { name: '<input>', desc: 'حقل إدخال', ex: '<input type="text" placeholder="اسمك">' },
+      { name: '<button>', desc: 'زر', ex: '<button>اضغط</button>' },
+      { name: '<form>', desc: 'نموذج', ex: '<form>\n  <input name="x">\n</form>' }
     ]},
-    { title: "📝 نماذج", functions: [
-      { name: "<form>", desc: "نموذج", example: '<form>\n  <input name="x">\n  <button>إرسال</button>\n</form>' },
-      { name: "<input type='text'>", desc: "نص", example: '<input type="text" placeholder="اسمك">' },
-      { name: "<input type='email'>", desc: "بريد", example: '<input type="email" required>' },
-      { name: "<input type='password'>", desc: "كلمة مرور", example: '<input type="password">' },
-      { name: "<input type='number'>", desc: "رقم", example: '<input type="number" min="1">' },
-      { name: "<input type='date'>", desc: "تاريخ", example: '<input type="date">' },
-      { name: "<input type='color'>", desc: "لون", example: '<input type="color">' },
-      { name: "<input type='checkbox'>", desc: "مربع", example: '<input type="checkbox" id="x">\n<label for="x">أوافق</label>' },
-      { name: "<textarea>", desc: "نص طويل", example: '<textarea rows="5"></textarea>' },
-      { name: "<select>", desc: "قائمة", example: '<select>\n  <option>Python</option>\n</select>' },
-      { name: "<label>", desc: "تسمية", example: '<label for="x">الاسم:</label>' }
-    ]},
-    { title: "🖼️ HTML5 الدلالية", functions: [
-      { name: "<header>", desc: "ترويسة", example: '<header><h1>موقعي</h1></header>' },
-      { name: "<nav>", desc: "تنقل", example: '<nav><a href="/">رئيسية</a></nav>' },
-      { name: "<main>", desc: "رئيسي", example: '<main>...</main>' },
-      { name: "<section>", desc: "قسم", example: '<section>...</section>' },
-      { name: "<article>", desc: "مقال", example: '<article>...</article>' },
-      { name: "<aside>", desc: "جانبي", example: '<aside>...</aside>' },
-      { name: "<footer>", desc: "تذييل", example: '<footer>© 2024</footer>' },
-      { name: "<details>", desc: "قابل للطي", example: '<details>\n  <summary>اضغط</summary>\n  <p>محتوى</p>\n</details>' }
-    ]},
-    { title: "⚙️ خصائص عامة", functions: [
-      { name: "id='x'", desc: "معرف فريد", example: '<div id="main">...</div>' },
-      { name: "class='x'", desc: "فئة", example: '<div class="box large">...</div>' },
-      { name: "style=''", desc: "ستايل", example: '<p style="color:red">نص</p>' },
-      { name: "title=''", desc: "تلميح", example: '<span title="تلميح">نص</span>' },
-      { name: "hidden", desc: "إخفاء", example: '<div hidden>مخفي</div>' },
-      { name: "contenteditable", desc: "قابل للتعديل", example: '<div contenteditable="true">عدلني</div>' },
-      { name: "data-*", desc: "بيانات", example: '<div data-id="5">...</div>' }
+    { title: '🎨 ألوان', items: [
+      { name: 'style=""', desc: 'ستايل مباشر', ex: '<p style="color:red">نص</p>' },
+      { name: 'class=""', desc: 'فئة', ex: '<div class="box">...</div>' },
+      { name: 'id=""', desc: 'معرف', ex: '<div id="main">...</div>' }
     ]}
-  ]},
-  css: { sections: [
-    { title: "🎨 ألوان", functions: [
-      { name: "color", desc: "لون النص", example: 'p { color: red; }' },
-      { name: "background", desc: "خلفية", example: 'body { background: linear-gradient(90deg, red, blue); }' },
-      { name: "background-color", desc: "لون الخلفية", example: '.box { background-color: #333; }' },
-      { name: "background-image", desc: "صورة خلفية", example: 'body { background-image: url("bg.jpg"); }' },
-      { name: "opacity", desc: "شفافية", example: '.ghost { opacity: 0.5; }' },
-      { name: "linear-gradient", desc: "تدرج", example: 'background: linear-gradient(45deg, #f00, #00f);' }
+  ],
+  css: [
+    { title: '🎨 الألوان', items: [
+      { name: 'color', desc: 'لون النص', ex: 'p { color: red; }' },
+      { name: 'background', desc: 'الخلفية', ex: 'body { background: #333; }' },
+      { name: 'linear-gradient', desc: 'تدرج', ex: 'background: linear-gradient(90deg, red, blue);' }
     ]},
-    { title: "🔤 خطوط", functions: [
-      { name: "font-family", desc: "نوع الخط", example: 'body { font-family: Arial, sans-serif; }' },
-      { name: "font-size", desc: "الحجم", example: 'h1 { font-size: 32px; }' },
-      { name: "font-weight", desc: "السماكة", example: 'strong { font-weight: 700; }' },
-      { name: "text-align", desc: "محاذاة", example: 'h1 { text-align: center; }' },
-      { name: "text-decoration", desc: "تزيين", example: 'a { text-decoration: none; }' },
-      { name: "line-height", desc: "ارتفاع السطر", example: 'p { line-height: 1.6; }' },
-      { name: "letter-spacing", desc: "تباعد", example: 'h1 { letter-spacing: 2px; }' }
+    { title: '🔤 الخطوط', items: [
+      { name: 'font-family', desc: 'نوع الخط', ex: 'body { font-family: Arial; }' },
+      { name: 'font-size', desc: 'الحجم', ex: 'h1 { font-size: 32px; }' },
+      { name: 'text-align', desc: 'محاذاة', ex: 'h1 { text-align: center; }' }
     ]},
-    { title: "📏 أبعاد", functions: [
-      { name: "width / height", desc: "الأبعاد", example: '.box { width: 300px; height: 200px; }' },
-      { name: "max-width", desc: "أقصى عرض", example: '.c { max-width: 1200px; }' },
-      { name: "padding", desc: "حشو داخلي", example: '.box { padding: 20px; }' },
-      { name: "margin", desc: "هامش", example: '.box { margin: 0 auto; }' },
-      { name: "gap", desc: "مسافة flex/grid", example: '.flex { gap: 16px; }' }
+    { title: '📏 الأبعاد', items: [
+      { name: 'width / height', desc: 'العرض والارتفاع', ex: '.box { width: 300px; height: 200px; }' },
+      { name: 'padding', desc: 'حشو', ex: '.box { padding: 20px; }' },
+      { name: 'margin', desc: 'هامش', ex: '.box { margin: 10px; }' }
     ]},
-    { title: "🖼️ حدود وظلال", functions: [
-      { name: "border", desc: "حدود", example: '.box { border: 2px solid #333; }' },
-      { name: "border-radius", desc: "زوايا دائرية", example: '.btn { border-radius: 25px; }' },
-      { name: "box-shadow", desc: "ظل", example: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' },
-      { name: "text-shadow", desc: "ظل النص", example: 'h1 { text-shadow: 2px 2px 4px #000; }' }
+    { title: '🖼️ الحدود', items: [
+      { name: 'border', desc: 'حدود', ex: '.box { border: 2px solid #333; }' },
+      { name: 'border-radius', desc: 'زوايا دائرية', ex: '.btn { border-radius: 25px; }' },
+      { name: 'box-shadow', desc: 'ظل', ex: '.card { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }' }
     ]},
-    { title: "📐 تخطيط", functions: [
-      { name: "display: flex", desc: "مرن", example: '.c { display: flex; gap: 10px; }' },
-      { name: "justify-content", desc: "أفقي", example: '.c { justify-content: space-between; }' },
-      { name: "align-items", desc: "رأسي", example: '.c { align-items: center; }' },
-      { name: "flex-direction", desc: "اتجاه", example: '.col { flex-direction: column; }' },
-      { name: "display: grid", desc: "شبكة", example: '.g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }' },
-      { name: "position", desc: "الموضع", example: '.fix { position: fixed; top: 0; }' }
+    { title: '📐 التخطيط', items: [
+      { name: 'display: flex', desc: 'تخطيط مرن', ex: '.c { display: flex; gap: 10px; }' },
+      { name: 'display: grid', desc: 'شبكة', ex: '.g { display: grid; grid-template-columns: 1fr 1fr; }' },
+      { name: 'position', desc: 'الموضع', ex: '.fixed { position: fixed; top: 0; }' }
     ]},
-    { title: "✨ تأثيرات", functions: [
-      { name: "transition", desc: "انتقال", example: '.btn { transition: all 0.3s; }' },
-      { name: "transform", desc: "تحويل", example: '.big { transform: scale(1.2); }' },
-      { name: "animation", desc: "حركة", example: '@keyframes f {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n.x { animation: f 1s; }' },
-      { name: ":hover", desc: "مرور", example: '.btn:hover { background: red; }' }
-    ]},
-    { title: "📱 استجابة", functions: [
-      { name: "@media", desc: "استعلام", example: '@media (max-width: 768px) {\n  .sidebar { display: none; }\n}' },
-      { name: "وحدات نسبية", desc: "% em rem vh vw", example: '.box { width: 50%; font-size: 1.5rem; }' },
-      { name: "clamp()", desc: "قيمة مرنة", example: 'font-size: clamp(1rem, 4vw, 2rem);' }
+    { title: '✨ التأثيرات', items: [
+      { name: 'transition', desc: 'انتقال', ex: '.btn { transition: all 0.3s; }' },
+      { name: 'transform', desc: 'تحويل', ex: '.big { transform: scale(1.2); }' },
+      { name: ':hover', desc: 'عند المرور', ex: '.btn:hover { background: red; }' }
     ]}
-  ]},
-  javascript: { sections: [
-    { title: "🖨️ إخراج", functions: [
-      { name: "console.log(x)", desc: "طباعة", example: 'console.log("مرحبا");' },
-      { name: "console.error(x)", desc: "خطأ", example: 'console.error("!");' },
-      { name: "console.warn(x)", desc: "تحذير", example: 'console.warn("!");' },
-      { name: "console.table(arr)", desc: "جدول", example: 'console.table([{n:"أ"}]);' },
-      { name: "typeof x", desc: "النوع", example: 'typeof 5  // "number"' }
+  ],
+  javascript: [
+    { title: '🖨️ الإخراج', items: [
+      { name: 'console.log()', desc: 'طباعة', ex: 'console.log("مرحبا");' },
+      { name: 'console.error()', desc: 'خطأ', ex: 'console.error("خطأ");' },
+      { name: 'typeof', desc: 'النوع', ex: 'typeof 5  // "number"' }
     ]},
-    { title: "📦 متغيرات", functions: [
-      { name: "let", desc: "قابل للتغيير", example: 'let x = 5;\nx = 10;' },
-      { name: "const", desc: "ثابت", example: 'const PI = 3.14;' },
-      { name: "Template Literal", desc: "نص ديناميكي", example: 'const n = "أ";\nconsole.log(`مرحبا ${n}`);' }
+    { title: '📦 المتغيرات', items: [
+      { name: 'let', desc: 'متغير', ex: 'let x = 5;\nx = 10;' },
+      { name: 'const', desc: 'ثابت', ex: 'const PI = 3.14;' },
+      { name: 'Template Literals', desc: 'نص ديناميكي', ex: 'const n = "أ";\nconsole.log(`مرحبا ${n}`);' }
     ]},
-    { title: "🔢 أرقام", functions: [
-      { name: "parseInt()", desc: "نص→صحيح", example: 'parseInt("42")  // 42' },
-      { name: "parseFloat()", desc: "نص→عشري", example: 'parseFloat("3.14")' },
-      { name: "Number()", desc: "لرقم", example: 'Number("5")  // 5' },
-      { name: "toFixed(n)", desc: "أرقام عشرية", example: '(3.14).toFixed(2)' },
-      { name: "Math.floor()", desc: "تقريب أسفل", example: 'Math.floor(3.7)  // 3' },
-      { name: "Math.ceil()", desc: "تقريب أعلى", example: 'Math.ceil(3.2)  // 4' },
-      { name: "Math.round()", desc: "تقريب", example: 'Math.round(3.5)  // 4' },
-      { name: "Math.random()", desc: "عشوائي", example: 'Math.random()' },
-      { name: "Math.max()", desc: "الأكبر", example: 'Math.max(1, 5, 3)' },
-      { name: "Math.min()", desc: "الأصغر", example: 'Math.min(1, 5, 3)' },
-      { name: "Math.abs()", desc: "مطلق", example: 'Math.abs(-5)' },
-      { name: "Math.sqrt()", desc: "جذر", example: 'Math.sqrt(16)  // 4' }
+    { title: '🔢 الأرقام', items: [
+      { name: 'parseInt()', desc: 'نص لعدد', ex: 'parseInt("42")' },
+      { name: 'Math.floor()', desc: 'تقريب أسفل', ex: 'Math.floor(3.7)  // 3' },
+      { name: 'Math.random()', desc: 'عشوائي', ex: 'Math.random()' },
+      { name: 'toFixed()', desc: 'عشري', ex: '(3.14).toFixed(1)' }
     ]},
-    { title: "🔤 نصوص", functions: [
-      { name: "length", desc: "الطول", example: '"hello".length  // 5' },
-      { name: "toUpperCase()", desc: "كبيرة", example: '"hi".toUpperCase()' },
-      { name: "toLowerCase()", desc: "صغيرة", example: '"HI".toLowerCase()' },
-      { name: "split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
-      { name: "replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
-      { name: "replaceAll(a,b)", desc: "استبدال الكل", example: '"aaa".replaceAll("a","b")' },
-      { name: "includes(s)", desc: "يحتوي", example: '"hello".includes("ell")' },
-      { name: "indexOf(s)", desc: "موقع", example: '"hello".indexOf("l")' },
-      { name: "trim()", desc: "مسافات", example: '"  hi  ".trim()' },
-      { name: "charAt(i)", desc: "حرف", example: '"hi".charAt(1)' },
-      { name: "slice(a,b)", desc: "قص", example: '"hello".slice(1,4)' },
-      { name: "repeat(n)", desc: "تكرار", example: '"ab".repeat(3)' },
-      { name: "startsWith(s)", desc: "يبدأ", example: '"hello".startsWith("he")' }
+    { title: '🔤 النصوص', items: [
+      { name: 'toUpperCase()', desc: 'أحرف كبيرة', ex: '"hi".toUpperCase()' },
+      { name: 'split()', desc: 'تقسيم', ex: '"a,b".split(",")' },
+      { name: 'replace()', desc: 'استبدال', ex: '"hi".replace("i","ello")' },
+      { name: 'includes()', desc: 'يحتوي', ex: '"hello".includes("ell")' },
+      { name: 'trim()', desc: 'إزالة المسافات', ex: '"  hi  ".trim()' }
     ]},
-    { title: "📋 مصفوفات", functions: [
-      { name: "push(x)", desc: "إضافة", example: '[1].push(2)' },
-      { name: "pop()", desc: "حذف آخر", example: '[1,2].pop()' },
-      { name: "unshift(x)", desc: "بداية", example: '[2].unshift(1)' },
-      { name: "shift()", desc: "حذف أول", example: '[1,2].shift()' },
-      { name: "map(fn)", desc: "تحويل", example: '[1,2].map(x=>x*2)' },
-      { name: "filter(fn)", desc: "تصفية", example: '[1,2,3].filter(x=>x>1)' },
-      { name: "reduce(fn,i)", desc: "اختصار", example: '[1,2].reduce((a,b)=>a+b,0)' },
-      { name: "forEach(fn)", desc: "مرور", example: '[1,2].forEach(x=>console.log(x))' },
-      { name: "find(fn)", desc: "أول", example: '[1,2].find(x=>x>1)' },
-      { name: "includes(x)", desc: "يحتوي", example: '[1,2].includes(2)' },
-      { name: "sort()", desc: "ترتيب", example: '[3,1,2].sort()' },
-      { name: "reverse()", desc: "عكس", example: '[1,2].reverse()' },
-      { name: "join(sep)", desc: "دمج", example: '[1,2].join("-")' },
-      { name: "slice(a,b)", desc: "جزء", example: '[1,2,3].slice(1,3)' },
-      { name: "splice(i,n)", desc: "حذف/إضافة", example: 'let a=[1,2,3];\na.splice(1,1)' },
-      { name: "concat()", desc: "دمج", example: '[1].concat([2])' },
-      { name: "some(fn)", desc: "هل يوجد", example: '[1,2].some(x=>x>1)' },
-      { name: "every(fn)", desc: "هل الكل", example: '[1,2].every(x=>x>0)' }
+    { title: '📋 المصفوفات', items: [
+      { name: 'push()', desc: 'إضافة', ex: '[1,2].push(3)' },
+      { name: 'pop()', desc: 'حذف آخر', ex: '[1,2].pop()' },
+      { name: 'map()', desc: 'تحويل', ex: '[1,2,3].map(x => x*2)' },
+      { name: 'filter()', desc: 'تصفية', ex: '[1,2,3].filter(x => x>1)' },
+      { name: 'forEach()', desc: 'مرور', ex: '[1,2].forEach(x => console.log(x))' },
+      { name: 'reduce()', desc: 'اختصار', ex: '[1,2,3].reduce((a,b) => a+b, 0)' }
     ]},
-    { title: "📦 كائنات", functions: [
-      { name: "obj.key", desc: "وصول", example: 'let p={n:"أ"}; p.n' },
-      { name: "Object.keys()", desc: "مفاتيح", example: 'Object.keys({a:1})' },
-      { name: "Object.values()", desc: "قيم", example: 'Object.values({a:1})' },
-      { name: "Object.entries()", desc: "أزواج", example: 'Object.entries({a:1})' },
-      { name: "JSON.stringify()", desc: "كائن→نص", example: 'JSON.stringify({a:1})' },
-      { name: "JSON.parse()", desc: "نص→كائن", example: 'JSON.parse(\'{"a":1}\')' }
+    { title: '🔀 الشروط', items: [
+      { name: 'if / else', desc: 'شروط', ex: 'if (x > 0) { } else { }' },
+      { name: 'ternary ?:', desc: 'شرط مختصر', ex: 'let s = x > 0 ? "+" : "-";' },
+      { name: 'switch', desc: 'حالات', ex: 'switch(x) {\n  case 1: break;\n}' }
     ]},
-    { title: "🔀 شروط", functions: [
-      { name: "if/else", desc: "شروط", example: 'if(x>0){...} else {...}' },
-      { name: "ternary ?:", desc: "مختصر", example: 'let s = x>0 ? "+" : "-";' },
-      { name: "switch", desc: "حالات", example: 'switch(x){case 1:break;}' },
-      { name: "&& / ||", desc: "منطقية", example: 'if (x>0 && y<5) {}' },
-      { name: "??", desc: "بديل null", example: 'let x = a ?? "def";' },
-      { name: "?.", desc: "وصول آمن", example: 'obj?.user?.name' }
+    { title: '🔄 الحلقات', items: [
+      { name: 'for', desc: 'حلقة', ex: 'for (let i = 0; i < 5; i++) { }' },
+      { name: 'for...of', desc: 'على مصفوفة', ex: 'for (const x of [1,2]) { }' },
+      { name: 'while', desc: 'شرطية', ex: 'while (i < 5) { i++; }' }
     ]},
-    { title: "🔄 حلقات", functions: [
-      { name: "for", desc: "كلاسيكية", example: 'for(let i=0;i<5;i++){}' },
-      { name: "for...of", desc: "مصفوفات", example: 'for(const x of [1,2]){}' },
-      { name: "for...in", desc: "كائنات", example: 'for(const k in obj){}' },
-      { name: "while", desc: "شرطية", example: 'while(i<5){i++;}' },
-      { name: "do...while", desc: "مرة", example: 'do{}while(x<5);' },
-      { name: "break/continue", desc: "خروج/تخطي", example: 'for(...){if(x)break;}' }
-    ]},
-    { title: "📚 دوال", functions: [
-      { name: "function", desc: "عادية", example: 'function f(x){return x;}' },
-      { name: "arrow =>", desc: "سهمية", example: 'const sq = x => x*x;' },
-      { name: "default params", desc: "افتراضية", example: 'function f(x=5){}' },
-      { name: "rest ...", desc: "متعددة", example: 'function sum(...n){return n.reduce((a,b)=>a+b);}' }
-    ]},
-    { title: "⚡ ES6+", functions: [
-      { name: "Destructuring", desc: "تفكيك", example: 'const [a,b]=[1,2];\nconst {x,y}={x:1,y:2};' },
-      { name: "Spread ...", desc: "نشر", example: 'const a=[...[1,2],3];' },
-      { name: "Map", desc: "خريطة", example: 'const m=new Map();\nm.set("k","v");' },
-      { name: "Set", desc: "فريدة", example: 'const s=new Set([1,2,2]);' },
-      { name: "Promise", desc: "وعد", example: 'new Promise(r=>r("ok")).then(x=>console.log(x));' },
-      { name: "async/await", desc: "غير متزامن", example: 'async function f(){\n  const r = await fetch(u);\n}' }
-    ]},
-    { title: "⏰ توقيت", functions: [
-      { name: "setTimeout", desc: "مؤجل", example: 'setTimeout(()=>{}, 1000);' },
-      { name: "setInterval", desc: "متكرر", example: 'setInterval(()=>{}, 1000);' },
-      { name: "Date.now()", desc: "الآن", example: 'Date.now()' },
-      { name: "new Date()", desc: "تاريخ", example: 'const d=new Date();' }
+    { title: '📚 الدوال', items: [
+      { name: 'function', desc: 'دالة', ex: 'function greet(n) { return "hi " + n; }' },
+      { name: 'arrow =>', desc: 'سهمية', ex: 'const sq = x => x * x;' },
+      { name: 'setTimeout', desc: 'تنفيذ مؤجل', ex: 'setTimeout(() => { }, 1000);' },
+      { name: 'setInterval', desc: 'متكرر', ex: 'setInterval(() => { }, 1000);' }
     ]}
-  ]},
-  python: { sections: [
-    { title: "🖨️ إخراج", functions: [
-      { name: "print(x)", desc: "طباعة", example: 'print("مرحبا")' },
-      { name: "print(sep='-')", desc: "فاصل", example: 'print("أ","ب",sep="-")' },
-      { name: "print(end='')", desc: "بدون سطر", example: 'print("أ",end="")' },
-      { name: "f-string", desc: "نص ديناميكي", example: 'n="أ"\nprint(f"مرحبا {n}")' },
-      { name: "format()", desc: "تنسيق", example: '"مرحبا {}".format("أ")' }
+  ],
+  python: [
+    { title: '🖨️ الإخراج', items: [
+      { name: 'print()', desc: 'طباعة', ex: 'print("مرحبا")' },
+      { name: 'f-string', desc: 'نص ديناميكي', ex: 'n = "أ"\nprint(f"مرحبا {n}")' }
     ]},
-    { title: "🔢 أرقام", functions: [
-      { name: "int(x)", desc: "صحيح", example: 'int("42")  # 42' },
-      { name: "float(x)", desc: "عشري", example: 'float("3.14")' },
-      { name: "str(x)", desc: "نص", example: 'str(123)' },
-      { name: "round(x,n)", desc: "تقريب", example: 'round(3.14,1)' },
-      { name: "abs(x)", desc: "مطلق", example: 'abs(-5)  # 5' },
-      { name: "max()", desc: "الأكبر", example: 'max(1,2,3)' },
-      { name: "min()", desc: "الأصغر", example: 'min([1,2,3])' },
-      { name: "sum()", desc: "المجموع", example: 'sum([1,2,3])  # 6' },
-      { name: "pow(x,y)", desc: "قوة", example: 'pow(2,3)  # 8' }
+    { title: '🔢 الأرقام', items: [
+      { name: 'int()', desc: 'صحيح', ex: 'int("42")' },
+      { name: 'float()', desc: 'عشري', ex: 'float("3.14")' },
+      { name: 'round()', desc: 'تقريب', ex: 'round(3.14, 1)' },
+      { name: 'abs()', desc: 'مطلق', ex: 'abs(-5)' },
+      { name: 'max()/min()', desc: 'أكبر/أصغر', ex: 'max(1, 5, 3)' },
+      { name: 'sum()', desc: 'مجموع', ex: 'sum([1,2,3])' }
     ]},
-    { title: "🔤 نصوص", functions: [
-      { name: "upper()", desc: "كبيرة", example: '"hi".upper()' },
-      { name: "lower()", desc: "صغيرة", example: '"HI".lower()' },
-      { name: "title()", desc: "عنوان", example: '"hi there".title()' },
-      { name: "split(sep)", desc: "تقسيم", example: '"a,b".split(",")' },
-      { name: "replace(a,b)", desc: "استبدال", example: '"hi".replace("i","ello")' },
-      { name: "strip()", desc: "مسافات", example: '"  hi  ".strip()' },
-      { name: "startswith()", desc: "يبدأ", example: '"hi".startswith("h")' },
-      { name: "endswith()", desc: "ينتهي", example: '"hi".endswith("i")' },
-      { name: "find(s)", desc: "موقع", example: '"hi".find("i")' },
-      { name: "count(s)", desc: "عدد", example: '"hello".count("l")' },
-      { name: '"sep".join(l)', desc: "دمج", example: '"-".join(["a","b"])' },
-      { name: "s[a:b]", desc: "قص", example: 's="hello"\ns[1:4]' },
-      { name: "s[::-1]", desc: "عكس", example: '"hello"[::-1]' }
+    { title: '🔤 النصوص', items: [
+      { name: '.upper()', desc: 'أحرف كبيرة', ex: '"hi".upper()' },
+      { name: '.lower()', desc: 'أحرف صغيرة', ex: '"HI".lower()' },
+      { name: '.split()', desc: 'تقسيم', ex: '"a,b".split(",")' },
+      { name: '.replace()', desc: 'استبدال', ex: '"hi".replace("i", "ello")' },
+      { name: '.strip()', desc: 'إزالة المسافات', ex: '"  hi  ".strip()' },
+      { name: '.join()', desc: 'دمج', ex: '"-".join(["a","b"])' },
+      { name: '[a:b]', desc: 'قص', ex: 's = "hello"\ns[1:4]' }
     ]},
-    { title: "📋 قوائم", functions: [
-      { name: "append(x)", desc: "إضافة", example: 'l=[1]\nl.append(2)' },
-      { name: "insert(i,x)", desc: "في موقع", example: 'l.insert(0,0)' },
-      { name: "pop()", desc: "حذف آخر", example: 'l.pop()' },
-      { name: "remove(x)", desc: "حذف قيمة", example: 'l.remove(2)' },
-      { name: "sort()", desc: "ترتيب", example: 'l=[3,1,2]\nl.sort()' },
-      { name: "reverse()", desc: "عكس", example: 'l.reverse()' },
-      { name: "index(x)", desc: "موقع", example: 'l.index(2)' },
-      { name: "count(x)", desc: "عدد", example: 'l.count(2)' },
-      { name: "extend(l2)", desc: "دمج", example: 'l.extend([4,5])' },
-      { name: "comprehension", desc: "قائمة ذكية", example: '[x*2 for x in range(5)]' }
+    { title: '📋 القوائم', items: [
+      { name: '.append()', desc: 'إضافة', ex: 'l = [1]\nl.append(2)' },
+      { name: '.pop()', desc: 'حذف', ex: 'l.pop()' },
+      { name: '.sort()', desc: 'ترتيب', ex: 'l.sort()' },
+      { name: '.reverse()', desc: 'عكس', ex: 'l.reverse()' },
+      { name: 'comprehension', desc: 'قائمة ذكية', ex: '[x*2 for x in range(5)]' },
+      { name: 'range()', desc: 'نطاق', ex: 'for i in range(5):' }
     ]},
-    { title: "📚 قواميس", functions: [
-      { name: "{k: v}", desc: "إنشاء", example: 'd={"n":"أ"}' },
-      { name: "d[key]", desc: "وصول", example: 'd["n"]' },
-      { name: "d.get(k,def)", desc: "آمن", example: 'd.get("x", 0)' },
-      { name: "d.keys()", desc: "مفاتيح", example: 'd.keys()' },
-      { name: "d.values()", desc: "قيم", example: 'd.values()' },
-      { name: "d.items()", desc: "أزواج", example: 'd.items()' },
-      { name: "d.update(d2)", desc: "دمج", example: 'd.update({"age":25})' }
+    { title: '📚 القواميس', items: [
+      { name: '{k: v}', desc: 'إنشاء', ex: 'd = {"name": "أ"}' },
+      { name: 'd[key]', desc: 'وصول', ex: 'd["name"]' },
+      { name: 'd.get()', desc: 'وصول آمن', ex: 'd.get("age", 0)' },
+      { name: 'd.keys()', desc: 'المفاتيح', ex: 'd.keys()' },
+      { name: 'd.values()', desc: 'القيم', ex: 'd.values()' },
+      { name: 'd.items()', desc: 'أزواج', ex: 'for k, v in d.items():' }
     ]},
-    { title: "🔀 شروط", functions: [
-      { name: "if/elif/else", desc: "شروط", example: 'if x>0:\n    print("+")\nelif x<0:\n    print("-")\nelse:\n    print("0")' },
-      { name: "ternary", desc: "مختصر", example: 's = "بالغ" if age>=18 else "قاصر"' },
-      { name: "in/not in", desc: "وجود", example: '"a" in "cat"' },
-      { name: "and/or/not", desc: "منطقية", example: 'if x>0 and y<10: ...' }
+    { title: '🔀 الشروط', items: [
+      { name: 'if / elif / else', desc: 'شروط', ex: 'if x > 0:\n    print("+")\nelif x < 0:\n    print("-")\nelse:\n    print("0")' },
+      { name: 'ternary', desc: 'مختصر', ex: 's = "بالغ" if age >= 18 else "قاصر"' },
+      { name: 'in / not in', desc: 'وجود', ex: '"a" in "cat"' }
     ]},
-    { title: "🔄 حلقات", functions: [
-      { name: "for i in range()", desc: "تكرار", example: 'for i in range(5):\n    print(i)' },
-      { name: "range(a,b,c)", desc: "نطاق", example: 'range(1,10,2)' },
-      { name: "for x in list", desc: "مرور", example: 'for n in [1,2]:\n    print(n)' },
-      { name: "enumerate()", desc: "مع فهرس", example: 'for i,v in enumerate(["a","b"]):\n    print(i,v)' },
-      { name: "zip()", desc: "دمج", example: 'for a,b in zip([1,2],["أ","ب"]):\n    print(a,b)' },
-      { name: "while", desc: "شرطية", example: 'i=0\nwhile i<5:\n    i+=1' },
-      { name: "break/continue", desc: "خروج/تخطي", example: 'for i in range(10):\n    if i==5: break' }
+    { title: '🔄 الحلقات', items: [
+      { name: 'for', desc: 'تكرار', ex: 'for i in range(5):\n    print(i)' },
+      { name: 'enumerate', desc: 'مع فهرس', ex: 'for i, v in enumerate(["a","b"]):' },
+      { name: 'while', desc: 'شرطية', ex: 'i = 0\nwhile i < 5:\n    i += 1' },
+      { name: 'break / continue', desc: 'خروج / تخطي', ex: 'for i in range(10):\n    if i == 5:\n        break' }
     ]},
-    { title: "📚 دوال", functions: [
-      { name: "def", desc: "تعريف", example: 'def greet(n):\n    return f"hi {n}"' },
-      { name: "default", desc: "افتراضية", example: 'def greet(n="زائر"): ...' },
-      { name: "lambda", desc: "مختصرة", example: 'sq = lambda x: x*x' },
-      { name: "*args", desc: "متعددة", example: 'def f(*a): return sum(a)' },
-      { name: "**kwargs", desc: "مفتاحية", example: 'def f(**k): print(k)' }
+    { title: '📚 الدوال', items: [
+      { name: 'def', desc: 'تعريف', ex: 'def greet(n):\n    return f"hi {n}"' },
+      { name: 'lambda', desc: 'مختصرة', ex: 'sq = lambda x: x*x' },
+      { name: '*args', desc: 'وسائط متعددة', ex: 'def f(*a): return sum(a)' }
     ]},
-    { title: "📦 استيراد", functions: [
-      { name: "import x", desc: "استيراد", example: 'import math' },
-      { name: "from x import y", desc: "محدد", example: 'from random import randint' },
-      { name: "import as", desc: "اختصار", example: 'import math as m' },
-      { name: "math", desc: "رياضيات", example: 'import math\nmath.sqrt(16)' },
-      { name: "random", desc: "عشوائي", example: 'import random\nrandom.randint(1,10)' }
+    { title: '📦 الاستيراد', items: [
+      { name: 'import', desc: 'استيراد', ex: 'import math\nprint(math.sqrt(16))' },
+      { name: 'from ... import', desc: 'محدد', ex: 'from random import randint' }
     ]}
-  ]},
-  sql: { sections: [
-    { title: "📋 جداول", functions: [
-      { name: "CREATE TABLE", desc: "إنشاء", example: 'CREATE TABLE t (\n  id INTEGER PRIMARY KEY,\n  name TEXT\n);' },
-      { name: "DROP TABLE", desc: "حذف", example: 'DROP TABLE t;' },
-      { name: "ALTER ADD", desc: "إضافة عمود", example: 'ALTER TABLE t ADD COLUMN age INTEGER;' }
+  ],
+  sql: [
+    { title: '📋 الجداول', items: [
+      { name: 'CREATE TABLE', desc: 'إنشاء', ex: 'CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT\n);' },
+      { name: 'DROP TABLE', desc: 'حذف', ex: 'DROP TABLE users;' },
+      { name: 'ALTER TABLE', desc: 'تعديل', ex: 'ALTER TABLE users ADD COLUMN age INTEGER;' }
     ]},
-    { title: "📝 بيانات", functions: [
-      { name: "INSERT", desc: "إضافة", example: "INSERT INTO t (name) VALUES ('أحمد');" },
-      { name: "SELECT", desc: "اختيار", example: 'SELECT * FROM t;' },
-      { name: "UPDATE", desc: "تحديث", example: "UPDATE t SET age=26 WHERE name='أحمد';" },
-      { name: "DELETE", desc: "حذف", example: "DELETE FROM t WHERE age<18;" }
+    { title: '📝 البيانات', items: [
+      { name: 'INSERT', desc: 'إضافة', ex: "INSERT INTO users (name) VALUES ('أحمد');" },
+      { name: 'SELECT', desc: 'اختيار', ex: 'SELECT * FROM users;' },
+      { name: 'UPDATE', desc: 'تحديث', ex: "UPDATE users SET age = 26 WHERE name = 'أحمد';" },
+      { name: 'DELETE', desc: 'حذف', ex: "DELETE FROM users WHERE age < 18;" }
     ]},
-    { title: "🔍 فلترة", functions: [
-      { name: "WHERE", desc: "شرط", example: 'WHERE age>25' },
-      { name: "ORDER BY", desc: "ترتيب", example: 'ORDER BY age DESC' },
-      { name: "LIMIT", desc: "عدد", example: 'LIMIT 10' },
-      { name: "LIKE", desc: "بحث", example: "WHERE name LIKE 'أ%'" },
-      { name: "IN", desc: "قائمة", example: 'WHERE age IN (20,25)' },
-      { name: "BETWEEN", desc: "بين", example: 'WHERE age BETWEEN 20 AND 30' },
-      { name: "DISTINCT", desc: "فريد", example: 'SELECT DISTINCT age FROM t;' }
+    { title: '🔍 الفلترة', items: [
+      { name: 'WHERE', desc: 'شرط', ex: 'SELECT * FROM users WHERE age > 25;' },
+      { name: 'ORDER BY', desc: 'ترتيب', ex: 'SELECT * FROM users ORDER BY age DESC;' },
+      { name: 'LIMIT', desc: 'عدد', ex: 'SELECT * FROM users LIMIT 10;' },
+      { name: 'LIKE', desc: 'بحث', ex: "WHERE name LIKE 'أ%'" }
     ]},
-    { title: "🔢 تجميع", functions: [
-      { name: "COUNT()", desc: "عدد", example: 'SELECT COUNT(*) FROM t;' },
-      { name: "SUM()", desc: "مجموع", example: 'SELECT SUM(age) FROM t;' },
-      { name: "AVG()", desc: "متوسط", example: 'SELECT AVG(age) FROM t;' },
-      { name: "MAX()", desc: "أكبر", example: 'SELECT MAX(age) FROM t;' },
-      { name: "MIN()", desc: "أصغر", example: 'SELECT MIN(age) FROM t;' },
-      { name: "GROUP BY", desc: "تجميع", example: 'GROUP BY age' }
-    ]},
-    { title: "🔗 ربط", functions: [
-      { name: "INNER JOIN", desc: "داخلي", example: 'SELECT * FROM a INNER JOIN b ON a.id=b.a_id;' },
-      { name: "LEFT JOIN", desc: "يسار", example: 'SELECT * FROM a LEFT JOIN b ON a.id=b.a_id;' }
+    { title: '🔢 التجميع', items: [
+      { name: 'COUNT()', desc: 'عدد', ex: 'SELECT COUNT(*) FROM users;' },
+      { name: 'SUM()', desc: 'مجموع', ex: 'SELECT SUM(age) FROM users;' },
+      { name: 'AVG()', desc: 'متوسط', ex: 'SELECT AVG(age) FROM users;' },
+      { name: 'MAX()', desc: 'أكبر', ex: 'SELECT MAX(age) FROM users;' }
     ]}
-  ]},
-  markdown: { sections: [
-    { title: "📝 نصوص", functions: [
-      { name: "# عنوان", desc: "عناوين", example: '# h1\n## h2\n### h3' },
-      { name: "**نص**", desc: "عريض", example: '**مهم**' },
-      { name: "*نص*", desc: "مائل", example: '*مائل*' },
-      { name: "~~نص~~", desc: "مشطوب", example: '~~قديم~~' },
-      { name: "> اقتباس", desc: "اقتباس", example: '> اقتباس' }
+  ],
+  markdown: [
+    { title: '📝 النصوص', items: [
+      { name: '# عنوان', desc: 'عناوين', ex: '# h1\n## h2\n### h3' },
+      { name: '**نص**', desc: 'عريض', ex: '**مهم**' },
+      { name: '*نص*', desc: 'مائل', ex: '*مائل*' },
+      { name: '~~نص~~', desc: 'مشطوب', ex: '~~قديم~~' }
     ]},
-    { title: "📋 قوائم", functions: [
-      { name: "- عنصر", desc: "نقاط", example: '- عنصر' },
-      { name: "1. عنصر", desc: "مرقمة", example: '1. أولاً' },
-      { name: "- [x]", desc: "مهام", example: '- [x] منجز\n- [ ] جاري' }
+    { title: '📋 القوائم', items: [
+      { name: '- عنصر', desc: 'نقاط', ex: '- عنصر 1\n- عنصر 2' },
+      { name: '1. عنصر', desc: 'مرقمة', ex: '1. أولاً\n2. ثانياً' },
+      { name: '- [x]', desc: 'مهام', ex: '- [x] منجز\n- [ ] جاري' }
     ]},
-    { title: "🔗 روابط", functions: [
-      { name: "[نص](url)", desc: "رابط", example: '[جوجل](https://google.com)' },
-      { name: "![alt](img)", desc: "صورة", example: '![شعار](logo.png)' }
+    { title: '🔗 الروابط', items: [
+      { name: '[نص](url)', desc: 'رابط', ex: '[جوجل](https://google.com)' },
+      { name: '![alt](img)', desc: 'صورة', ex: '![شعار](logo.png)' }
     ]},
-    { title: "💻 كود", functions: [
-      { name: "`كود`", desc: "سطري", example: 'استخدم `print()`' },
-      { name: "```lang", desc: "كتلة", example: '```js\nconst x=5;\n```' }
+    { title: '💻 الكود', items: [
+      { name: '`كود`', desc: 'سطري', ex: 'استخدم `print()`' },
+      { name: '```lang', desc: 'كتلة', ex: '```js\nconst x = 5;\n```' }
     ]}
-  ]},
-  json: { sections: [
-    { title: "📦 بنية", functions: [
-      { name: "{...}", desc: "كائن", example: '{"name":"أ"}' },
-      { name: "[...]", desc: "مصفوفة", example: '[1,2,3]' },
-      { name: "نص", desc: "String", example: '"نص"' },
-      { name: "رقم", desc: "Number", example: '42' },
-      { name: "منطقي", desc: "Boolean", example: 'true' },
-      { name: "null", desc: "فارغ", example: 'null' }
+  ],
+  json: [
+    { title: '📦 البنية', items: [
+      { name: '{...}', desc: 'كائن', ex: '{"name": "أحمد"}' },
+      { name: '[...]', desc: 'مصفوفة', ex: '[1, 2, 3]' },
+      { name: 'نص', desc: 'String', ex: '"نص"' },
+      { name: 'رقم', desc: 'Number', ex: '42' },
+      { name: 'منطقي', desc: 'Boolean', ex: 'true' },
+      { name: 'null', desc: 'فارغ', ex: 'null' }
     ]},
-    { title: "⚠️ قواعد", functions: [
-      { name: "بدون تعليقات", desc: "لا //" },
-      { name: "علامات مزدوجة", desc: 'استخدم "' },
-      { name: "بدون فاصلة أخيرة", desc: "لا فاصلة بعد الأخير" }
+    { title: '⚠️ القواعد', items: [
+      { name: 'بدون تعليقات', desc: 'لا // ولا /* */' },
+      { name: 'علامات مزدوجة', desc: 'استخدم " وليس \'' },
+      { name: 'بدون فاصلة أخيرة', desc: 'لا فاصلة بعد آخر عنصر' }
     ]}
-  ]},
-  yaml: { sections: [
-    { title: "📄 بنية", functions: [
-      { name: "key: value", desc: "زوج", example: 'name: أحمد' },
-      { name: "قائمة", desc: "قائمة", example: 'items:\n  - a\n  - b' },
-      { name: "متداخل", desc: "Nested", example: 'user:\n  name: أ' }
+  ],
+  yaml: [
+    { title: '📄 البنية', items: [
+      { name: 'key: value', desc: 'زوج', ex: 'name: أحمد' },
+      { name: 'قائمة', desc: 'قائمة', ex: 'items:\n  - HTML\n  - CSS' },
+      { name: 'متداخل', desc: 'Nested', ex: 'user:\n  name: أحمد' }
     ]}
-  ]},
-  xml: { sections: [
-    { title: "📄 بنية", functions: [
-      { name: "<?xml?>", desc: "إعلان", example: '<?xml version="1.0"?>' },
-      { name: "<tag>x</tag>", desc: "عنصر", example: '<name>أ</name>' },
-      { name: "<tag attr='v'>", desc: "مع خاصية", example: '<user id="1">أ</user>' }
+  ],
+  xml: [
+    { title: '📄 البنية', items: [
+      { name: '<?xml?>', desc: 'إعلان', ex: '<?xml version="1.0"?>' },
+      { name: '<tag>x</tag>', desc: 'عنصر', ex: '<name>أحمد</name>' },
+      { name: '<tag attr="v">', desc: 'مع خاصية', ex: '<user id="1">أحمد</user>' }
     ]}
-  ]}
+  ]
 };
 
 /* ============================================================
-   Helpers
+   أدوات مساعدة
    ============================================================ */
-function escHtml(text) {
-  const d = document.createElement('div');
-  d.textContent = text;
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function toast(msg, type) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type === 'error' ? ' error' : type === 'info' ? ' info' : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() {
+    t.className = '';
+  }, 2000);
+}
+
+function escHtml(t) {
+  var d = document.createElement('div');
+  d.textContent = t;
   return d.innerHTML;
 }
 
-function setStatus(text, type) {
-  const el = $('statusText');
-  if (el) el.textContent = text;
-  const dot = $('statusDot');
-  if (dot) {
-    dot.className = 'status-dot' + (type === 'busy' ? ' busy' : type === 'error' ? ' error' : '');
-  }
-}
-
-function setEngine(text) {
-  const el = $('engineInfo');
-  if (el) el.textContent = text;
-}
-
-function showToast(msg, type) {
-  const t = $('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.className = 'toast show' + (type === 'error' ? ' error' : type === 'info' ? ' info' : '');
-  clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => { t.className = 'toast'; }, 2000);
-}
-
 /* ============================================================
-   Line Numbers
+   تحديث أرقام الأسطر
    ============================================================ */
+
 function updateLineNumbers() {
-  if (!codeEditor || !lineNumbers) return;
-  const lines = codeEditor.value.split('\n');
-  let html = '';
-  for (let i = 1; i <= lines.length; i++) {
-    const isErr = State.errorLines.indexOf(i) !== -1;
-    const isWarn = State.warningLines.indexOf(i) !== -1;
-    let cls = '';
-    if (isErr) cls = 'err-num';
-    else if (isWarn) cls = 'warn-num';
-    html += '<div class="' + cls + '">' + i + '</div>';
+  var lines = $('codeEditor').value.split('\n');
+  var html = '';
+  for (var i = 1; i <= lines.length; i++) {
+    var cls = errorLines.indexOf(i) !== -1 ? 'style="color:#f85149;font-weight:bold"' : '';
+    html += '<div ' + cls + '>' + i + '</div>';
   }
-  lineNumbers.innerHTML = html;
-  lineNumbers.scrollTop = codeEditor.scrollTop;
-}
-
-function updateCursorInfo() {
-  if (!codeEditor) return;
-  const pos = codeEditor.selectionStart;
-  const text = codeEditor.value.substring(0, pos);
-  const line = text.split('\n').length;
-  const col = pos - text.lastIndexOf('\n');
-  const el = $('cursorInfo');
-  if (el) el.textContent = line + ':' + col;
+  $('lineNumbers').innerHTML = html;
+  $('lineNumbers').scrollTop = $('codeEditor').scrollTop;
 }
 
 /* ============================================================
-   Linters
+   تشغيل الكود
    ============================================================ */
-function runLinter() {
-  if (!codeEditor) return;
-  const code = codeEditor.value;
-  const issues = [];
-  try {
-    if (State.currentLang === 'javascript') lintJS(code, issues);
-    else if (State.currentLang === 'python') lintPython(code, issues);
-    else if (State.currentLang === 'html') lintHTML(code, issues);
-    else if (State.currentLang === 'css') lintCSS(code, issues);
-    else if (State.currentLang === 'json') lintJSON(code, issues);
-  } catch (e) { console.warn('lint error', e); }
+
+function runCode(manual) {
+  var lang = LANGUAGES[currentLang];
+  var code = $('codeEditor').value;
   
-  State.errorLines = issues.filter(i => i.severity === 'error').map(i => i.line);
-  State.warningLines = issues.filter(i => i.severity === 'warning').map(i => i.line);
-  updateLineNumbers();
-  updateErrorBadge(issues);
-  renderIssues(issues);
-}
-
-function updateErrorBadge(issues) {
-  const badge = $('errorBadge');
-  if (!badge) return;
-  const errs = issues.filter(i => i.severity === 'error').length;
-  const warns = issues.filter(i => i.severity === 'warning').length;
-  if (errs + warns === 0) {
-    badge.classList.add('hidden');
-  } else {
-    badge.textContent = errs + warns;
-    badge.className = 'tab-badge' + (errs === 0 ? ' warning' : '');
-  }
-}
-
-function renderIssues(issues) {
-  const div = $('tab-errors');
-  if (!div) return;
-  if (issues.length === 0) {
-    div.innerHTML = '<div class="empty-state success"><span class="big-icon">✅</span>لا توجد أخطاء! كودك نظيف</div>';
+  if (!code.trim()) {
+    showOutput('⚠️ لا يوجد كود');
     return;
   }
-  let html = '';
-  issues.forEach(issue => {
-    const icon = issue.severity === 'error' ? '❌' : '⚠️';
-    const cls = issue.severity === 'error' ? '' : ' warning';
-    html += '<div class="error-item' + cls + '">' +
-      '<div class="header"><span class="icon">' + icon + '</span>' +
-      '<span class="line">السطر ' + issue.line + '</span></div>' +
-      '<div class="message">' + escHtml(issue.message) + '</div>' +
-      (issue.suggestion ? '<div class="suggestion">' + escHtml(issue.suggestion) + '</div>' : '') +
-      '</div>';
-  });
-  div.innerHTML = html;
-}
-
-function lintJS(code, issues) {
-  const lines = code.split('\n');
-  const stack = [];
-  lines.forEach((line, idx) => {
-    const ln = idx + 1;
-    const trimmed = line.trim();
-    if (trimmed.startsWith('//')) return;
-    
-    if (/\bvar\s+\w+/.test(line)) {
-      issues.push({ line: ln, severity: 'warning', message: 'استخدام var قديم', suggestion: 'استخدم "let" أو "const"' });
-    }
-    if (/[^=!<>]==[^=]/.test(line) && !line.includes('===')) {
-      issues.push({ line: ln, severity: 'warning', message: 'استخدام == بدل ===', suggestion: 'استخدم === للمقارنة الصارمة' });
-    }
-    
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '{' || c === '(' || c === '[') stack.push({ c, ln });
-      else if (c === '}' || c === ')' || c === ']') {
-        const open = c === '}' ? '{' : c === ')' ? '(' : '[';
-        if (stack.length === 0 || stack[stack.length - 1].c !== open) {
-          issues.push({ line: ln, severity: 'error', message: 'قوس "' + c + '" بدون فتح مطابق', suggestion: 'تحقق من الأقواس' });
-        } else stack.pop();
-      }
-    }
-  });
-  stack.forEach(s => issues.push({
-    line: s.ln, severity: 'error',
-    message: 'قوس "' + s.c + '" لم يُغلق',
-    suggestion: 'أضف "' + (s.c === '{' ? '}' : s.c === '(' ? ')' : ']') + '"'
-  }));
-}
-
-function lintPython(code, issues) {
-  const lines = code.split('\n');
-  lines.forEach((line, idx) => {
-    const ln = idx + 1;
-    const trimmed = line.trim();
-    if (trimmed.startsWith('#') || !trimmed) return;
-    if (/^(if|elif|else|for|while|def|class|try|except|finally|with)\b/.test(trimmed) && !trimmed.endsWith(':') && !trimmed.includes('#')) {
-      issues.push({ line: ln, severity: 'error', message: 'نقطتين ":" مفقودة', suggestion: 'أضف ":" في نهاية السطر' });
-    }
-    if (/^print\s+["']/.test(trimmed) && !trimmed.includes('(')) {
-      issues.push({ line: ln, severity: 'warning', message: 'print بدون أقواس', suggestion: 'استخدم print("نص")' });
-    }
-    const open = (line.match(/\(/g) || []).length;
-    const close = (line.match(/\)/g) || []).length;
-    if (open !== close) {
-      issues.push({ line: ln, severity: 'warning', message: 'أقواس غير متوازنة: ' + open + ' ( vs ' + close + ' )', suggestion: 'تحقق من الأقواس' });
-    }
-  });
-}
-
-function lintHTML(code, issues) {
-  const lines = code.split('\n');
-  const stack = [];
-  const voidTags = ['br','hr','img','input','meta','link','area','base','col','embed','source','track','wbr'];
-  lines.forEach((line, idx) => {
-    const ln = idx + 1;
-    const cleaned = line.replace(/<!--[\s\S]*?-->/g, '');
-    const re = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
-    let m;
-    while ((m = re.exec(cleaned)) !== null) {
-      const full = m[0];
-      const tag = m[1].toLowerCase();
-      const selfClose = m[2] === '/';
-      if (full.startsWith('</')) {
-        if (stack.length === 0) {
-          issues.push({ line: ln, severity: 'error', message: 'وسم إغلاق </' + tag + '> بدون فتح', suggestion: 'تحقق من الوسوم' });
-        } else {
-          const last = stack.pop();
-          if (last.tag !== tag) {
-            issues.push({ line: ln, severity: 'error', message: '</' + tag + '> لا يطابق <' + last.tag + '>', suggestion: 'أغلق <' + last.tag + '> أولاً' });
-          }
-        }
-      } else if (!selfClose && voidTags.indexOf(tag) === -1) {
-        stack.push({ tag, ln });
-      }
-    }
-  });
-  stack.forEach(s => issues.push({ line: s.ln, severity: 'warning', message: 'وسم <' + s.tag + '> لم يُغلق', suggestion: 'أضف </' + s.tag + '>' }));
-}
-
-function lintCSS(code, issues) {
-  const lines = code.split('\n');
-  let count = 0;
-  lines.forEach((line, idx) => {
-    const ln = idx + 1;
-    const cleaned = line.replace(/\/\*[\s\S]*?\*\//g, '');
-    const open = (cleaned.match(/{/g) || []).length;
-    const close = (cleaned.match(/}/g) || []).length;
-    count += open - close;
-    if (count < 0) {
-      issues.push({ line: ln, severity: 'error', message: 'قوس } بدون فتح', suggestion: 'تحقق من الأقواس' });
-      count = 0;
-    }
-  });
-  if (count > 0) issues.push({ line: lines.length, severity: 'warning', message: count + ' قوس { لم يُغلق', suggestion: 'أضف "}"' });
-}
-
-function lintJSON(code, issues) {
-  if (!code.trim()) return;
-  try { JSON.parse(code); }
-  catch (e) {
-    const m = e.message.match(/position (\d+)/);
-    let ln = 1;
-    if (m) ln = code.substring(0, parseInt(m[1])).split('\n').length;
-    issues.push({ line: ln, severity: 'error', message: e.message, suggestion: 'تحقق من الفواصل والعلامات' });
+  
+  if (lang.engine === 'web') {
+    runWeb(code);
+  } else if (lang.engine === 'markdown') {
+    runMarkdown(code);
+  } else if (lang.engine === 'json') {
+    runJSON(code);
+  } else if (lang.engine === 'yaml') {
+    runYAML(code);
+  } else if (lang.engine === 'xml') {
+    runXML(code);
+  } else if (lang.engine === 'python') {
+    runPython(code);
+  } else if (lang.engine === 'sql') {
+    runSQL(code);
   }
+  
+  // تحديث شريط الحالة
+  $('statusText').textContent = 'تم التنفيذ';
 }
 
 /* ============================================================
-   Run Code
+   Web Engine (HTML/CSS/JS)
    ============================================================ */
-async function runCode(manual) {
-  const lang = LANGUAGES[State.currentLang];
-  if (!lang) return;
-  const code = codeEditor.value;
-  const runBtn = $('runBtn');
-  
-  if (!code.trim()) { showOutput('⚠️ لا يوجد كود'); return; }
-  
-  if (manual) {
-    runBtn.disabled = true;
-    runBtn.innerHTML = '<span class="loading"></span>';
-  }
-  
-  try {
-    if (lang.engine === 'web') runWeb(code, State.currentLang);
-    else if (lang.engine === 'pyodide') await runPython(code);
-    else if (lang.engine === 'sqlite') await runSQL(code);
-    else if (lang.engine === 'markdown') runMarkdown(code);
-    else if (lang.engine === 'json') runJSON(code);
-    else if (lang.engine === 'yaml') runYAML(code);
-    else if (lang.engine === 'xml') runXML(code);
-    
-    const now = new Date();
-    $('lastRunInfo').textContent = 
-      String(now.getHours()).padStart(2,'0') + ':' +
-      String(now.getMinutes()).padStart(2,'0') + ':' +
-      String(now.getSeconds()).padStart(2,'0');
-  } catch (err) {
-    console.error(err);
-    showOutput('❌ خطأ:\n' + err.message);
-    setStatus('خطأ', 'error');
-  } finally {
-    if (manual) {
-      runBtn.disabled = false;
-      runBtn.innerHTML = '▶ تشغيل';
-    }
-  }
-}
 
-function runWeb(code, langKey) {
-  State.consoleMessages = [];
-  let frame = $('previewFrame');
-  if (!frame) {
-    const out = $('tab-output');
-    out.innerHTML = '';
-    frame = document.createElement('iframe');
-    frame.id = 'previewFrame';
-    frame.sandbox = 'allow-scripts allow-modals allow-forms allow-popups';
-    out.appendChild(frame);
-  }
-  let html = code;
-  if (langKey === 'css' && code.toLowerCase().indexOf('<html') === -1) {
-    html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + code + '</style></head><body><h1>تجربة</h1><p>نص</p><div class="card box">صندوق</div><button>زر</button></body></html>';
-  }
-  const consoleScript = '<script>(function(){function s(t,a){try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){if(typeof x==="object"){try{return JSON.stringify(x);}catch(e){return String(x);}}return String(x);}).join(" ")},"*");}catch(e){}}var l=console.log,e=console.error,w=console.warn;console.log=function(){s("log",arguments);l.apply(console,arguments);};console.error=function(){s("error",arguments);e.apply(console,arguments);};console.warn=function(){s("warn",arguments);w.apply(console,arguments);};window.addEventListener("error",function(ev){s("error",["❌ "+ev.message+" (سطر "+ev.lineno+")"]);});})();<\/script>';
-  if (html.indexOf('</head>') !== -1) html = html.replace('</head>', consoleScript + '</head>');
-  else if (html.indexOf('<body') !== -1) html = html.replace('<body', consoleScript + '<body');
-  else html = consoleScript + html;
+function runWeb(code) {
+  var out = $('tab-output');
+  out.innerHTML = '';
   
-  window.onmessage = (e) => {
+  // إنشاء iframe جديد
+  var frame = document.createElement('iframe');
+  frame.id = 'previewFrame';
+  frame.sandbox = 'allow-scripts allow-modals allow-forms allow-popups';
+  out.appendChild(frame);
+  
+  var html = code;
+  if (currentLang === 'css' && code.toLowerCase().indexOf('<html') === -1) {
+    html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + code + '</style></head><body><h1>تجربة CSS</h1><p>نص تجريبي</p><div class="card">صندوق</div><button>زر</button></body></html>';
+  }
+  
+  // إضافة sccript لالتقاط console
+  var consoleScript = '<script>' +
+    '(function(){' +
+    'var send=function(t,a){' +
+    'try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){' +
+    'if(typeof x==="object"){try{return JSON.stringify(x);}catch(e){return String(x);}}' +
+    'return String(x);' +
+    '}).join(" ")},"*");}catch(e){}};' +
+    'var _l=console.log,_e=console.error,_w=console.warn;' +
+    'console.log=function(){send("log",arguments);_l.apply(console,arguments);};' +
+    'console.error=function(){send("error",arguments);_e.apply(console,arguments);};' +
+    'console.warn=function(){send("warn",arguments);_w.apply(console,arguments);};' +
+    'window.addEventListener("error",function(ev){send("error",["❌ "+ev.message+" (سطر "+ev.lineno+")"]);});' +
+    '})();' +
+    '<\/script>';
+  
+  if (html.indexOf('</head>') !== -1) {
+    html = html.replace('</head>', consoleScript + '</head>');
+  } else if (html.indexOf('<body') !== -1) {
+    html = html.replace('<body', consoleScript + '<body');
+  } else {
+    html = consoleScript + html;
+  }
+  
+  frame.srcdoc = html;
+  
+  // استقبال رسائل console
+  window.onmessage = function(e) {
     if (e.data && e.data.type === 'console') {
-      State.consoleMessages.push({ level: e.data.level, text: e.data.args });
-      updateConsoleErrors();
+      var level = e.data.level;
+      var text = e.data.args;
+      if (level === 'error') {
+        var errBox = $('tab-errors');
+        if (errBox.innerHTML.indexOf('لا توجد أخطاء') !== -1) {
+          errBox.innerHTML = '';
+        }
+        errBox.innerHTML += '<div class="error-item"><div class="err-header">❌ خطأ تشغيل</div><div class="err-msg">' + escHtml(text) + '</div></div>';
+        var badge = $('errorBadge');
+        badge.style.display = 'inline-block';
+        badge.textContent = (parseInt(badge.textContent) || 0) + 1;
+      }
     }
   };
   
-  frame.srcdoc = html;
-  switchTab('output');
-  setStatus('تم التشغيل');
-  setEngine(LANGUAGES[langKey].name);
+  // التبديل لتبويب المخرجات
+  showTab('output');
 }
 
-function updateConsoleErrors() {
-  const errs = State.consoleMessages.filter(m => m.level === 'error');
-  const warns = State.consoleMessages.filter(m => m.level === 'warn');
-  if (errs.length + warns.length === 0) return;
-  const div = $('tab-errors');
-  let html = '';
-  errs.forEach(e => {
-    html += '<div class="error-item"><div class="header"><span class="icon">❌</span><span class="line">خطأ تشغيل</span></div><div class="message">' + escHtml(e.text) + '</div></div>';
-  });
-  warns.forEach(w => {
-    html += '<div class="error-item warning"><div class="header"><span class="icon">⚠️</span><span class="line">تحذير</span></div><div class="message">' + escHtml(w.text) + '</div></div>';
-  });
-  div.innerHTML = html;
-  const badge = $('errorBadge');
-  badge.textContent = errs.length + warns.length;
-  badge.className = 'tab-badge' + (errs.length === 0 ? ' warning' : '');
-  badge.classList.remove('hidden');
-}
-
-async function runPython(code) {
-  try {
-    if (!State.pyodideReady) {
-      showOutput('⏳ تحميل محرك Python...\n(مرة واحدة فقط)');
-      setStatus('تحميل Python...', 'busy');
-      await new Promise((resolve, reject) => {
-        const load = () => {
-          window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' })
-            .then(py => { State.pyodide = py; State.pyodideReady = true; resolve(); })
-            .catch(reject);
-        };
-        if (window.loadPyodide) return load();
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-        s.onload = load;
-        s.onerror = () => reject(new Error('فشل التحميل'));
-        document.head.appendChild(s);
-      });
-    }
-    const py = State.pyodide;
-    py.runPython('import sys, io\n_buf = io.StringIO()\nsys.stdout = _buf\nsys.stderr = _buf');
-    let output = '', errText = '';
-    try {
-      py.runPython(code);
-      output = py.runPython('_buf.getvalue()');
-    } catch (e) {
-      errText = e.message || String(e);
-      try { output = py.runPython('_buf.getvalue()'); } catch(_){}
-    } finally {
-      py.runPython('sys.stdout = sys.__stdout__\nsys.stderr = sys.__stderr__');
-    }
-    if (errText) {
-      showOutput(output || '');
-      const m = errText.match(/line (\d+)/);
-      const ln = m ? m[1] : null;
-      const div = $('tab-errors');
-      div.innerHTML = '<div class="error-item"><div class="header"><span class="icon">🐛</span>' +
-        (ln ? '<span class="line">السطر ' + ln + '</span>' : '<span class="line">خطأ Python</span>') +
-        '</div><div class="message">' + escHtml(errText) + '</div>' +
-        (pySuggestion(errText) ? '<div class="suggestion">' + escHtml(pySuggestion(errText)) + '</div>' : '') +
-        '</div>';
-      if (ln) { State.errorLines = [parseInt(ln)]; updateLineNumbers(); }
-      const b = $('errorBadge');
-      b.textContent = '1'; b.className = 'tab-badge'; b.classList.remove('hidden');
-      setStatus('خطأ', 'error');
-    } else {
-      showOutput(output || '✅ تم بنجاح');
-      State.errorLines = []; updateLineNumbers();
-      $('errorBadge').classList.add('hidden');
-      setStatus('نجح');
-    }
-    setEngine('Python');
-  } catch (err) {
-    showOutput('❌ فشل: ' + err.message);
-    setStatus('فشل', 'error');
-  }
-}
-
-function pySuggestion(msg) {
-  const m = msg.toLowerCase();
-  if (m.indexOf('indentation') !== -1) return 'تحقق من المسافات البادئة (4 ثابتة)';
-  if (m.indexOf('syntax') !== -1) return 'خطأ في الصياغة';
-  if (m.indexOf('nameerror') !== -1) {
-    const x = msg.match(/name '(\w+)'/);
-    return x ? '"' + x[1] + '" غير معرّف' : 'اسم غير معرّف';
-  }
-  if (m.indexOf('typeerror') !== -1) return 'خطأ في النوع';
-  if (m.indexOf('zerodivision') !== -1) return 'القسمة على صفر';
-  if (m.indexOf('indexerror') !== -1) return 'الفهرس خارج النطاق';
-  if (m.indexOf('keyerror') !== -1) return 'المفتاح غير موجود';
-  return null;
-}
-
-async function runSQL(code) {
-  try {
-    if (!State.sqlReady) {
-      showOutput('⏳ تحميل SQLite...');
-      setStatus('تحميل SQL...', 'busy');
-      await new Promise((resolve, reject) => {
-        const init = () => {
-          window.initSqlJs({ locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/' + f })
-            .then(S => { State.SQL = S; State.sqlReady = true; resolve(); })
-            .catch(reject);
-        };
-        if (window.initSqlJs) return init();
-        const s = document.createElement('script');
-        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js';
-        s.onload = init;
-        s.onerror = () => reject(new Error('فشل التحميل'));
-        document.head.appendChild(s);
-      });
-    }
-    const db = new State.SQL.Database();
-    const stmts = code.split(';').map(s => s.trim()).filter(s => s);
-    let out = '';
-    const errors = [];
-    for (const s of stmts) {
-      try {
-        const r = db.exec(s);
-        if (r.length > 0) {
-          for (const x of r) {
-            out += '📋 ' + x.columns.join(' | ') + '\n';
-            out += '─'.repeat(40) + '\n';
-            for (const row of x.values) out += row.map(v => String(v ?? 'NULL')).join(' | ') + '\n';
-            out += '\n';
-          }
-        } else {
-          out += '✅ ' + s.substring(0, 50) + '\n\n';
-        }
-      } catch (e) { errors.push(e.message); out += '❌ ' + e.message + '\n'; }
-    }
-    showOutput(out || '✅ تم');
-    if (errors.length) {
-      $('tab-errors').innerHTML = errors.map(e => '<div class="error-item"><div class="header"><span class="icon">❌</span></div><div class="message">' + escHtml(e) + '</div></div>').join('');
-      const b = $('errorBadge'); b.textContent = errors.length; b.className = 'tab-badge'; b.classList.remove('hidden');
-      setStatus('خطأ', 'error');
-    } else {
-      $('errorBadge').classList.add('hidden');
-      setStatus('نجح');
-    }
-    setEngine('SQLite');
-  } catch (err) {
-    showOutput('❌ ' + err.message);
-    setStatus('فشل', 'error');
-  }
-}
+/* ============================================================
+   Markdown
+   ============================================================ */
 
 function runMarkdown(code) {
-  let html = code
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px"><code>$2</code></pre>')
+  var html = code
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre style="background:#1c2330;color:#7ee787;padding:12px;border-radius:8px;overflow-x:auto"><code>$2</code></pre>')
     .replace(/^### (.*)$/gm, '<h3>$1</h3>')
     .replace(/^## (.*)$/gm, '<h2>$1</h2>')
     .replace(/^# (.*)$/gm, '<h1>$1</h1>')
@@ -1498,293 +1082,596 @@ function runMarkdown(code) {
     .replace(/^- \[ \] (.+)$/gm, '<li style="list-style:none">⬜ $1</li>')
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     .replace(/\n/g, '<br>');
+  
   html = html.replace(/(<li>.*<\/li>)/s, '<ul style="padding-right:20px">$1</ul>');
-  const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;line-height:1.7;background:white;color:#222}h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}h2{color:#8250df;margin-top:24px}</style></head><body>' + html + '</body></html>';
-  let frame = $('previewFrame');
-  if (!frame) {
-    const out = $('tab-output');
-    out.innerHTML = '';
-    frame = document.createElement('iframe');
-    frame.id = 'previewFrame';
-    out.appendChild(frame);
-  }
+  
+  var full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial;padding:24px;line-height:1.7;background:white;color:#222}h1{color:#0969da;border-bottom:2px solid #0969da;padding-bottom:8px}h2{color:#8250df;margin-top:24px}</style></head><body>' + html + '</body></html>';
+  
+  var out = $('tab-output');
+  out.innerHTML = '';
+  var frame = document.createElement('iframe');
+  frame.id = 'previewFrame';
   frame.srcdoc = full;
-  switchTab('output');
-  setEngine('Markdown');
-  setStatus('نجح');
-  $('errorBadge').classList.add('hidden');
+  out.appendChild(frame);
+  showTab('output');
 }
+
+/* ============================================================
+   JSON
+   ============================================================ */
 
 function runJSON(code) {
   try {
-    const obj = JSON.parse(code);
-    let s = '✅ JSON صالح!\n\n📊 إحصائيات:\n';
-    s += '• الأحرف: ' + code.length + '\n';
-    s += '• الأسطر: ' + code.split('\n').length + '\n';
-    if (Array.isArray(obj)) s += '• النوع: مصفوفة (' + obj.length + ' عنصر)\n';
-    else if (typeof obj === 'object') s += '• النوع: كائن (' + Object.keys(obj).length + ' خصائص)\n';
-    s += '\n📄 النسخة المنسقة:\n' + JSON.stringify(obj, null, 2);
-    showOutput(s);
-    setEngine('JSON');
-    setStatus('صالح');
-    State.errorLines = [];
-    updateLineNumbers();
-    $('errorBadge').classList.add('hidden');
+    var obj = JSON.parse(code);
+    var out = '✅ JSON صالح!\n\n';
+    out += 'الأحرف: ' + code.length + '\n';
+    out += 'الأسطر: ' + code.split('\n').length + '\n\n';
+    out += '📄 النسخة المنسقة:\n' + JSON.stringify(obj, null, 2);
+    showOutput(out);
+    clearErrors();
   } catch (e) {
     showOutput('❌ JSON غير صالح:\n\n' + e.message);
-    const m = e.message.match(/position (\d+)/);
-    if (m) { State.errorLines = [code.substring(0, parseInt(m[1])).split('\n').length]; updateLineNumbers(); }
-    setStatus('خطأ', 'error');
+    showError('JSON غير صالح', e.message, 'تحقق من الفواصل والعلامات المزدوجة');
   }
 }
 
+/* ============================================================
+   YAML
+   ============================================================ */
+
 function runYAML(code) {
-  const lines = code.split('\n');
-  const errors = [];
-  lines.forEach((line, idx) => {
-    if (line.trim().startsWith('#') || !line.trim()) return;
-    if (!line.startsWith(' ') && !line.startsWith('-') && line.indexOf(':') === -1 && /[a-zA-Z\u0600-\u06FF]/.test(line)) {
-      errors.push({ line: idx + 1 });
-    }
-  });
-  let out = '📄 YAML\n\nالأسطر: ' + lines.length + '\n\n';
-  if (errors.length) {
-    out += '⚠️ تحذيرات:\n';
-    errors.forEach(e => out += '  • السطر ' + e.line + '\n');
-    State.warningLines = errors.map(e => e.line);
-    updateLineNumbers();
-  } else {
-    out += '✅ البنية سليمة';
-    State.warningLines = [];
-    updateLineNumbers();
-  }
-  showOutput(out);
-  setEngine('YAML');
-  setStatus(errors.length ? 'تحذيرات' : 'صالح');
+  showOutput('📄 YAML\n\n' + code);
 }
+
+/* ============================================================
+   XML
+   ============================================================ */
 
 function runXML(code) {
   try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(code, 'text/xml');
-    const err = doc.querySelector('parsererror');
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(code, 'text/xml');
+    var err = doc.querySelector('parsererror');
     if (err) {
       showOutput('❌ XML غير صالح:\n\n' + err.textContent);
-      const m = err.textContent.match(/line (\d+)/);
-      if (m) { State.errorLines = [parseInt(m[1])]; updateLineNumbers(); }
-      setStatus('خطأ', 'error');
+      showError('XML غير صالح', err.textContent, 'تأكد من إغلاق الوسوم');
       return;
     }
-    let out = '✅ XML صالح!\n\nالجذر: ' + doc.documentElement.nodeName + '\n';
-    out += 'العناصر: ' + doc.getElementsByTagName('*').length + '\n';
+    var out = '✅ XML صالح!\n\n';
+    out += 'الجذر: ' + doc.documentElement.nodeName + '\n';
+    out += 'العناصر: ' + doc.getElementsByTagName('*').length;
     showOutput(out);
-    setEngine('XML');
-    setStatus('صالح');
-    State.errorLines = [];
-    updateLineNumbers();
+    clearErrors();
   } catch (e) {
     showOutput('❌ ' + e.message);
-    setStatus('خطأ', 'error');
   }
 }
 
-function showOutput(text) {
-  const out = $('tab-output');
-  if (!out) return;
-  out.innerHTML = '';
-  const div = document.createElement('div');
-  div.style.whiteSpace = 'pre-wrap';
-  div.textContent = text;
-  out.appendChild(div);
-}
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === name);
-  });
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-  const t = $('tab-' + name);
-  if (t) t.classList.remove('hidden');
-}
-
 /* ============================================================
-   Tips
+   Python (Pyodide)
    ============================================================ */
-function loadTips() {
-  const key = $('tipsLangSelect').value;
-  const tips = TIPS[key];
-  const langName = LANGUAGES[key] ? LANGUAGES[key].name : key;
-  const icon = LANGUAGES[key] ? LANGUAGES[key].icon : '';
-  const container = $('tipsContent');
-  if (!tips) {
-    container.innerHTML = '<h2>' + icon + ' ' + langName + '</h2><div class="tips-section"><p>لا توجد نصائح</p></div>';
+
+var pyodideInstance = null;
+
+function runPython(code) {
+  if (pyodideInstance) {
+    executePython(code);
     return;
   }
-  let total = 0;
-  tips.sections.forEach(s => total += s.functions.length);
-  let html = '<h2>' + icon + ' نصائح ' + langName + ' <span class="tips-count">(' + total + ' دالة)</span></h2>';
-  tips.sections.forEach(section => {
-    html += '<div class="tips-section"><h3>' + section.title + '</h3>';
-    section.functions.forEach((fn, i) => {
-      const sid = 'snip_' + key + '_' + i;
-      window[sid] = fn.example;
-      html += '<div class="func-item">' +
-        '<span class="fname">' + escHtml(fn.name) + '</span>' +
-        '<div class="fdesc">' + escHtml(fn.desc) + '</div>' +
-        (fn.example ? '<div class="fexample">' + escHtml(fn.example) + '</div>' +
-          '<button class="insert-btn" type="button" data-snippet="' + sid + '">➕ إدراج</button>' : '') +
-        '</div>';
-    });
-    html += '</div>';
-  });
-  container.innerHTML = html;
   
-  // ربط أزرار الإدراج بـ addEventListener بدل onclick
-  container.querySelectorAll('[data-snippet]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-snippet');
-      insertSnippetById(id);
+  showOutput('⏳ تحميل محرك Python...\n(مرة واحدة، ~10MB)');
+  
+  var script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+  script.onload = function() {
+    window.loadPyodide({
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
+    }).then(function(py) {
+      pyodideInstance = py;
+      executePython(code);
+    }).catch(function(err) {
+      showOutput('❌ فشل تحميل Python:\n' + err.message);
     });
-  });
+  };
+  script.onerror = function() {
+    showOutput('❌ فشل تحميل Python - تحقق من الإنترنت');
+  };
+  document.head.appendChild(script);
 }
 
-function insertSnippetById(id) {
-  const code = window[id];
-  if (!code) return;
-  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  const editorNav = document.querySelector('[data-page="editor"]');
-  if (editorNav) editorNav.classList.add('active');
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  $('page-editor').classList.add('active');
-  codeEditor.value = codeEditor.value + '\n' + code + '\n';
-  updateLineNumbers();
-  showToast('✅ تم الإدراج');
-  closeSidebar();
-  scheduleLint();
-  scheduleAutoRun();
+function executePython(code) {
+  try {
+    var py = pyodideInstance;
+    py.runPython('import sys, io\n_buf = io.StringIO()\nsys.stdout = _buf\nsys.stderr = _buf');
+    var output = '', errText = '';
+    try {
+      py.runPython(code);
+      output = py.runPython('_buf.getvalue()');
+    } catch (e) {
+      errText = e.message || String(e);
+      try { output = py.runPython('_buf.getvalue()'); } catch(_) {}
+    } finally {
+      py.runPython('sys.stdout = sys.__stdout__\nsys.stderr = sys.__stderr__');
+    }
+    
+    if (errText) {
+      showOutput(output || '❌ خطأ');
+      var lineMatch = errText.match(/line (\d+)/);
+      var lineNum = lineMatch ? lineMatch[1] : null;
+      showError('Python خطأ' + (lineNum ? ' - السطر ' + lineNum : ''), errText, getPythonSuggestion(errText));
+      if (lineNum) {
+        errorLines = [parseInt(lineNum)];
+        updateLineNumbers();
+      }
+    } else {
+      showOutput(output || '✅ تم بنجاح');
+      clearErrors();
+    }
+  } catch (e) {
+    showOutput('❌ ' + e.message);
+  }
+}
+
+function getPythonSuggestion(msg) {
+  var m = msg.toLowerCase();
+  if (m.indexOf('indentation') !== -1) return 'تحقق من المسافات البادئة';
+  if (m.indexOf('syntax') !== -1) return 'خطأ في الصياغة';
+  if (m.indexOf('nameerror') !== -1) return 'متغير غير معرّف';
+  if (m.indexOf('typeerror') !== -1) return 'خطأ في نوع البيانات';
+  if (m.indexOf('zerodivision') !== -1) return 'القسمة على صفر';
+  return 'تحقق من الكود';
 }
 
 /* ============================================================
-   Projects
+   SQL (sql.js)
    ============================================================ */
-function saveProject() {
-  try {
-    const name = $('projectName').value.trim() || 'مشروع';
-    const code = codeEditor.value;
-    if (!code.trim()) { showToast('⚠️ لا يوجد كود', 'error'); return; }
-    const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-    const idx = projects.findIndex(p => p.name === name);
-    const project = { name, code, lang: State.currentLang, date: new Date().toISOString(), id: idx >= 0 ? projects[idx].id : Date.now() };
-    if (idx >= 0) { projects[idx] = project; showToast('💾 تم التحديث'); }
-    else { projects.push(project); showToast('💾 تم الحفظ'); }
-    localStorage.setItem('iqcode-projects', JSON.stringify(projects));
-  } catch (e) {
-    showToast('❌ خطأ في الحفظ', 'error');
+
+var sqlInstance = null;
+
+function runSQL(code) {
+  if (sqlInstance) {
+    executeSQL(code);
+    return;
   }
+  
+  showOutput('⏳ تحميل SQLite...');
+  
+  var script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js';
+  script.onload = function() {
+    window.initSqlJs({
+      locateFile: function(f) {
+        return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/' + f;
+      }
+    }).then(function(SQL) {
+      sqlInstance = SQL;
+      executeSQL(code);
+    }).catch(function(err) {
+      showOutput('❌ فشل تحميل SQL: ' + err.message);
+    });
+  };
+  script.onerror = function() {
+    showOutput('❌ فشل تحميل SQL');
+  };
+  document.head.appendChild(script);
+}
+
+function executeSQL(code) {
+  try {
+    var db = new sqlInstance.Database();
+    var stmts = code.split(';').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+    var out = '';
+    var errors = [];
+    
+    for (var i = 0; i < stmts.length; i++) {
+      try {
+        var r = db.exec(stmts[i]);
+        if (r.length > 0) {
+          for (var j = 0; j < r.length; j++) {
+            out += '📋 ' + r[j].columns.join(' | ') + '\n';
+            out += '─────\n';
+            for (var k = 0; k < r[j].values.length; k++) {
+              out += r[j].values[k].map(function(v) { return String(v == null ? 'NULL' : v); }).join(' | ') + '\n';
+            }
+            out += '\n';
+          }
+        } else {
+          out += '✅ تم\n';
+        }
+      } catch (e) {
+        errors.push(e.message);
+        out += '❌ ' + e.message + '\n';
+      }
+    }
+    
+    showOutput(out || '✅ تم');
+    if (errors.length > 0) {
+      showError('SQL خطأ', errors.join('\n'), 'تحقق من الصياغة');
+    } else {
+      clearErrors();
+    }
+  } catch (e) {
+    showOutput('❌ ' + e.message);
+  }
+}
+
+/* ============================================================
+   عرض المخرجات والأخطاء
+   ============================================================ */
+
+function showOutput(text) {
+  var out = $('tab-output');
+  out.textContent = text;
+  showTab('output');
+}
+
+function showError(title, msg, fix) {
+  var err = $('tab-errors');
+  err.innerHTML = '<div class="error-item">' +
+    '<div class="err-header">❌ ' + escHtml(title) + '</div>' +
+    '<div class="err-msg">' + escHtml(msg) + '</div>' +
+    (fix ? '<div class="err-fix">💡 ' + escHtml(fix) + '</div>' : '') +
+    '</div>';
+  
+  var badge = $('errorBadge');
+  badge.style.display = 'inline-block';
+  badge.textContent = '1';
+  
+  showTab('errors');
+}
+
+function clearErrors() {
+  var err = $('tab-errors');
+  err.textContent = '✅ لا توجد أخطاء';
+  var badge = $('errorBadge');
+  badge.style.display = 'none';
+  errorLines = [];
+  updateLineNumbers();
+}
+
+function showTab(name) {
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-tab') === name);
+  }
+  document.querySelectorAll('.tab-content').forEach(function(c) {
+    c.classList.add('hidden');
+  });
+  $('tab-' + name).classList.remove('hidden');
+}
+
+/* ============================================================
+   Linter - فحص الأخطاء الفوري
+   ============================================================ */
+
+function runLinter() {
+  var code = $('codeEditor').value;
+  var issues = [];
+  
+  if (currentLang === 'javascript') {
+    lintJS(code, issues);
+  } else if (currentLang === 'python') {
+    lintPython(code, issues);
+  } else if (currentLang === 'html') {
+    lintHTML(code, issues);
+  } else if (currentLang === 'json') {
+    lintJSON(code, issues);
+  }
+  
+  errorLines = issues.filter(function(i) { return i.severity === 'error'; }).map(function(i) { return i.line; });
+  updateLineNumbers();
+  
+  if (issues.length > 0) {
+    var err = $('tab-errors');
+    var html = '';
+    for (var i = 0; i < issues.length; i++) {
+      var iss = issues[i];
+      html += '<div class="error-item' + (iss.severity === 'warning' ? ' warning' : '') + '">' +
+        '<div class="err-header">' + (iss.severity === 'error' ? '❌' : '⚠️') + ' السطر ' + iss.line + '</div>' +
+        '<div class="err-msg">' + escHtml(iss.message) + '</div>' +
+        (iss.suggestion ? '<div class="err-fix">💡 ' + escHtml(iss.suggestion) + '</div>' : '') +
+        '</div>';
+    }
+    err.innerHTML = html;
+    var badge = $('errorBadge');
+    badge.style.display = 'inline-block';
+    badge.textContent = issues.length;
+  } else {
+    var err = $('tab-errors');
+    err.textContent = '✅ لا توجد أخطاء';
+    var badge = $('errorBadge');
+    badge.style.display = 'none';
+  }
+}
+
+function lintJS(code, issues) {
+  var lines = code.split('\n');
+  var stack = [];
+  for (var i = 0; i < lines.length; i++) {
+    var ln = i + 1;
+    var trimmed = lines[i].trim();
+    if (trimmed.indexOf('//') === 0) continue;
+    
+    if (/\bvar\s+\w+/.test(lines[i])) {
+      issues.push({ line: ln, severity: 'warning', message: 'استخدام var', suggestion: 'استخدم let أو const' });
+    }
+    if (/[^=!<>]==[^=]/.test(lines[i]) && lines[i].indexOf('===') === -1) {
+      issues.push({ line: ln, severity: 'warning', message: 'استخدام ==', suggestion: 'استخدم ===' });
+    }
+  }
+}
+
+function lintPython(code, issues) {
+  var lines = code.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var ln = i + 1;
+    var trimmed = lines[i].trim();
+    if (trimmed.indexOf('#') === 0 || !trimmed) continue;
+    
+    if (/^(if|elif|else|for|while|def|class|try|except|finally|with)\b/.test(trimmed) && trimmed.slice(-1) !== ':') {
+      issues.push({ line: ln, severity: 'error', message: 'نقطتين : مفقودة', suggestion: 'أضف :' });
+    }
+    if (/^print\s+["']/.test(trimmed) && trimmed.indexOf('(') === -1) {
+      issues.push({ line: ln, severity: 'warning', message: 'print بدون أقواس', suggestion: 'استخدم print("نص")' });
+    }
+  }
+}
+
+function lintHTML(code, issues) {
+  var lines = code.split('\n');
+  var stack = [];
+  var voidTags = ['br','hr','img','input','meta','link'];
+  for (var i = 0; i < lines.length; i++) {
+    var ln = i + 1;
+    var cleaned = lines[i].replace(/<!--[\s\S]*?-->/g, '');
+    var re = /<\/?([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
+    var m;
+    while ((m = re.exec(cleaned)) !== null) {
+      var full = m[0];
+      var tag = m[1].toLowerCase();
+      var selfClose = m[2] === '/';
+      if (full.indexOf('</') === 0) {
+        if (stack.length === 0) {
+          issues.push({ line: ln, severity: 'error', message: 'وسم إغلاق بدون فتح', suggestion: 'تحقق من الوسوم' });
+        } else {
+          stack.pop();
+        }
+      } else if (!selfClose && voidTags.indexOf(tag) === -1) {
+        stack.push({ tag: tag, ln: ln });
+      }
+    }
+  }
+}
+
+function lintJSON(code, issues) {
+  if (!code.trim()) return;
+  try {
+    JSON.parse(code);
+  } catch (e) {
+    var m = e.message.match(/position (\d+)/);
+    var ln = 1;
+    if (m) ln = code.substring(0, parseInt(m[1])).split('\n').length;
+    issues.push({ line: ln, severity: 'error', message: e.message, suggestion: 'تحقق من JSON' });
+  }
+}
+
+function scheduleLint() {
+  clearTimeout(lintTimer);
+  lintTimer = setTimeout(runLinter, 500);
+}
+
+function scheduleAutoRun() {
+  if (!autoRun) return;
+  clearTimeout(autoRunTimer);
+  autoRunTimer = setTimeout(function() { runCode(false); }, 1500);
+}
+
+/* ============================================================
+   النصائح
+   ============================================================ */
+
+function loadTips() {
+  var key = $('tipsLangSelect').value;
+  var tips = TIPS[key];
+  var lang = LANGUAGES[key];
+  var container = $('tipsContainer');
+  
+  if (!tips) {
+    container.innerHTML = '<p style="text-align:center;padding:20px;">لا توجد نصائح لهذه اللغة</p>';
+    return;
+  }
+  
+  var total = 0;
+  for (var i = 0; i < tips.length; i++) {
+    total += tips[i].items.length;
+  }
+  
+  var html = '<h2 style="color:#58a6ff;margin-bottom:16px;">' + lang.icon + ' نصائح ' + lang.name + ' (' + total + ' دالة)</h2>';
+  
+  for (var i = 0; i < tips.length; i++) {
+    var section = tips[i];
+    html += '<div class="tip-section">';
+    html += '<h3>' + section.title + '</h3>';
+    
+    for (var j = 0; j < section.items.length; j++) {
+      var fn = section.items[j];
+      html += '<div class="tip-func">';
+      html += '<div class="tip-name">' + escHtml(fn.name) + '</div>';
+      html += '<div class="tip-desc">' + escHtml(fn.desc) + '</div>';
+      if (fn.ex) {
+        html += '<div class="tip-example">' + escHtml(fn.ex) + '</div>';
+        html += '<button class="tip-insert" data-code="' + escHtml(fn.ex).replace(/"/g, '&quot;') + '">➕ إدراج</button>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  
+  container.innerHTML = html;
+  
+  // ربط أزرار الإدراج
+  container.querySelectorAll('.tip-insert').forEach(function(btn) {
+    btn.onclick = function() {
+      var code = btn.getAttribute('data-code');
+      $('codeEditor').value += '\n' + code + '\n';
+      updateLineNumbers();
+      toast('✅ تم الإدراج');
+      // الانتقال للمحرر
+      document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); });
+      document.querySelector('[data-page="editor"]').classList.add('active');
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      $('page-editor').classList.add('active');
+      closeSidebar();
+    };
+  });
+}
+
+/* ============================================================
+   المشاريع
+   ============================================================ */
+
+function saveProject() {
+  var name = $('projectName').value.trim() || 'مشروع';
+  var code = $('codeEditor').value;
+  if (!code.trim()) { toast('⚠️ لا يوجد كود', 'error'); return; }
+  
+  var projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  var idx = -1;
+  for (var i = 0; i < projects.length; i++) {
+    if (projects[i].name === name) { idx = i; break; }
+  }
+  
+  var project = {
+    name: name,
+    code: code,
+    lang: currentLang,
+    date: new Date().toISOString(),
+    id: idx >= 0 ? projects[idx].id : Date.now()
+  };
+  
+  if (idx >= 0) {
+    projects[idx] = project;
+    toast('💾 تم التحديث');
+  } else {
+    projects.push(project);
+    toast('💾 تم الحفظ');
+  }
+  
+  localStorage.setItem('iqcode-projects', JSON.stringify(projects));
 }
 
 function loadProjects() {
-  const grid = $('projectsGrid');
-  const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  var container = $('projectsContainer');
+  var projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  
   if (projects.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="big-icon">📭</span>لا توجد مشاريع</div>';
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:#8b949e;">📭 لا توجد مشاريع محفوظة</div>';
     return;
   }
-  grid.innerHTML = '';
-  projects.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    const lang = LANGUAGES[p.lang];
-    card.innerHTML = '<span class="lang-badge">' + (lang ? lang.icon + ' ' + lang.name : p.lang) + '</span>' +
-      '<h3>' + escHtml(p.name) + '</h3>' +
-      '<div class="meta">📅 ' + new Date(p.date).toLocaleString('ar-EG') + '</div>' +
-      '<div class="actions">' +
-      '<button type="button" data-open="' + p.id + '" style="background:var(--primary-2);color:white;border:none;">📂 فتح</button>' +
-      '<button type="button" class="danger" data-del="' + p.id + '">🗑 حذف</button>' +
-      '</div>';
-    grid.appendChild(card);
+  
+  projects.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+  
+  var html = '';
+  for (var i = 0; i < projects.length; i++) {
+    var p = projects[i];
+    var lang = LANGUAGES[p.lang];
+    html += '<div class="project-card">';
+    html += '<span class="proj-lang">' + (lang ? lang.icon + ' ' + lang.name : p.lang) + '</span>';
+    html += '<h3>' + escHtml(p.name) + '</h3>';
+    html += '<div class="proj-meta">📅 ' + new Date(p.date).toLocaleString('ar-EG') + '</div>';
+    html += '<div class="proj-actions">';
+    html += '<button class="blue" data-open="' + p.id + '">📂 فتح</button>';
+    html += '<button class="red" data-del="' + p.id + '">🗑 حذف</button>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+  
+  container.querySelectorAll('[data-open]').forEach(function(b) {
+    b.onclick = function() { openProject(parseInt(b.getAttribute('data-open'))); };
   });
-  grid.querySelectorAll('[data-open]').forEach(b => {
-    b.addEventListener('click', () => openProject(parseInt(b.getAttribute('data-open'))));
-  });
-  grid.querySelectorAll('[data-del]').forEach(b => {
-    b.addEventListener('click', () => deleteProject(parseInt(b.getAttribute('data-del'))));
+  container.querySelectorAll('[data-del]').forEach(function(b) {
+    b.onclick = function() { deleteProject(parseInt(b.getAttribute('data-del'))); };
   });
 }
 
 function openProject(id) {
-  const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-  const p = projects.find(x => x.id === id);
+  var projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  var p = null;
+  for (var i = 0; i < projects.length; i++) {
+    if (projects[i].id === id) { p = projects[i]; break; }
+  }
   if (!p) return;
-  State.currentLang = p.lang;
+  
+  currentLang = p.lang;
   $('langSelect').value = p.lang;
   $('projectName').value = p.name;
-  codeEditor.value = p.code;
+  $('codeEditor').value = p.code;
   updateLineNumbers();
-  State.errorLines = []; State.warningLines = [];
-  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  const editorNav = document.querySelector('[data-page="editor"]');
-  if (editorNav) editorNav.classList.add('active');
-  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  errorLines = [];
+  
+  // الانتقال للمحرر
+  document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); });
+  document.querySelector('[data-page="editor"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(function(pg) { pg.classList.remove('active'); });
   $('page-editor').classList.add('active');
-  showToast('📂 تم الفتح');
-  scheduleLint();
-  scheduleAutoRun();
+  closeSidebar();
+  
+  toast('📂 تم الفتح');
 }
 
 function deleteProject(id) {
-  if (!confirm('حذف؟')) return;
-  let projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-  projects = projects.filter(p => p.id !== id);
+  if (!confirm('حذف المشروع؟')) return;
+  var projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  projects = projects.filter(function(p) { return p.id !== id; });
   localStorage.setItem('iqcode-projects', JSON.stringify(projects));
   loadProjects();
-  showToast('🗑');
+  toast('🗑 تم الحذف');
 }
 
 function clearAllProjects() {
-  if (!confirm('حذف الكل؟')) return;
+  if (!confirm('حذف جميع المشاريع؟')) return;
   localStorage.removeItem('iqcode-projects');
   loadProjects();
-  showToast('🗑');
+  toast('🗑 تم المسح');
 }
 
 function exportProjects() {
-  const projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-  if (projects.length === 0) { showToast('⚠️ لا توجد مشاريع', 'error'); return; }
-  const blob = new Blob([JSON.stringify({ app: 'İQCODE', version: '9.0', exportedAt: new Date().toISOString(), projects }, null, 2)], { type: 'application/json;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  var projects = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+  if (projects.length === 0) { toast('⚠️ لا توجد مشاريع', 'error'); return; }
+  var blob = new Blob([JSON.stringify({ app: 'İQCODE', projects: projects }, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
   a.href = url;
-  a.download = 'iqcode_backup_' + new Date().toISOString().slice(0,10) + '.json';
+  a.download = 'iqcode_backup.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 100);
-  showToast('📤 ' + projects.length + ' مشروع');
+  setTimeout(function() { URL.revokeObjectURL(url); }, 100);
+  toast('📤 تم التصدير');
 }
 
 function importProjects(e) {
-  const file = e.target.files[0];
+  var file = e.target.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
+  var reader = new FileReader();
+  reader.onload = function(ev) {
     try {
-      const data = JSON.parse(ev.target.result);
-      const imported = Array.isArray(data) ? data : (data.projects || []);
-      const existing = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
-      let added = 0, updated = 0;
-      imported.forEach(p => {
-        if (!p.name || !p.code || !p.lang) return;
-        const idx = existing.findIndex(x => x.name === p.name);
-        const project = { name: p.name, code: p.code, lang: p.lang, date: p.date || new Date().toISOString(), id: idx >= 0 ? existing[idx].id : Date.now() + Math.random() };
-        if (idx >= 0) { existing[idx] = project; updated++; }
-        else { existing.push(project); added++; }
-      });
+      var data = JSON.parse(ev.target.result);
+      var imported = data.projects || data;
+      if (!Array.isArray(imported)) throw new Error('صيغة غير صحيحة');
+      
+      var existing = JSON.parse(localStorage.getItem('iqcode-projects') || '[]');
+      for (var i = 0; i < imported.length; i++) {
+        var p = imported[i];
+        if (!p.name || !p.code || !p.lang) continue;
+        p.id = Date.now() + Math.random();
+        existing.push(p);
+      }
       localStorage.setItem('iqcode-projects', JSON.stringify(existing));
       loadProjects();
-      showToast('📥 ' + added + ' جديد، ' + updated + ' محدّث');
+      toast('📥 تم الاستيراد: ' + imported.length);
     } catch (err) {
-      showToast('❌ ملف غير صالح', 'error');
+      toast('❌ ملف غير صالح', 'error');
     }
   };
   reader.readAsText(file);
@@ -1792,200 +1679,171 @@ function importProjects(e) {
 }
 
 function downloadCode() {
-  const lang = LANGUAGES[State.currentLang];
-  if (!lang) return;
-  const code = codeEditor.value;
-  const name = ($('projectName').value.trim() || 'project').replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
-  const filename = name + '.' + lang.fileExt;
-  const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  var lang = LANGUAGES[currentLang];
+  var code = $('codeEditor').value;
+  var name = ($('projectName').value.trim() || 'project').replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, '_');
+  var filename = name + '.' + lang.file;
+  var blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 100);
-  showToast('⬇ ' + filename);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 100);
+  toast('⬇ ' + filename);
 }
 
 /* ============================================================
-   Sidebar / Theme
+   التنقل والصفحات
    ============================================================ */
+
+function switchPage(page) {
+  document.querySelectorAll('.menu-item').forEach(function(m) {
+    m.classList.toggle('active', m.getAttribute('data-page') === page);
+  });
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  $('page-' + page).classList.add('active');
+  closeSidebar();
+  
+  if (page === 'tips') loadTips();
+  if (page === 'projects') loadProjects();
+}
+
 function openSidebar() {
   $('sidebar').classList.add('open');
   $('overlay').classList.add('show');
 }
+
 function closeSidebar() {
   $('sidebar').classList.remove('open');
   $('overlay').classList.remove('show');
 }
 
 function toggleTheme() {
-  State.isDark = !State.isDark;
-  document.documentElement.setAttribute('data-theme', State.isDark ? 'dark' : 'light');
-  $('themeIcon').textContent = State.isDark ? '🌙' : '☀️';
-  $('themeText').textContent = State.isDark ? 'ليلي' : 'نهاري';
-  localStorage.setItem('iqcode-theme', State.isDark ? 'dark' : 'light');
-}
-
-function toggleAutoRun() {
-  State.autoRun = !State.autoRun;
-  const t = $('autoRunToggle');
-  if (State.autoRun) {
-    t.classList.add('on');
-    showToast('⚡ التشغيل التلقائي مفعّل');
-    scheduleAutoRun();
+  isDark = !isDark;
+  if (isDark) {
+    document.body.style.background = '#0d1117';
+    document.body.style.color = '#e6edf3';
+    $('themeBtn').textContent = '🌙 الوضع الليلي';
   } else {
-    t.classList.remove('on');
-    showToast('⏸ التشغيل التلقائي متوقف', 'info');
+    document.body.style.background = '#f5f5f5';
+    document.body.style.color = '#222';
+    $('themeBtn').textContent = '☀️ الوضع النهاري';
   }
 }
 
-function scheduleAutoRun() {
-  if (!State.autoRun) return;
-  clearTimeout(State.autoRunTimer);
-  State.autoRunTimer = setTimeout(() => runCode(false), 1500);
+function toggleAutoRun() {
+  autoRun = !autoRun;
+  $('autoRunBtn').textContent = autoRun ? '⚡ تشغيل تلقائي: مفعّل' : '⏸ تشغيل تلقائي: متوقف';
+  $('autoRunBtn').style.background = autoRun ? '#238636' : '#6e7681';
+  if (autoRun) scheduleAutoRun();
+  toast(autoRun ? '⚡ مفعّل' : '⏸ متوقف', 'info');
 }
 
-function scheduleLint() {
-  clearTimeout(State.lintTimer);
-  State.lintTimer = setTimeout(runLinter, 400);
-}
-
-/* ============================================================
-   Init Navigation
-   ============================================================ */
-function initNavigation() {
-  // Sidebar nav
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const page = item.getAttribute('data-page');
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const target = $('page-' + page);
-      if (target) target.classList.add('active');
-      if (page === 'projects') loadProjects();
-      if (page === 'tips') loadTips();
-      closeSidebar();
-    });
-  });
-  
-  // Tabs
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-tab');
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-      tab.classList.add('active');
-      const t = $('tab-' + target);
-      if (t) t.classList.remove('hidden');
-    });
-  });
-}
-
-/* ============================================================
-   Language Select
-   ============================================================ */
 function changeLang() {
-  State.currentLang = $('langSelect').value;
-  codeEditor.value = STARTER_CODE[State.currentLang] || '';
+  currentLang = $('langSelect').value;
+  $('codeEditor').value = STARTER[currentLang] || '';
   updateLineNumbers();
-  State.errorLines = []; State.warningLines = [];
-  setEngine(LANGUAGES[State.currentLang].name);
-  showToast(LANGUAGES[State.currentLang].icon + ' ' + LANGUAGES[State.currentLang].name, 'info');
+  errorLines = [];
+  clearErrors();
+  $('engineInfo').textContent = LANGUAGES[currentLang].name;
+  toast(LANGUAGES[currentLang].icon + ' ' + LANGUAGES[currentLang].name, 'info');
   scheduleLint();
   scheduleAutoRun();
 }
 
 /* ============================================================
-   Divider
+   ربط الأزرار - الأهم
    ============================================================ */
-function initDivider() {
-  const divider = $('divider');
-  const outSec = $('outputSection');
-  let dragging = false;
-  
-  const start = (e) => { dragging = true; e.preventDefault(); };
-  const end = () => { dragging = false; };
-  const move = (y) => {
-    if (!dragging) return;
-    const wrapper = document.querySelector('.editor-wrapper');
-    const rect = wrapper.getBoundingClientRect();
-    const h = rect.bottom - y - 25;
-    if (h > 80 && h < rect.height - 80) outSec.style.height = h + 'px';
-  };
-  
-  divider.addEventListener('mousedown', start);
-  document.addEventListener('mouseup', end);
-  document.addEventListener('mousemove', e => move(e.clientY));
-  divider.addEventListener('touchstart', start, { passive: false });
-  document.addEventListener('touchend', end);
-  document.addEventListener('touchmove', e => move(e.touches[0].clientY), { passive: true });
-}
 
-/* ============================================================
-   Wire up all buttons
-   ============================================================ */
-function wireButtons() {
-  const bind = (id, fn) => {
-    const el = $(id);
-    if (el) {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        try { fn(); } catch (err) { console.error(id + ' error:', err); showToast('❌ خطأ', 'error'); }
-      });
-    } else {
-      console.warn('Button not found:', id);
-    }
-  };
+function wireAllButtons() {
+  console.log('🔌 Wiring buttons...');
   
-  bind('menuBtn', openSidebar);
-  bind('overlay', closeSidebar);
-  bind('runBtn', () => runCode(true));
-  bind('saveBtn', saveProject);
-  bind('downloadBtn', downloadCode);
-  bind('themeBtn', toggleTheme);
-  bind('autoRunToggle', toggleAutoRun);
-  bind('exportBtn', exportProjects);
-  bind('importBtn', () => $('importFile').click());
-  bind('clearBtn', clearAllProjects);
+  // القائمة
+  var menuBtn = $('menuBtn');
+  if (menuBtn) menuBtn.onclick = openSidebar;
   
-  const imp = $('importFile');
-  if (imp) imp.addEventListener('change', importProjects);
+  var overlay = $('overlay');
+  if (overlay) overlay.onclick = closeSidebar;
   
-  const ls = $('langSelect');
-  if (ls) ls.addEventListener('change', changeLang);
+  // أزرار الشريط العلوي
+  var runBtn = $('runBtn');
+  if (runBtn) runBtn.onclick = function() { runCode(true); };
   
-  const tls = $('tipsLangSelect');
-  if (tls) tls.addEventListener('change', loadTips);
+  var saveBtn = $('saveBtn');
+  if (saveBtn) saveBtn.onclick = saveProject;
   
-  // Editor events
+  var downloadBtn = $('downloadBtn');
+  if (downloadBtn) downloadBtn.onclick = downloadCode;
+  
+  // القائمة الجانبية
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    item.onclick = function() {
+      switchPage(item.getAttribute('data-page'));
+    };
+  });
+  
+  var themeBtn = $('themeBtn');
+  if (themeBtn) themeBtn.onclick = toggleTheme;
+  
+  var autoRunBtn = $('autoRunBtn');
+  if (autoRunBtn) autoRunBtn.onclick = toggleAutoRun;
+  
+  // صفحات
+  var exportBtn = $('exportBtn');
+  if (exportBtn) exportBtn.onclick = exportProjects;
+  
+  var importBtn = $('importBtn');
+  if (importBtn) importBtn.onclick = function() { $('importFile').click(); };
+  
+  var clearBtn = $('clearBtn');
+  if (clearBtn) clearBtn.onclick = clearAllProjects;
+  
+  var importFile = $('importFile');
+  if (importFile) importFile.onchange = importProjects;
+  
+  // التبويبات
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.onclick = function() {
+      showTab(tab.getAttribute('data-tab'));
+    };
+  });
+  
+  // Select languages
+  var langSelect = $('langSelect');
+  if (langSelect) langSelect.onchange = changeLang;
+  
+  var tipsLangSelect = $('tipsLangSelect');
+  if (tipsLangSelect) tipsLangSelect.onchange = loadTips;
+  
+  // المحرر
+  var codeEditor = $('codeEditor');
   if (codeEditor) {
-    codeEditor.addEventListener('scroll', () => {
-      if (lineNumbers) lineNumbers.scrollTop = codeEditor.scrollTop;
-    });
-    codeEditor.addEventListener('input', () => {
+    codeEditor.oninput = function() {
       updateLineNumbers();
       scheduleLint();
       scheduleAutoRun();
-    });
-    codeEditor.addEventListener('click', updateCursorInfo);
-    codeEditor.addEventListener('keyup', updateCursorInfo);
-    codeEditor.addEventListener('keydown', (e) => {
+    };
+    codeEditor.onscroll = function() {
+      $('lineNumbers').scrollTop = codeEditor.scrollTop;
+    };
+    codeEditor.onkeydown = function(e) {
       if (e.key === 'Tab') {
         e.preventDefault();
-        const s = codeEditor.selectionStart;
+        var s = codeEditor.selectionStart;
         codeEditor.value = codeEditor.value.substring(0, s) + '  ' + codeEditor.value.substring(codeEditor.selectionEnd);
         codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
         updateLineNumbers();
       }
-    });
+    };
   }
   
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
+  // اختصارات
+  document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       runCode(true);
@@ -1995,84 +1853,63 @@ function wireButtons() {
       saveProject();
     }
   });
+  
+  console.log('✅ All buttons wired');
 }
 
 /* ============================================================
-   Init
+   التهيئة
    ============================================================ */
+
 function init() {
-  try {
-    console.log('İQCODE v9.0 starting...');
+  console.log('🚀 İQCODE v10.0 starting...');
+  
+  // تعبئة قوائم اللغات
+  var ls = $('langSelect');
+  var tls = $('tipsLangSelect');
+  var langs = Object.keys(LANGUAGES);
+  for (var i = 0; i < langs.length; i++) {
+    var key = langs[i];
+    var lang = LANGUAGES[key];
+    var o1 = document.createElement('option');
+    o1.value = key;
+    o1.textContent = lang.icon + ' ' + lang.name;
+    ls.appendChild(o1);
     
-    codeEditor = $('codeEditor');
-    lineNumbers = $('lineNumbers');
-    
-    if (!codeEditor) { console.error('codeEditor not found!'); return; }
-    
-    // Theme restore
-    if (localStorage.getItem('iqcode-theme') === 'light') {
-      State.isDark = false;
-      document.documentElement.setAttribute('data-theme', 'light');
-      const ti = $('themeIcon'); if (ti) ti.textContent = '☀️';
-      const tt = $('themeText'); if (tt) tt.textContent = 'نهاري';
-    }
-    
-    // Populate languages
-    const ls = $('langSelect');
-    const tls = $('tipsLangSelect');
-    Object.keys(LANGUAGES).forEach(key => {
-      const lang = LANGUAGES[key];
-      if (ls) {
-        const o = document.createElement('option');
-        o.value = key;
-        o.textContent = lang.icon + ' ' + lang.name;
-        ls.appendChild(o);
-      }
-      if (tls) {
-        const o = document.createElement('option');
-        o.value = key;
-        o.textContent = lang.icon + ' ' + lang.name;
-        tls.appendChild(o);
-      }
-    });
-    if (ls) ls.value = 'html';
-    if (tls) tls.value = 'html';
-    
-    // Navigation
-    initNavigation();
-    initDivider();
-    
-    // Initial content
-    State.currentLang = 'html';
-    codeEditor.value = STARTER_CODE.html;
-    updateLineNumbers();
-    loadTips();
-    
-    setStatus('جاهز');
-    setEngine('HTML');
-    
-    // Wire ALL buttons
-    wireButtons();
-    
-    // Auto-run initial
-    setTimeout(() => {
-      runLinter();
-      runCode(false);
-    }, 500);
-    
-    console.log('✅ İQCODE ready');
-  } catch (e) {
-    console.error('Init error:', e);
-    alert('خطأ في التهيئة: ' + e.message);
+    var o2 = document.createElement('option');
+    o2.value = key;
+    o2.textContent = lang.icon + ' ' + lang.name;
+    tls.appendChild(o2);
   }
+  ls.value = 'html';
+  tls.value = 'html';
+  
+  // تحميل الكود الأولي
+  $('codeEditor').value = STARTER.html;
+  updateLineNumbers();
+  
+  // ربط كل الأزرار
+  wireAllButtons();
+  
+  // ربط النصائح مبدئياً
+  loadTips();
+  
+  // تشغيل أولي
+  setTimeout(function() {
+    runCode(false);
+  }, 500);
+  
+  toast('✅ İQCODE جاهز!', 'info');
+  console.log('✅ İQCODE ready');
 }
 
-// Start when DOM is ready
+// تشغيل بعد تحميل DOM
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
 }
+
 </script>
 </body>
 </html>
